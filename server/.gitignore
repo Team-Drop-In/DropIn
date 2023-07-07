@@ -37,4 +37,4 @@ out/
 .vscode/
 
 ### Enviroment variable
-**/src/main/resources/application.yml
+application.yml
