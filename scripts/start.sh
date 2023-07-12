@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-PROJECT_ROOT="/home/ubuntu/app"
+PROJECT_ROOT="/home/ubuntu/app/server"
 JAR_FILE="$PROJECT_ROOT/dropin-webapp.jar"
 
 APP_LOG="$PROJECT_ROOT/application.log"
