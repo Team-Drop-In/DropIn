@@ -12,7 +12,7 @@ on:
     branches: [ "main", "develop" ]
   pull_request:
     branches: [ "main", "develop" ]
-    
+
 env:
   AWS_REGION: ap-northeast-2
   S3_BUCKET_NAME: dropin-github-actions-s3-bucket
