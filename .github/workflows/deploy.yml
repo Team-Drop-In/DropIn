@@ -33,6 +33,8 @@ jobs:
         java-version: '11'
 
     # (3) Gradle build (Test 제외)
+    - name: Grant execute permission for gradlew
+      run: chmod +x gradlew
     - name: init with Gradle
       uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
     - run: gradle init
