@@ -38,7 +38,6 @@ jobs:
     # 이 워크플로우는 gradle build 를 수행함
     - name: Build with Gradle
       uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
-    - run: ./gradlew clean build
       with:
         gradle-version: 8.1.1
         arguments: build
