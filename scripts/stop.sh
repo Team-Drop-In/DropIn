@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-PROJECT_ROOT="/home/ubuntu/app"
-JAR_FILE="$PROJECT_ROOT/dropin-webapp.jar"
+PROJECT_ROOT="/home/ubuntu/app/server"
+JAR_FILE="$PROJECT_ROOT/dropin-server.jar"
 
 DEPLOY_LOG="$PROJECT_ROOT/deploy.log"
 
