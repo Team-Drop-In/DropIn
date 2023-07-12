@@ -37,7 +37,7 @@ jobs:
     # 3) Gradle 사용. arguments 를 붙이면 뒤에 그대로 실행된다고 생각하면 됨
     # 이 워크플로우는 gradle build 를 수행함
     - name: Grant execute permission for gradlew
-      run: chmod +x gradlew
+      run: sudo chmod +x gradlew
     - name: init with Gradle
       uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
     - run: gradle init
