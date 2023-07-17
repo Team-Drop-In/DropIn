@@ -27,6 +27,7 @@ const Login = () => {
         "비밀번호는 8자 이상으로 하나 이상의 대문자, 소문자, 숫자, 특수문자를 포함해주세요.",
     },
   };
+
   return (
     <Container>
       <Content>
