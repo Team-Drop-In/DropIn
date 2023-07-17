@@ -3,6 +3,7 @@ import axios from "axios";
 import { Routes, Route } from "react-router-dom";
 import Header from "./components/Header";
 import Login from "./pages/user/Login";
+import Signup from "./pages/user/Signup";
 
 const App = () => {
   // const [responseData, setResponseData] = useState(null);
@@ -24,6 +25,7 @@ const App = () => {
       <Header />
       <Routes>
         <Route path="/" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
       </Routes>
 
       {/* {responseData ? (

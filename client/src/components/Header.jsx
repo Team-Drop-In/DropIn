@@ -11,7 +11,7 @@ const Header = () => {
       <Content>
         <Tab>
           <button onClick={() => navigate("/")}>
-            <img src={LogoImage} alt="로고" className="logo_img" />
+            <Logo src={LogoImage} alt="로고" className="logo_img" />
           </button>
           <Link>DropIn</Link>
           <Link>커뮤니티</Link>
@@ -30,13 +30,36 @@ export default Header;
 const Container = styled(container)`
   position: fixed;
   z-index: 9999;
+  border-bottom: 1px solid #2c2c2c;
+
+  button {
+    cursor: pointer;
+    border: none;
+    background-color: transparent;
+  }
+
+  a {
+    margin-left: 14px;
+  }
 `;
 
 const Content = styled(content)`
   height: 60px;
-  background-color: white;
+  background-color: black;
+  letter-spacing: 0.5px;
   justify-content: space-between;
 `;
 
-const Tab = styled(content)``;
-const User = styled(content)``;
+const Tab = styled.div`
+  display: flex;
+  align-items: center;
+  width: fit-content;
+`;
+const Logo = styled.img`
+  width: 85px;
+`;
+const User = styled.div`
+  display: flex;
+  align-items: center;
+  width: fit-content;
+`;
