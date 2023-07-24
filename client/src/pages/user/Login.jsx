@@ -35,12 +35,12 @@ const Login = () => {
         {/* <Form onSubmit={handleSubmit(onFormSubmit, onFormError)}> */}
         <Form>
           <Controller
-            name={"username"}
+            name={"email"}
             control={control}
             rules={emailOptions}
             render={({ field, fieldState: { error } }) => (
               <Input
-                id="username"
+                id="email"
                 label="이메일"
                 type="text"
                 placeholder="이메일"
