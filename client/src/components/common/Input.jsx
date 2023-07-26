@@ -33,7 +33,7 @@ export default Input;
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  width: 100%;
+  width: ${(props) => (props.width ? `${props.width}` : "100%")};
 `;
 
 const Label = styled.label`
