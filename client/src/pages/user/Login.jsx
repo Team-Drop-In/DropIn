@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { Controller, useForm } from "react-hook-form";
 import { container, content } from "../../styles/style";
@@ -7,6 +8,8 @@ import Button from "../../components/common/Button";
 import LogoImage from "../../images/logo.svg";
 
 const Login = () => {
+  const [error, setError] = useState(false);
+
   const navigate = useNavigate();
   const { handleSubmit, control } = useForm();
 
@@ -28,12 +31,16 @@ const Login = () => {
     },
   };
 
+  const onFormSubmit = (data) => {
+    console.log("폼 제출", data);
+    setError((prev) => !prev);
+  };
+
   return (
     <Container>
       <Content>
         <Logo src={LogoImage} alt="로고" className="logo_img" />
-        {/* <Form onSubmit={handleSubmit(onFormSubmit, onFormError)}> */}
-        <Form>
+        <Form onSubmit={handleSubmit(onFormSubmit)}>
           <Controller
             name={"email"}
             control={control}
@@ -65,6 +72,7 @@ const Login = () => {
               />
             )}
           />
+          {error && <ErrorMsg>정보가 일치하지 않습니다</ErrorMsg>}
           <Button
             text={"로그인"}
             width={"100%"}
@@ -106,6 +114,12 @@ const Form = styled.form`
   width: 350px;
   margin-top: 35px;
   margin-bottom: 12px;
+`;
+
+const ErrorMsg = styled.div`
+  width: 100%;
+  padding: 0 2px;
+  text-align: right;
 `;
 
 const More = styled.div`
