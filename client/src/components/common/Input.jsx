@@ -3,17 +3,19 @@ import { COLOR } from "../../styles/theme";
 
 const Input = ({
   label,
+  span,
   type,
   errorMessage,
   value,
   onChange,
   autocomplete,
   style,
+  width,
   placeholder,
   ...restProps
 }) => {
   return (
-    <Container style={style}>
+    <Container style={style} width={width}>
       {label ? <Label>{label}</Label> : null}
       <InputComponent
         {...restProps}
@@ -23,6 +25,7 @@ const Input = ({
         autocomplete={autocomplete}
         placeholder={placeholder}
       />
+      {span ? <span>{span}</span> : null}
       {errorMessage ? <AlertMessage>{errorMessage}</AlertMessage> : null}
     </Container>
   );
@@ -34,6 +37,26 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   width: ${(props) => (props.width ? `${props.width}` : "100%")};
+
+  [type="radio"] {
+    display: none;
+  }
+
+  [type="radio"] + span {
+    display: inline-block;
+    height: 39px;
+    text-align: center;
+    cursor: pointer;
+    text-align: center;
+    padding: 15px;
+    margin-top: 10px;
+    background-color: #818181;
+  }
+
+  [type="radio"]:checked + span {
+    background-color: #113a6b;
+    color: #ffffff;
+  }
 `;
 
 const Label = styled.label`
