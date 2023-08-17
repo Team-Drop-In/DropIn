@@ -4,6 +4,7 @@ import { Routes, Route } from "react-router-dom";
 import Header from "./components/Header";
 import Login from "./pages/user/Login";
 import Signup from "./pages/user/Signup";
+import Board from "./pages/board/Board";
 
 const App = () => {
   // const [responseData, setResponseData] = useState(null);
@@ -26,6 +27,7 @@ const App = () => {
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/" element={<Signup />} />
+        <Route path="/board" element={<Board />} />
       </Routes>
 
       {/* {responseData ? (
