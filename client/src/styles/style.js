@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export const container = styled.div`
+export const Container = styled.div`
   width: 100vw;
   height: fit-content;
   display: flex;
@@ -8,7 +8,7 @@ export const container = styled.div`
   align-items: center;
 `;
 
-export const content = styled.div`
+export const Content = styled.div`
   width: 1320px;
   padding: 0px 20px;
   display: flex;

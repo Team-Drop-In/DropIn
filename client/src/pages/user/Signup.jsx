@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { useNavigate, Link } from "react-router-dom";
 import { Controller, useForm } from "react-hook-form";
-import { container, content } from "../../styles/style";
+import { Container, Content } from "../../styles/style";
 import { COLOR } from "../../styles/theme";
 import Input from "../../components/common/Input";
 import Button from "../../components/common/Button";
@@ -31,8 +31,8 @@ const Signup = () => {
   };
 
   return (
-    <Container>
-      <Content>
+    <Wrap>
+      <Contain>
         <Logo src={LogoImage} alt="로고" className="logo_img" />
         <Title>회원가입</Title>
         {/* <Form onSubmit={handleSubmit(onFormSubmit, onFormError)}> */}
@@ -194,20 +194,20 @@ const Signup = () => {
             type="submit"
           />
         </Form>
-      </Content>
-    </Container>
+      </Contain>
+    </Wrap>
   );
 };
 
 export default Signup;
 
-const Container = styled(container)`
+const Wrap = styled(Container)`
   label {
     font-size: 14px;
   }
 `;
 
-const Content = styled(content)`
+const Contain = styled(Content)`
   height: 100vh;
   display: flex;
   flex-direction: column;

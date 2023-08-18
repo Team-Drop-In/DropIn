@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { Controller, useForm } from "react-hook-form";
-import { container, content } from "../../styles/style";
+import { Container, Content } from "../../styles/style";
 import Input from "../../components/common/Input";
 import Button from "../../components/common/Button";
 import LogoImage from "../../images/logo.svg";
@@ -37,8 +37,8 @@ const Login = () => {
   };
 
   return (
-    <Container>
-      <Content>
+    <Wrap>
+      <Contain>
         <Logo src={LogoImage} alt="로고" className="logo_img" />
         <Form onSubmit={handleSubmit(onFormSubmit)}>
           <Controller
@@ -87,20 +87,20 @@ const Login = () => {
           </Find>
           <Google>구글</Google>
         </More>
-      </Content>
-    </Container>
+      </Contain>
+    </Wrap>
   );
 };
 
 export default Login;
 
-const Container = styled(container)`
+const Wrap = styled(Container)`
   label {
     display: none;
   }
 `;
 
-const Content = styled(content)`
+const Contain = styled(Content)`
   height: 100vh;
   display: flex;
   flex-direction: column;

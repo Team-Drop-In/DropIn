@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { container, content } from "../styles/style";
+import { Container, Content } from "../styles/style";
 import LogoImage from "../images/logo.svg";
 import { useNavigate, Link } from "react-router-dom";
 
@@ -7,8 +7,8 @@ const Header = () => {
   const navigate = useNavigate();
 
   return (
-    <Container>
-      <Content>
+    <Wrap>
+      <Contain>
         <Tab>
           <button onClick={() => navigate("/")}>
             <Logo src={LogoImage} alt="로고" className="logo_img" />
@@ -20,14 +20,14 @@ const Header = () => {
           <Link>로그인</Link>
           <Link>회원가입</Link>
         </User>
-      </Content>
-    </Container>
+      </Contain>
+    </Wrap>
   );
 };
 
 export default Header;
 
-const Container = styled(container)`
+const Wrap = styled(Container)`
   position: fixed;
   z-index: 9999;
   border-bottom: 1px solid #2c2c2c;
@@ -43,7 +43,7 @@ const Container = styled(container)`
   }
 `;
 
-const Content = styled(content)`
+const Contain = styled(Content)`
   height: 60px;
   background-color: black;
   letter-spacing: 0.5px;

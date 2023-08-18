@@ -1,7 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
 import styled from "styled-components";
-import { container, content } from "../../styles/style";
+import { Container, Content } from "../../styles/style";
 
 const Board = () => {
   const [apiResponse, setApiResponse] = useState("");
@@ -19,23 +19,17 @@ const Board = () => {
 
   return (
     <Container>
-      <Content>
+      <Contain>
         <button onClick={testApi}>API 요청 보내기</button>
         <div>API 응답: {apiResponse}</div>
-      </Content>
+      </Contain>
     </Container>
   );
 };
 
 export default Board;
 
-const Container = styled(container)`
-  label {
-    display: none;
-  }
-`;
-
-const Content = styled(content)`
+const Contain = styled(Content)`
   height: 100vh;
   display: flex;
   flex-direction: column;
