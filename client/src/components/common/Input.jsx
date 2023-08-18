@@ -64,7 +64,7 @@ const Label = styled.label`
 `;
 
 const InputComponent = styled.input`
-  margin-bottom: 12px;
+  margin-bottom: 9px;
   border-radius: 5px;
   padding: 10px;
   background-color: ${COLOR.main_grey};
@@ -76,4 +76,6 @@ const InputComponent = styled.input`
   }
 `;
 
-const AlertMessage = styled.span``;
+const AlertMessage = styled.span`
+  margin-bottom: 7px;
+`;

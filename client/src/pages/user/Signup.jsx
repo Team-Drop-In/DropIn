@@ -254,6 +254,7 @@ const StyledRadioInput = styled.input`
     display: inline-block;
     height: 39px;
     width: 54px;
+    font-weight: bold;
     text-align: center;
     cursor: pointer;
     text-align: center;

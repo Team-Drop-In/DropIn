@@ -7,6 +7,7 @@ const Container = styled.button`
   border: none;
   color: black;
   font-weight: 500;
+  margin: ${(props) => (props.margin ? `${props.margin}` : "0")};
   border-radius: ${(props) =>
     props.borderRadius ? `${props.borderRadius}` : "5px"};
   cursor: pointer;
@@ -19,13 +20,14 @@ const Container = styled.button`
   background-color: ${COLOR.btn_grey};
 `;
 
-const Button = ({ text, width, height, borderRadius, style }) => {
+const Button = ({ text, width, height, borderRadius, margin, style }) => {
   return (
     <Container
       style={style}
       width={width}
       height={height}
       borderRadius={borderRadius}
+      margin={margin}
     >
       {text}
     </Container>

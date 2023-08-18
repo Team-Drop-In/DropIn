@@ -8,7 +8,7 @@ export const Container = styled.div`
   align-items: center;
 `;
 
-export const Content = styled.div`
+export const Content = styled.main`
   width: 1320px;
   padding: 0px 20px;
   display: flex;
