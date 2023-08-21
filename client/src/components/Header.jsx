@@ -17,8 +17,8 @@ const Header = () => {
           <Link>커뮤니티</Link>
         </Tab>
         <User>
-          <Link>로그인</Link>
-          <Link>회원가입</Link>
+          <Link to="/login">로그인</Link>
+          <Link to="/signup">회원가입</Link>
         </User>
       </Contain>
     </Wrap>

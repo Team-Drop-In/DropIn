@@ -83,7 +83,7 @@ const Login = () => {
         </Form>
         <More>
           <Find>
-            <Link>아이디</Link> / <Link>비밀번호</Link> 찾기
+            <Link>아이디</Link> / <Link to="/findpwd">비밀번호</Link> 찾기
           </Find>
           <Google>구글</Google>
         </More>
