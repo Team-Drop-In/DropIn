@@ -5,6 +5,7 @@ import Header from "./components/Header";
 const Login = lazy(() => import("./pages/user/Login"));
 const Signup = lazy(() => import("./pages/user/Signup"));
 const FindPwd = lazy(() => import("./pages/user/FindPwd"));
+const Profile = lazy(() => import("./pages/user/Profile"));
 const Board = lazy(() => import("./pages/board/Board"));
 
 const App = () => {
@@ -15,6 +16,7 @@ const App = () => {
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
+          <Route path="/profile" element={<Profile />} />
           <Route path="/findpwd" element={<FindPwd />} />
           <Route path="/board" element={<Board />} />
         </Routes>
