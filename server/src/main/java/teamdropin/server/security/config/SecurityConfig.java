@@ -10,16 +10,18 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.client.web.OAuth2LoginAuthenticationFilter;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import teamdropin.server.domain.member.repository.MemberRepository;
 import teamdropin.server.domain.member.service.MemberService;
-import teamdropin.server.security.auth.JwtService;
-import teamdropin.server.security.auth.JwtTokenizer;
-import teamdropin.server.security.filter.JwtAuthenticationFilter;
-import teamdropin.server.security.filter.JwtVerificationFilter;
+import teamdropin.server.security.jwt.JwtService;
+import teamdropin.server.security.jwt.JwtTokenizer;
+import teamdropin.server.security.filter.CustomAuthenticationFilter;
+import teamdropin.server.security.filter.CustomVerificationFilter;
 import teamdropin.server.security.handler.MemberAuthenticationFailureHandler;
 import teamdropin.server.security.handler.MemberAuthenticationSuccessHandler;
 import teamdropin.server.security.handler.OAuth2MemberSuccessHandler;
@@ -35,6 +37,7 @@ public class SecurityConfig {
     private final CustomAuthorityUtils authorityUtils;
     private final MemberService memberService;
     private final JwtService jwtService;
+    private final MemberRepository memberRepository;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
@@ -50,7 +53,7 @@ public class SecurityConfig {
                 .apply(new CustomFilterConfigurer())
                 .and()
                 .oauth2Login(oauth2 -> oauth2
-                        .successHandler(new OAuth2MemberSuccessHandler(jwtTokenizer,jwtService, authorityUtils, memberService)))
+                        .successHandler(new OAuth2MemberSuccessHandler(jwtTokenizer,jwtService, authorityUtils, memberService,memberRepository)))
                 .authorizeHttpRequests()
                 .anyRequest()
                 .permitAll();
@@ -72,17 +75,17 @@ public class SecurityConfig {
         public void configure(HttpSecurity builder) throws Exception {
             AuthenticationManager authenticationManager = builder.getSharedObject(AuthenticationManager.class);
 
-            JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(authenticationManager, jwtTokenizer,jwtService);
-            jwtAuthenticationFilter.setFilterProcessesUrl("/api/login");
-            jwtAuthenticationFilter.setAuthenticationSuccessHandler(new MemberAuthenticationSuccessHandler());
-            jwtAuthenticationFilter.setAuthenticationFailureHandler(new MemberAuthenticationFailureHandler());
+            CustomAuthenticationFilter customAuthenticationFilter = new CustomAuthenticationFilter(authenticationManager, jwtTokenizer,jwtService);
+            customAuthenticationFilter.setFilterProcessesUrl("/api/login");
+            customAuthenticationFilter.setAuthenticationSuccessHandler(new MemberAuthenticationSuccessHandler());
+            customAuthenticationFilter.setAuthenticationFailureHandler(new MemberAuthenticationFailureHandler());
 
-            JwtVerificationFilter jwtVerificationFilter = new JwtVerificationFilter(jwtTokenizer, authorityUtils);  // (2) 추가
+            CustomVerificationFilter customVerificationFilter = new CustomVerificationFilter(jwtTokenizer, authorityUtils);  // (2) 추가
 
             builder
-                    .addFilter(jwtAuthenticationFilter)
-                    .addFilterAfter(jwtVerificationFilter, JwtAuthenticationFilter.class)
-                    .addFilterAfter(jwtVerificationFilter, OAuth2LoginAuthenticationFilter.class);
+                    .addFilter(customAuthenticationFilter)
+                    .addFilterAfter(customVerificationFilter, CustomAuthenticationFilter.class)
+                    .addFilterAfter(customVerificationFilter, OAuth2LoginAuthenticationFilter.class);
         }
     }
 

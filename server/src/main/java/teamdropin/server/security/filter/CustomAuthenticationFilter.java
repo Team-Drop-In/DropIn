@@ -11,9 +11,9 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import teamdropin.server.domain.member.dto.LoginDto;
 import teamdropin.server.domain.member.entity.Member;
-import teamdropin.server.security.auth.JwtService;
-import teamdropin.server.security.auth.JwtTokenizer;
-import teamdropin.server.security.auth.userdetails.MemberDetailsService;
+import teamdropin.server.security.jwt.JwtService;
+import teamdropin.server.security.jwt.JwtTokenizer;
+import teamdropin.server.security.auth.MemberDetailsService;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -23,7 +23,7 @@ import java.io.IOException;
 
 @RequiredArgsConstructor
 @Slf4j
-public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
+public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
     private final AuthenticationManager authenticationManager;
     private final JwtTokenizer jwtTokenizer;
@@ -49,5 +49,10 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
         response.setHeader("Authorization", "Bearer " + accessToken);
         response.setHeader("Refresh", refreshToken);
+    }
+
+    @Override
+    protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException, ServletException {
+        response.setStatus(401);
     }
 }

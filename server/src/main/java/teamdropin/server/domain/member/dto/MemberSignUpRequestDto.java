@@ -32,7 +32,8 @@ public class MemberSignUpRequestDto {
      */
     @NotBlank
     @Size(min = 8, max = 20)
-    @Pattern(regexp = MemberValidation.PASSWORD_REGEX)
+    @Pattern(regexp = MemberValidation.PASSWORD_REGEX,
+            message = "비밀번호는 공백이 없고 적어도 영어 대,소문자 , 숫자, 특수문자 !@#$%^&*() 1개 이상을 포함해야 합니다.")
     private String password;
 
     /**
@@ -42,7 +43,7 @@ public class MemberSignUpRequestDto {
      */
     @NotBlank
     @Size(min = 2, max = 10)
-    @Pattern(regexp = MemberValidation.NAME_REGEX)
+    @Pattern(regexp = MemberValidation.NAME_REGEX,message = "이름은 영어 혹은 한글만 가능합니다.")
     private String name;
 
     /**
@@ -52,7 +53,7 @@ public class MemberSignUpRequestDto {
      */
     @NotBlank
     @Size(min = 2, max = 20)
-    @Pattern(regexp = MemberValidation.NICKNAME_REGEX)
+    @Pattern(regexp = MemberValidation.NICKNAME_REGEX, message = "닉네임은 영어,한글 그리고 숫자만 가능합니다.")
     private String nickname;
 
     @Enumerated(EnumType.STRING)

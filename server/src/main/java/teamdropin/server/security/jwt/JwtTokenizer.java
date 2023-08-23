@@ -1,4 +1,4 @@
-package teamdropin.server.security.auth;
+package teamdropin.server.security.jwt;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;

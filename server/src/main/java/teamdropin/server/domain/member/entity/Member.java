@@ -31,7 +31,6 @@ public class Member extends BaseTimeEntity {
     @Email
     private String username;
 
-    @NotBlank
     private String password;
 
     @NotBlank
@@ -39,16 +38,16 @@ public class Member extends BaseTimeEntity {
     @Pattern(regexp = MemberValidation.NAME_REGEX)
     private String name;
 
-//    @NotBlank
-//    @Size(min = 2, max = 20)
-//    @Pattern(regexp = MemberValidation.NICKNAME_REGEX)
+    @NotBlank
+    @Size(min = 2, max = 20)
+    @Pattern(regexp = MemberValidation.NICKNAME_REGEX)
     private String nickname;
 
     @Enumerated(EnumType.STRING)
-//    @ValidEnum(enumClass = Gender.class)
+    @ValidEnum(enumClass = Gender.class)
     private Gender gender;
 
-//    @NotBlank
+    @NotBlank
     private String oauthProvider;
 
     @ElementCollection(fetch = FetchType.EAGER)

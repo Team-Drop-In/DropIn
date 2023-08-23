@@ -1,8 +1,5 @@
 package teamdropin.server.security.filter;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.security.SignatureException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -10,8 +7,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 import teamdropin.server.domain.member.entity.Member;
-import teamdropin.server.domain.member.entity.OauthProvider;
-import teamdropin.server.security.auth.JwtTokenizer;
+import teamdropin.server.security.jwt.JwtTokenizer;
 import teamdropin.server.security.utils.CustomAuthorityUtils;
 
 import javax.servlet.FilterChain;
@@ -24,7 +20,7 @@ import java.util.List;
 import java.util.Map;
 
 @RequiredArgsConstructor
-public class JwtVerificationFilter extends OncePerRequestFilter {
+public class CustomVerificationFilter extends OncePerRequestFilter {
     private final JwtTokenizer jwtTokenizer;
     private final CustomAuthorityUtils customAuthorityUtils;
 
@@ -50,13 +46,13 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
     }
 
     private void setAuthenticationToContext(Map<String, Object> claims){
-//        Long id = ((Number) claims.get("id")).longValue();
+        Long id = ((Number) claims.get("id")).longValue();
         String username = (String) claims.get("username");
         List<GrantedAuthority> authorities = customAuthorityUtils.createAuthorities((List)claims.get("roles"));
         List<String> roles = new ArrayList<>();
         authorities.forEach(s->roles.add(s.getAuthority()));
         Member member = Member.builder()
-//                .id(id)
+                .id(id)
                 .username(username)
                 .roles(roles)
                 .build();
