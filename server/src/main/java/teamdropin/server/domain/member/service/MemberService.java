@@ -11,26 +11,24 @@ import teamdropin.server.domain.member.repository.MemberRepository;
 public class MemberService {
 
     private final MemberRepository memberRepository;
-    private final PasswordEncoder passwordEncoder;
 
     /**
      * 회원가입
      */
     public void join(Member member){
-        validateDuplicateEmail(member.getEmail());
+        validateDuplicateEmail(member.getUsername());
         validateDuplicateNickname(member.getNickname());
-        member.encodePassword(passwordEncoder);
         memberRepository.save(member);
     }
 
-    private void validateDuplicateEmail(String email) {
-        memberRepository.findByEmail(email)
+    public void validateDuplicateEmail(String email) {
+        memberRepository.findByUsername(email)
                 .ifPresent(m -> {
                     throw new IllegalStateException("이미 존재하는 이메일 입니다.");
                 });
     }
 
-    private void validateDuplicateNickname(String nickname) {
+    public void validateDuplicateNickname(String nickname) {
         memberRepository.findByNickname(nickname)
                 .ifPresent(m -> {
                     throw new IllegalStateException("이미 존재하는 닉네임 입니다.");

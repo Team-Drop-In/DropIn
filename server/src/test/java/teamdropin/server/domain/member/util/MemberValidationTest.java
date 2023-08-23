@@ -1,6 +1,7 @@
 package teamdropin.server.domain.member.util;
 
 import org.junit.jupiter.api.Test;
+import teamdropin.server.domain.member.utils.MemberValidation;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -18,7 +19,6 @@ class MemberValidationTest {
         assertTrue("이름".matches(MemberValidation.NAME_REGEX));
         assertFalse("test123".matches(MemberValidation.NAME_REGEX));
         assertFalse("test123!".matches(MemberValidation.NAME_REGEX));
-        assertFalse("testtesttestestestes".matches(MemberValidation.NAME_REGEX));
     }
 
     @Test

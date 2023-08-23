@@ -1,6 +1,5 @@
-package teamdropin.server.domain.member.util;
+package teamdropin.server.domain.member.utils;
 
-import org.springframework.beans.factory.annotation.Value;
 
 public class MemberValidation {
 

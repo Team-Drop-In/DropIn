@@ -5,7 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import teamdropin.server.domain.member.entity.Gender;
-import teamdropin.server.domain.member.util.MemberValidation;
+import teamdropin.server.domain.member.utils.MemberValidation;
 import teamdropin.server.global.util.enumValid.ValidEnum;
 
 import javax.persistence.EnumType;
@@ -22,7 +22,8 @@ import javax.validation.constraints.Size;
 public class MemberSignUpRequestDto {
 
     @Email
-    private String email;
+    @NotBlank
+    private String username;
 
     /**
      * password

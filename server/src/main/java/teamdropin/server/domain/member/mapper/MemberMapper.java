@@ -8,22 +8,27 @@ import teamdropin.server.domain.member.dto.MemberSignUpResponseDto;
 import teamdropin.server.domain.member.entity.Member;
 import teamdropin.server.domain.member.entity.OauthProvider;
 import teamdropin.server.domain.member.entity.Role;
+import teamdropin.server.security.utils.CustomAuthorityUtils;
+
+import java.util.ArrayList;
 
 @Component
 @RequiredArgsConstructor
 public class MemberMapper {
 
+    private final CustomAuthorityUtils authorityUtils;
+
     private final PasswordEncoder passwordEncoder;
 
     public Member toMember(MemberSignUpRequestDto memberSignUpRequestDto){
         return Member.builder()
-                .email(memberSignUpRequestDto.getEmail())
+                .username(memberSignUpRequestDto.getUsername())
                 .password(passwordEncoder.encode(memberSignUpRequestDto.getPassword()))
                 .name(memberSignUpRequestDto.getName())
                 .nickname(memberSignUpRequestDto.getNickname())
                 .gender(memberSignUpRequestDto.getGender())
-                .oauthProvider(OauthProvider.DROPIN)
-                .role(Role.ROLE_USER)
+                .oauthProvider("DROPIN")
+                .roles(authorityUtils.createUserRoles())
                 .build();
     }
 

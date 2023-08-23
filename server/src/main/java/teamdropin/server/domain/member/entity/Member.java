@@ -4,7 +4,7 @@ import lombok.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import teamdropin.server.domain.comment.entity.Comment;
 import teamdropin.server.domain.like.postLike.entity.PostLike;
-import teamdropin.server.domain.member.util.MemberValidation;
+import teamdropin.server.domain.member.utils.MemberValidation;
 import teamdropin.server.domain.post.entity.Post;
 import teamdropin.server.global.audit.BaseTimeEntity;
 import teamdropin.server.global.util.enumValid.ValidEnum;
@@ -29,7 +29,7 @@ public class Member extends BaseTimeEntity {
     private Long id;
 
     @Email
-    private String email;
+    private String username;
 
     @NotBlank
     private String password;
@@ -39,22 +39,20 @@ public class Member extends BaseTimeEntity {
     @Pattern(regexp = MemberValidation.NAME_REGEX)
     private String name;
 
-    @NotBlank
-    @Size(min = 2, max = 20)
-    @Pattern(regexp = MemberValidation.NICKNAME_REGEX)
+//    @NotBlank
+//    @Size(min = 2, max = 20)
+//    @Pattern(regexp = MemberValidation.NICKNAME_REGEX)
     private String nickname;
 
     @Enumerated(EnumType.STRING)
-    @ValidEnum(enumClass = Gender.class)
+//    @ValidEnum(enumClass = Gender.class)
     private Gender gender;
 
-    @Enumerated(EnumType.STRING)
-    @ValidEnum(enumClass = OauthProvider.class)
-    private OauthProvider oauthProvider;
+//    @NotBlank
+    private String oauthProvider;
 
-    @Enumerated(EnumType.STRING)
-    @ValidEnum(enumClass = Role.class)
-    private Role role;
+    @ElementCollection(fetch = FetchType.EAGER)
+    private List<String> roles = new ArrayList<>();
 
     private String profileImageUrl;
 
@@ -66,7 +64,4 @@ public class Member extends BaseTimeEntity {
     private List<PostLike> postLikes = new ArrayList<>();
 
 
-    public void encodePassword(PasswordEncoder passwordEncoder){
-        this.password = passwordEncoder.encode(this.password);
-    }
 }

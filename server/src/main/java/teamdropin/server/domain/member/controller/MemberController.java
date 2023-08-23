@@ -2,12 +2,14 @@ package teamdropin.server.domain.member.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import teamdropin.server.domain.member.dto.MemberSignUpRequestDto;
 import teamdropin.server.domain.member.dto.MemberSignUpResponseDto;
 import teamdropin.server.domain.member.entity.Member;
 import teamdropin.server.domain.member.mapper.MemberMapper;
 import teamdropin.server.domain.member.service.MemberService;
+import teamdropin.server.security.auth.userdetails.MemberDetailsService;
 
 import javax.validation.Valid;
 import java.net.URI;
@@ -33,8 +35,9 @@ public class MemberController {
     }
 
     @GetMapping("check-duplicate/email")
-    public void checkDuplicateEmail(){
-
+    public void checkDuplicateEmail(@AuthenticationPrincipal Member auth){
+        System.out.println(auth.getUsername());
+        System.out.println(auth.getRoles());
     }
 
     @GetMapping("check-duplicate/nickname")
