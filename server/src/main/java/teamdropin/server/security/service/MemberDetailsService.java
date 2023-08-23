@@ -1,4 +1,4 @@
-package teamdropin.server.security.auth;
+package teamdropin.server.security.service;
 
 import lombok.Builder;
 import lombok.Getter;

@@ -1,4 +1,4 @@
-package teamdropin.server.security.handler;
+package teamdropin.server.security.oauth2.handler;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -40,6 +40,7 @@ public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         OAuth2User oAuth2User = (OAuth2User) authentication.getPrincipal();
+        log.info("authorities={}", authentication.getAuthorities());
         Member member = memberRepository.findByUsername(String.valueOf(oAuth2User.getAttributes().get("email")))
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.USER_NOT_FOUND));
 

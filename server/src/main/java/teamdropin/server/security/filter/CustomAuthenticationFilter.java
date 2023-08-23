@@ -13,7 +13,7 @@ import teamdropin.server.domain.member.dto.LoginDto;
 import teamdropin.server.domain.member.entity.Member;
 import teamdropin.server.security.jwt.JwtService;
 import teamdropin.server.security.jwt.JwtTokenizer;
-import teamdropin.server.security.auth.MemberDetailsService;
+import teamdropin.server.security.service.MemberDetailsService;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;

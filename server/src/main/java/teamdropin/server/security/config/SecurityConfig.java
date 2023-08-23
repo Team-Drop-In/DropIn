@@ -10,7 +10,6 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.client.web.OAuth2LoginAuthenticationFilter;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
@@ -24,7 +23,7 @@ import teamdropin.server.security.filter.CustomAuthenticationFilter;
 import teamdropin.server.security.filter.CustomVerificationFilter;
 import teamdropin.server.security.handler.MemberAuthenticationFailureHandler;
 import teamdropin.server.security.handler.MemberAuthenticationSuccessHandler;
-import teamdropin.server.security.handler.OAuth2MemberSuccessHandler;
+import teamdropin.server.security.oauth2.handler.OAuth2MemberSuccessHandler;
 import teamdropin.server.security.utils.CustomAuthorityUtils;
 
 import java.util.Arrays;

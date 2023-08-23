@@ -1,7 +1,6 @@
-package teamdropin.server.security.handler;
+package teamdropin.server.security.oauth2.service;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
@@ -13,8 +12,8 @@ import teamdropin.server.domain.member.entity.Gender;
 import teamdropin.server.domain.member.entity.Member;
 import teamdropin.server.domain.member.repository.MemberRepository;
 import teamdropin.server.domain.member.service.MemberService;
-
-import java.util.Collections;
+import teamdropin.server.security.oauth2.OAuthAttributes;
+import teamdropin.server.security.utils.CustomAuthorityUtils;
 
 @Service
 @RequiredArgsConstructor
@@ -23,6 +22,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
     private final MemberService memberService;
 
     private final MemberRepository memberRepository;
+    private final CustomAuthorityUtils authorityUtils;
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest oAuth2UserRequest) throws OAuth2AuthenticationException {
@@ -37,25 +37,27 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
                 .getUserNameAttributeName();
         OAuthAttributes attributes = OAuthAttributes.of(registrationId, userNameAttributeName, oAuth2User.getAttributes());
 
-        saveOrPass(registrationId, userNameAttributeName, attributes);
+        Member member = saveOrPass(registrationId, attributes);
 
-        DefaultOAuth2User oauth2User = new DefaultOAuth2User(Collections.singleton(new SimpleGrantedAuthority("ROLE_USER"))
+        DefaultOAuth2User oauth2User = new DefaultOAuth2User(authorityUtils.createAuthorities(member.getRoles())
                 , attributes.getAttributes()
                 , attributes.getNameAttributeKey());
         return oauth2User;
     }
 
-    private void saveOrPass(String registrationId, String userNameAttributeName, OAuthAttributes attributes) {
+    private Member saveOrPass(String registrationId, OAuthAttributes attributes) {
         Member member =  Member.builder()
                 .username(attributes.getEmail())
                 .name(attributes.getName())
                 .nickname(memberService.createRandomNickname())
                 .oauthProvider(registrationId)
                 .gender(Gender.NOT_SELECT)
+                .roles(authorityUtils.createUserRoles())
                 .build();
 
         if(memberRepository.findByUsername(member.getUsername()).isEmpty()) {
             memberRepository.save(member);
         }
+        return member;
     }
 }

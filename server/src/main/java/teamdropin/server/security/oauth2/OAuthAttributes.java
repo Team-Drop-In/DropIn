@@ -1,9 +1,8 @@
-package teamdropin.server.security.handler;
+package teamdropin.server.security.oauth2;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import teamdropin.server.domain.member.entity.Member;
 
 import java.util.Map;
 
