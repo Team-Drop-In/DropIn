@@ -1,0 +1,9 @@
+spring:
+  config:
+    import: 'aws-parameterstore:'
+aws:
+  paramstore:
+    enabled: true
+    prefix: /spring-boot-aws
+    name: dropin-project
+    profileSeparator: _

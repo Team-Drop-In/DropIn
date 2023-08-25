@@ -20,15 +20,15 @@ import java.util.Map;
 public class JwtTokenizer {
 
     @Getter
-    @Value("${jwt.key}")
+    @Value("${spring.jwt.key}")
     private String secretKey;       // (2)
 
     @Getter
-    @Value("${jwt.access-token-expiration-minutes}")
+    @Value("${spring.jwt.access-token-expiration-minutes}")
     private int accessTokenExpirationMinutes;        // (3)
 
     @Getter
-    @Value("${jwt.refresh-token-expiration-minutes}")
+    @Value("${spring.jwt.refresh-token-expiration-minutes}")
     private int refreshTokenExpirationMinutes;          // (4)
 
     public String encodeBase64SecretKey(String secretKey){
