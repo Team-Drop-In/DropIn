@@ -5,14 +5,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-import teamdropin.server.domain.member.dto.GetMemberResponseDto;
-import teamdropin.server.domain.member.dto.MemberSignUpRequestDto;
-import teamdropin.server.domain.member.dto.SignUpCheckEmailDto;
-import teamdropin.server.domain.member.dto.SignUpCheckNicknameDto;
+import teamdropin.server.domain.member.dto.*;
 import teamdropin.server.domain.member.entity.Member;
 import teamdropin.server.domain.member.mapper.MemberMapper;
 import teamdropin.server.domain.member.service.MemberService;
 import teamdropin.server.global.dto.SingleResponseDto;
+import teamdropin.server.global.exception.BusinessLogicException;
+import teamdropin.server.global.exception.ExceptionCode;
 import teamdropin.server.global.util.UriCreator;
 
 import javax.validation.Valid;
@@ -49,9 +48,19 @@ public class MemberController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @GetMapping("/member")
-    public ResponseEntity<SingleResponseDto> getMember(@AuthenticationPrincipal Member member){
+    @GetMapping("member/my-page")
+    public ResponseEntity<SingleResponseDto> toMyPage(@AuthenticationPrincipal Member member){
+        if(member == null){
+            throw new BusinessLogicException(ExceptionCode.USER_NOT_FOUND);
+        }
         Member findMember = memberService.getMember(member.getId());
+        MyInfoResponseDto myInfoResponseDto = memberMapper.memberToGetMyInfoResponseDto(findMember);
+        return new ResponseEntity<>(new SingleResponseDto(myInfoResponseDto), HttpStatus.OK);
+    }
+
+    @GetMapping("/member/{id}")
+    public ResponseEntity<SingleResponseDto> getMember(@PathVariable("id") Long memberId ){
+        Member findMember = memberService.getMember(memberId);
         GetMemberResponseDto getMemberResponseDto = memberMapper.memberToGetMemberResponseDto(findMember);
         return new ResponseEntity<>(new SingleResponseDto(getMemberResponseDto), HttpStatus.OK);
     }

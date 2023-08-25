@@ -8,7 +8,9 @@ import teamdropin.server.domain.member.entity.Gender;
 @Data
 @AllArgsConstructor
 @Builder
-public class GetMemberResponseDto {
+public class MyInfoResponseDto {
+    private String username;
+    private String name;
     private String nickname;
     private Gender gender;
     private String profileImageUrl;

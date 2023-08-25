@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import teamdropin.server.domain.member.dto.GetMemberResponseDto;
+import teamdropin.server.domain.member.dto.MyInfoResponseDto;
 import teamdropin.server.domain.member.dto.MemberSignUpRequestDto;
 import teamdropin.server.domain.member.dto.MemberSignUpResponseDto;
 import teamdropin.server.domain.member.entity.Member;
@@ -35,10 +36,17 @@ public class MemberMapper {
                 .build();
     }
 
-    public GetMemberResponseDto memberToGetMemberResponseDto(Member member){
-        return GetMemberResponseDto.builder()
+    public MyInfoResponseDto memberToGetMyInfoResponseDto(Member member){
+        return MyInfoResponseDto.builder()
                 .username(member.getUsername())
                 .name(member.getName())
+                .nickname(member.getNickname())
+                .gender(member.getGender())
+                .profileImageUrl(member.getProfileImageUrl())
+                .build();
+    }
+    public GetMemberResponseDto memberToGetMemberResponseDto(Member member){
+        return GetMemberResponseDto.builder()
                 .nickname(member.getNickname())
                 .gender(member.getGender())
                 .profileImageUrl(member.getProfileImageUrl())
