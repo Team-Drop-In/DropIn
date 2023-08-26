@@ -8,8 +8,8 @@
 name: Java CI with Gradle
 
 on:
-  push:
-    branches: [ "main", "develop" ]
+#  push:
+#    branches: [ "main", "develop" ]
   pull_request:
     branches: [ "main", "develop" ]
 
@@ -75,7 +75,7 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '11'
-          
+
       - name: Set yml file
         uses: microsoft/variable-substitution@v1
         with:
