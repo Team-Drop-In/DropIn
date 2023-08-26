@@ -48,8 +48,8 @@ jobs:
         spring.security.oauth2.client.registration.google.clientId: ${{secrets.SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GOOGLE_CLIENTID}}
         spring.security.oauth2.client.registration.google.clientSecret: ${{secrets.SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GOOGLE_CLIENTSECRET}}
         spring.jwt.key: ${{secrets.JWT_KEY}}
-        spring.access-token-expiration-minutes: ${{secrets.JWT_ACCESS_TOKEN_EXPIRATION}}
-        spring.refresh-token-expiration-minutes: ${{secrets.JWT_REFRESH_TOKEN_EXPIRATION}}
+        spring.jwt.access-token-expiration-minutes: ${{secrets.JWT_ACCESS_TOKEN_EXPIRATION}}
+        spring.jwt.refresh-token-expiration-minutes: ${{secrets.JWT_REFRESH_TOKEN_EXPIRATION}}
 
     - name: Build with Gradle
       uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
@@ -87,8 +87,8 @@ jobs:
           spring.security.oauth2.client.registration.google.clientId: ${{secrets.SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GOOGLE_CLIENTID}}
           spring.security.oauth2.client.registration.google.clientSecret: ${{secrets.SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GOOGLE_CLIENTSECRET}}
           spring.jwt.key: ${{secrets.JWT_KEY}}
-          spring.access-token-expiration-minutes: ${{secrets.JWT_ACCESS_TOKEN_EXPIRATION}}
-          spring.refresh-token-expiration-minutes: ${{secrets.JWT_REFRESH_TOKEN_EXPIRATION}}
+          spring.jwt.access-token-expiration-minutes: ${{secrets.JWT_ACCESS_TOKEN_EXPIRATION}}
+          spring.jwt.refresh-token-expiration-minutes: ${{secrets.JWT_REFRESH_TOKEN_EXPIRATION}}
 
       # (3) Gradle build (Test 제외)
       - name: Build with Gradle
