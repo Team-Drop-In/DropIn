@@ -42,14 +42,15 @@ jobs:
         envsubst < $RESOURCE_PATH > temp.yml
         mv temp.yml $RESOURCE_PATH
       env:
-        spring.datasource.url: ${{secrets.SPRING_DATASOURCE_URL}}
-        spring.datasource.username: ${{secrets.SPRING_DATASOURCE_USERNAME}}
-        spring.datasource.password: ${{secrets.SPRING_DATASOURCE_PASSWORD}}
-        spring.security.oauth2.client.registration.google.clientId: ${{secrets.SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GOOGLE_CLIENTID}}
-        spring.security.oauth2.client.registration.google.clientSecret: ${{secrets.SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GOOGLE_CLIENTSECRET}}
-        spring.jwt.key: ${{secrets.JWT_KEY}}
-        spring.jwt.access-token-expiration-minutes: ${{secrets.JWT_ACCESS_TOKEN_EXPIRATION}}
-        spring.jwt.refresh-token-expiration-minutes: ${{secrets.JWT_REFRESH_TOKEN_EXPIRATION}}
+        SPRING_DATASOURCE_URL: ${{secrets.SPRING_DATASOURCE_URL}}
+        SPRING_DATASOURCE_USERNAME: ${{secrets.SPRING_DATASOURCE_USERNAME}}
+        SPRING_DATASOURCE_PASSWORD: ${{secrets.SPRING_DATASOURCE_PASSWORD}}
+        SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GOOGLE_CLIENTID: ${{secrets.SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GOOGLE_CLIENTID}}
+        SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GOOGLE_CLIENTSECRET: ${{secrets.SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GOOGLE_CLIENTSECRET}}
+        SPRING_JWT_KEY: ${{secrets.JWT_KEY}}
+        SPRING_JWT_ACCESS-TOKEN-EXPIRATION-MINUTES: ${{secrets.JWT_ACCESS_TOKEN_EXPIRATION}}
+        SPRING_JWT_REFRESH-TOKEN-EXPIRATION-MINUTES: ${{secrets.JWT_REFRESH_TOKEN_EXPIRATION}}
+
 
     - name: Build with Gradle
       run: ./gradlew build
@@ -75,7 +76,7 @@ jobs:
 
       - name: Set yml file
         run: |
-          envsubst < $RESOURCE_PATH/application.yml > temp.yml
+          envsubst < $RESOURCE_PATH > temp.yml
           mv temp.yml $RESOURCE_PATH
         env:
           SPRING_DATASOURCE_URL: ${{secrets.SPRING_DATASOURCE_URL}}
