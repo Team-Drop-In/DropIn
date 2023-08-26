@@ -18,7 +18,7 @@ env:
   S3_BUCKET_NAME: dropin-github-actions-s3-bucket
   CODE_DEPLOY_APPLICATION_NAME: dropin-codedeploy-app
   CODE_DEPLOY_DEPLOYMENT_GROUP_NAME: dropin-codedeploy-deployment-group
-  ENV_FILE: ./server/src/main/resources/application.yml
+  ENV_FILE: application.yml
 
 permissions:
   contents: read
