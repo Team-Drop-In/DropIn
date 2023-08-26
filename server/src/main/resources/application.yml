@@ -1,9 +1,9 @@
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-      url:
-      username:
-      password:
+    url:
+    username:
+    password:
   jpa:
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
     hibernate:
@@ -20,4 +20,3 @@ spring:
     key:
     access-token-expiration-minutes:
     refresh-token-expiration-minutes:
-
