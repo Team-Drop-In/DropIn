@@ -8,17 +8,17 @@
 name: Java CI with Gradle
 
 on:
-#  push:
-#    branches: [ "main", "develop" ]
-  pull_request:
+  push:
     branches: [ "main", "develop" ]
+#  pull_request:
+#    branches: [ "main", "develop" ]
 
 env:
   AWS_REGION: ap-northeast-2
   S3_BUCKET_NAME: dropin-github-actions-s3-bucket
   CODE_DEPLOY_APPLICATION_NAME: dropin-codedeploy-app
   CODE_DEPLOY_DEPLOYMENT_GROUP_NAME: dropin-codedeploy-deployment-group
-  RESOURCE_PATH: ./server/src/main/resources
+  RESOURCE_PATH: ./server/src/main/resources/application.yml
 
 permissions:
   contents: read
