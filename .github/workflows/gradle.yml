@@ -18,7 +18,7 @@ env:
   S3_BUCKET_NAME: dropin-github-actions-s3-bucket
   CODE_DEPLOY_APPLICATION_NAME: dropin-codedeploy-app
   CODE_DEPLOY_DEPLOYMENT_GROUP_NAME: dropin-codedeploy-deployment-group
-  RESOURCE_PATH: ./server/src/main/resources/application.yml
+  RESOURCE_PATH: ./server/src/main/resources
 
 permissions:
   contents: read
@@ -39,8 +39,8 @@ jobs:
 
     - name: Set yml file
       run: |
-        envsubst < ${{ env.$RESOURCE_PATH }} > temp.yml
-        mv temp.yml ${{ env.$RESOURCE_PATH }}
+        envsubst < ${{ env.$RESOURCE_PATH }}/application.yml > temp.yml
+        mv temp.yml ${{ env.$RESOURCE_PATH }}/application.yml
       env:
         SPRING_DATASOURCE_URL: ${{secrets.SPRING_DATASOURCE_URL}}
         SPRING_DATASOURCE_USERNAME: ${{secrets.SPRING_DATASOURCE_USERNAME}}
@@ -76,8 +76,8 @@ jobs:
 
       - name: Set yml file
         run: |
-          envsubst < ${{ env.$RESOURCE_PATH }} > temp.yml
-          mv temp.yml ${{ env.$RESOURCE_PATH }}
+          envsubst < ${{ env.$RESOURCE_PATH }}/application.yml > temp.yml
+          mv temp.yml ${{ env.$RESOURCE_PATH }}/application.yml
         env:
           SPRING_DATASOURCE_URL: ${{secrets.SPRING_DATASOURCE_URL}}
           SPRING_DATASOURCE_USERNAME: ${{secrets.SPRING_DATASOURCE_USERNAME}}
