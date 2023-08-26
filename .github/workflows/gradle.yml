@@ -88,10 +88,10 @@ jobs:
           spring.jwt.access-token-expiration-minutes: ${{secrets.JWT_ACCESS_TOKEN_EXPIRATION}}
           spring.jwt.refresh-token-expiration-minutes: ${{secrets.JWT_REFRESH_TOKEN_EXPIRATION}}
 
-      # (3) Gradle build 
+      # (3) Gradle build
       - name: Build with Gradle
-          run: ./gradlew build
-          working-directory: ./server
+        run: ./gradlew build
+        working-directory: ./server
 
       # (4) AWS 인증 (IAM 사용자 Access Key, Secret Key 활용)
       - name: Configure AWS credentials
