@@ -1,9 +1,9 @@
 spring:
-  config:
-    import: 'aws-parameterstore:'
-aws:
-  paramstore:
-    enabled: true
-    prefix: /spring-boot-aws
-    name: dropin-project
-    profileSeparator: _
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    hibernate:
+      ddl-auto: create
+    show-sql: true
+

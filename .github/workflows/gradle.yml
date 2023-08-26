@@ -35,6 +35,33 @@ jobs:
       with:
         java-version: '11'
         distribution: 'temurin'
+    - name: write DB URL
+      run : echo "SPRING_DATASOURCE_URL"=${{secrets.SPRING_DATASOURCE_URL}}" >> application.yml
+      working-directory: ./server/src/main/resources
+    - name: write DB Username
+      run: echo "SPRING_DATASOURCE_USERNAME"=${{secrets.SPRING_DATASOURCE_USERNAME}}" >> application.yml
+      working-directory: ./server/src/main/resources
+    - name: write DB Password
+      run: echo "SPRING_DATASOURCE_PASSWORD"=${{secrets.SPRING_DATASOURCE_PASSWORD}}" >> application.yml
+      working-directory: ./server/src/main/resources
+    - name: write Google Oauth2.0 clientId
+      run: echo "SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GOOGLE_CLIENTID"=${{secrets.SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GOOGLE_CLIENTID}}" >> application.yml
+      working-directory: ./server/src/main/resources
+    - name: write Google Oauth2.0 clientSecret
+      run: echo "SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GOOGLE_CLIENTSECRET"=${{secrets.SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GOOGLE_CLIENTSECRET}}" >> application.yml
+      working-directory: ./server/src/main/resources
+    - name: write Jwt SecretKey
+      run: echo "JWT_KEY"=${{secrets.JWT_KEY}}" >> application.yml
+      working-directory: ./server/src/main/resources
+    - name: write Jwt AccessToken Expiration
+      run: echo "JWT_ACCESS-TOKEN-EXPIRATION-MINUTES"=${{secrets.JWT_ACCESS_TOKEN_EXPIRATION}}" >> application.yml
+      working-directory: ./server/src/main/resources
+    - name: write Jwt AccessToken Expiration
+      run: echo "JWT_REFRESH-TOKEN-EXPIRATION-MINUTES"=${{secrets.JWT_REFRESH_TOKEN_EXPIRATION}}" >> application.yml
+      working-directory: ./server/src/main/resources
+
+
+
     - name: Build with Gradle
       uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
       with:
