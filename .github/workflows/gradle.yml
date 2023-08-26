@@ -18,7 +18,7 @@ env:
   S3_BUCKET_NAME: dropin-github-actions-s3-bucket
   CODE_DEPLOY_APPLICATION_NAME: dropin-codedeploy-app
   CODE_DEPLOY_DEPLOYMENT_GROUP_NAME: dropin-codedeploy-deployment-group
-  RESOURCE_PATH: ./server/src/main/resources/application.yml
+  RESOURCE_PATH: ./server/src/main/resources
 
 permissions:
   contents: read
@@ -39,7 +39,7 @@ jobs:
 
     - name: Set yml file
       run: |
-        envsubst < $RESOURCE_PATH > temp.yml
+        envsubst < $RESOURCE_PATH/application.yml > temp.yml
         mv temp.yml $RESOURCE_PATH
       env:
         spring.datasource.url: ${{secrets.SPRING_DATASOURCE_URL}}
@@ -75,7 +75,7 @@ jobs:
 
       - name: Set yml file
         run: |
-          envsubst < $RESOURCE_PATH > temp.yml
+          envsubst < $RESOURCE_PATH/application.yml > temp.yml
           mv temp.yml $RESOURCE_PATH
         env:
           spring.datasource.url: ${{secrets.SPRING_DATASOURCE_URL}}
