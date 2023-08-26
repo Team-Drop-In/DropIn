@@ -39,8 +39,8 @@ jobs:
 
     - name: Set yml file
       run: |
-        envsubst < $RESOURCE_PATH > temp.yml
-        mv temp.yml $RESOURCE_PATH
+        envsubst < env.$RESOURCE_PATH > temp.yml
+        mv temp.yml env.$RESOURCE_PATH
       env:
         SPRING_DATASOURCE_URL: ${{secrets.SPRING_DATASOURCE_URL}}
         SPRING_DATASOURCE_USERNAME: ${{secrets.SPRING_DATASOURCE_USERNAME}}
@@ -76,8 +76,8 @@ jobs:
 
       - name: Set yml file
         run: |
-          envsubst < $RESOURCE_PATH > temp.yml
-          mv temp.yml $RESOURCE_PATH
+          envsubst < env.$RESOURCE_PATH > temp.yml
+          mv temp.yml env.$RESOURCE_PATH
         env:
           SPRING_DATASOURCE_URL: ${{secrets.SPRING_DATASOURCE_URL}}
           SPRING_DATASOURCE_USERNAME: ${{secrets.SPRING_DATASOURCE_USERNAME}}
