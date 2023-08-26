@@ -8,8 +8,8 @@
 name: Java CI with Gradle
 
 on:
-  push:
-    branches: [ "main", "develop" ]
+#  push:
+#    branches: [ "main", "develop" ]
   pull_request:
     branches: [ "main", "develop" ]
 
@@ -18,6 +18,7 @@ env:
   S3_BUCKET_NAME: dropin-github-actions-s3-bucket
   CODE_DEPLOY_APPLICATION_NAME: dropin-codedeploy-app
   CODE_DEPLOY_DEPLOYMENT_GROUP_NAME: dropin-codedeploy-deployment-group
+  RESOURCE_PATH: ./server/src/main/resources
 
 permissions:
   contents: read
@@ -35,32 +36,20 @@ jobs:
       with:
         java-version: '11'
         distribution: 'temurin'
-    - name: write DB URL
-      run : echo "SPRING_DATASOURCE_URL=${{secrets.SPRING_DATASOURCE_URL}}" >> application.yml
-      working-directory: ./server/src/main/resources
-    - name: write DB Username
-      run: echo "SPRING_DATASOURCE_USERNAME=${{secrets.SPRING_DATASOURCE_USERNAME}}" >> application.yml
-      working-directory: ./server/src/main/resources
-    - name: write DB Password
-      run: echo "SPRING_DATASOURCE_PASSWORD=${{secrets.SPRING_DATASOURCE_PASSWORD}}" >> application.yml
-      working-directory: ./server/src/main/resources
-    - name: write Google Oauth2.0 clientId
-      run: echo "SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GOOGLE_CLIENTID=${{secrets.SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GOOGLE_CLIENTID}}" >> application.yml
-      working-directory: ./server/src/main/resources
-    - name: write Google Oauth2.0 clientSecret
-      run: echo "SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GOOGLE_CLIENTSECRET=${{secrets.SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GOOGLE_CLIENTSECRET}}" >> application.yml
-      working-directory: ./server/src/main/resources
-    - name: write Jwt SecretKey
-      run: echo "JWT_KEY=${{secrets.JWT_KEY}}" >> application.yml
-      working-directory: ./server/src/main/resources
-    - name: write Jwt AccessToken Expiration
-      run: echo "JWT_ACCESS-TOKEN-EXPIRATION-MINUTES=${{secrets.JWT_ACCESS_TOKEN_EXPIRATION}}" >> application.yml
-      working-directory: ./server/src/main/resources
-    - name: write Jwt AccessToken Expiration
-      run: echo "JWT_REFRESH-TOKEN-EXPIRATION-MINUTES=${{secrets.JWT_REFRESH_TOKEN_EXPIRATION}}" >> application.yml
-      working-directory: ./server/src/main/resources
 
-
+    - name: Set yml file
+      uses: microsoft/variable-substitution@v1
+      with:
+        files: ${{ env.RESOURCE_PATH }}
+      env:
+        spring.datasource.url: ${{secrets.SPRING_DATASOURCE_URL}}
+        spring.datasource.username: ${{secrets.SPRING_DATASOURCE_USERNAME}}
+        spring.datasource.password: ${{secrets.SPRING_DATASOURCE_PASSWORD}}
+        spring.security.oauth2.client.registration.google.clientId: ${{secrets.SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GOOGLE_CLIENTID}}
+        spring.security.oauth2.client.registration.google.clientSecret: ${{secrets.SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GOOGLE_CLIENTSECRET}}
+        spring.jwt.key: ${{secrets.JWT_KEY}}
+        spring.access-token-expiration-minutes: ${{secrets.JWT_ACCESS_TOKEN_EXPIRATION}}
+        spring.refresh-token-expiration-minutes: ${{secrets.JWT_REFRESH_TOKEN_EXPIRATION}}
 
     - name: Build with Gradle
       uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
@@ -86,30 +75,20 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '11'
-      - name: write DB URL
-        run: echo "SPRING_DATASOURCE_URL=${{secrets.SPRING_DATASOURCE_URL}}" >> application.yml
-        working-directory: ./server/src/main/resources
-      - name: write DB Username
-        run: echo "SPRING_DATASOURCE_USERNAME=${{secrets.SPRING_DATASOURCE_USERNAME}}" >> application.yml
-        working-directory: ./server/src/main/resources
-      - name: write DB Password
-        run: echo "SPRING_DATASOURCE_PASSWORD=${{secrets.SPRING_DATASOURCE_PASSWORD}}" >> application.yml
-        working-directory: ./server/src/main/resources
-      - name: write Google Oauth2.0 clientId
-        run: echo "SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GOOGLE_CLIENTID=${{secrets.SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GOOGLE_CLIENTID}}" >> application.yml
-        working-directory: ./server/src/main/resources
-      - name: write Google Oauth2.0 clientSecret
-        run: echo "SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GOOGLE_CLIENTSECRET=${{secrets.SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GOOGLE_CLIENTSECRET}}" >> application.yml
-        working-directory: ./server/src/main/resources
-      - name: write Jwt SecretKey
-        run: echo "JWT_KEY=${{secrets.JWT_KEY}}" >> application.yml
-        working-directory: ./server/src/main/resources
-      - name: write Jwt AccessToken Expiration
-        run: echo "JWT_ACCESS-TOKEN-EXPIRATION-MINUTES=${{secrets.JWT_ACCESS_TOKEN_EXPIRATION}}" >> application.yml
-        working-directory: ./server/src/main/resources
-      - name: write Jwt AccessToken Expiration
-        run: echo "JWT_REFRESH-TOKEN-EXPIRATION-MINUTES=${{secrets.JWT_REFRESH_TOKEN_EXPIRATION}}" >> application.yml
-        working-directory: ./server/src/main/resources
+
+      - name: Set yml file
+        uses: microsoft/variable-substitution@v1
+        with:
+          files: ${{ env.RESOURCE_PATH }}
+        env:
+          spring.datasource.url: ${{secrets.SPRING_DATASOURCE_URL}}
+          spring.datasource.username: ${{secrets.SPRING_DATASOURCE_USERNAME}}
+          spring.datasource.password: ${{secrets.SPRING_DATASOURCE_PASSWORD}}
+          spring.security.oauth2.client.registration.google.clientId: ${{secrets.SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GOOGLE_CLIENTID}}
+          spring.security.oauth2.client.registration.google.clientSecret: ${{secrets.SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GOOGLE_CLIENTSECRET}}
+          spring.jwt.key: ${{secrets.JWT_KEY}}
+          spring.access-token-expiration-minutes: ${{secrets.JWT_ACCESS_TOKEN_EXPIRATION}}
+          spring.refresh-token-expiration-minutes: ${{secrets.JWT_REFRESH_TOKEN_EXPIRATION}}
 
       # (3) Gradle build (Test 제외)
       - name: Build with Gradle
