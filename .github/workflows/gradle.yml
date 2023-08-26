@@ -18,7 +18,7 @@ env:
   S3_BUCKET_NAME: dropin-github-actions-s3-bucket
   CODE_DEPLOY_APPLICATION_NAME: dropin-codedeploy-app
   CODE_DEPLOY_DEPLOYMENT_GROUP_NAME: dropin-codedeploy-deployment-group
-  RESOURCE_PATH: ./server/src/main/resources
+  ENV_FILE: ./server/src/main/resources/application.yml
 
 permissions:
   contents: read
@@ -39,8 +39,8 @@ jobs:
 
     - name: Set yml file
       run: |
-        envsubst < ${{ env.$RESOURCE_PATH }}/application.yml > temp.yml
-        mv temp.yml ${{ env.$RESOURCE_PATH }}/application.yml
+        envsubst < $ENV_FILE > temp.yml
+        mv temp.yml $ENV_FILE
       env:
         SPRING_DATASOURCE_URL: ${{secrets.SPRING_DATASOURCE_URL}}
         SPRING_DATASOURCE_USERNAME: ${{secrets.SPRING_DATASOURCE_USERNAME}}
@@ -50,6 +50,7 @@ jobs:
         SPRING_JWT_KEY: ${{secrets.JWT_KEY}}
         SPRING_JWT_ACCESS-TOKEN-EXPIRATION-MINUTES: ${{secrets.JWT_ACCESS_TOKEN_EXPIRATION}}
         SPRING_JWT_REFRESH-TOKEN-EXPIRATION-MINUTES: ${{secrets.JWT_REFRESH_TOKEN_EXPIRATION}}
+      working-directory: ./server/src/main/resources
 
 
     - name: Build with Gradle
@@ -76,8 +77,8 @@ jobs:
 
       - name: Set yml file
         run: |
-          envsubst < ${{ env.$RESOURCE_PATH }}/application.yml > temp.yml
-          mv temp.yml ${{ env.$RESOURCE_PATH }}/application.yml
+          envsubst < $ENV_FILE > temp.yml
+          mv temp.yml $ENV_FILE
         env:
           SPRING_DATASOURCE_URL: ${{secrets.SPRING_DATASOURCE_URL}}
           SPRING_DATASOURCE_USERNAME: ${{secrets.SPRING_DATASOURCE_USERNAME}}
@@ -87,6 +88,7 @@ jobs:
           SPRING_JWT_KEY: ${{secrets.JWT_KEY}}
           SPRING_JWT_ACCESS-TOKEN-EXPIRATION-MINUTES: ${{secrets.JWT_ACCESS_TOKEN_EXPIRATION}}
           SPRING_JWT_REFRESH-TOKEN-EXPIRATION-MINUTES: ${{secrets.JWT_REFRESH_TOKEN_EXPIRATION}}
+        working-directory: ./server/src/main/resources
 
 
       # (3) Gradle build
