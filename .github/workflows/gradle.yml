@@ -38,7 +38,6 @@ jobs:
         distribution: 'temurin'
 
     - name: Set yml file
-      uses: microsoft/variable-substitution@v1
       run: |
         envsubst < $RESOURCE_PATH > temp.yml
         mv temp.yml $RESOURCE_PATH
