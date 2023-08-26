@@ -39,8 +39,9 @@ jobs:
 
     - name: Set yml file
       uses: microsoft/variable-substitution@v1
-      with:
-        files: ${{ env.RESOURCE_PATH }}
+      run: |
+        envsubst < $RESOURCE_PATH > temp.yml
+        mv temp.yml $RESOURCE_PATH
       env:
         spring.datasource.url: ${{secrets.SPRING_DATASOURCE_URL}}
         spring.datasource.username: ${{secrets.SPRING_DATASOURCE_USERNAME}}
@@ -52,11 +53,8 @@ jobs:
         spring.jwt.refresh-token-expiration-minutes: ${{secrets.JWT_REFRESH_TOKEN_EXPIRATION}}
 
     - name: Build with Gradle
-      uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
-      with:
-        gradle-version: 8.1.1
-        arguments: build
-        build-root-directory: ./server
+      run: ./gradlew build
+      working-directory: ./server
 
 
   deploy:
@@ -77,9 +75,9 @@ jobs:
           java-version: '11'
 
       - name: Set yml file
-        uses: microsoft/variable-substitution@v1
-        with:
-          files: ${{ env.RESOURCE_PATH }}
+        run: |
+          envsubst < $RESOURCE_PATH > temp.yml
+          mv temp.yml $RESOURCE_PATH
         env:
           spring.datasource.url: ${{secrets.SPRING_DATASOURCE_URL}}
           spring.datasource.username: ${{secrets.SPRING_DATASOURCE_USERNAME}}
@@ -90,13 +88,10 @@ jobs:
           spring.jwt.access-token-expiration-minutes: ${{secrets.JWT_ACCESS_TOKEN_EXPIRATION}}
           spring.jwt.refresh-token-expiration-minutes: ${{secrets.JWT_REFRESH_TOKEN_EXPIRATION}}
 
-      # (3) Gradle build (Test 제외)
+      # (3) Gradle build 
       - name: Build with Gradle
-        uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
-        with:
-          gradle-version: 8.1.1
-          arguments: build
-          build-root-directory: ./server
+          run: ./gradlew build
+          working-directory: ./server
 
       # (4) AWS 인증 (IAM 사용자 Access Key, Secret Key 활용)
       - name: Configure AWS credentials
