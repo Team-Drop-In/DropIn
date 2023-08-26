@@ -1,23 +1,10 @@
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url:
-    username:
-    password:
   jpa:
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
     hibernate:
       ddl-auto: create
     show-sql: true
-  security:
-    oauth2:
-      client:
-        registration:
-          google:
-            clientId:
-            clientSecret:
-  jwt:
-    key:
-    access-token-expiration-minutes: 30
-    refresh-token-expiration-minutes: 420
+
 
