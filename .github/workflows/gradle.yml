@@ -18,7 +18,7 @@ env:
   S3_BUCKET_NAME: dropin-github-actions-s3-bucket
   CODE_DEPLOY_APPLICATION_NAME: dropin-codedeploy-app
   CODE_DEPLOY_DEPLOYMENT_GROUP_NAME: dropin-codedeploy-deployment-group
-  ENV_FILE: application.yml
+  RESOURCE_PATH: ./server/src/main/resources/application.yml
 
 permissions:
   contents: read
@@ -30,32 +30,33 @@ jobs:
 
 
     steps:
-    - uses: actions/checkout@v3
-    - name: Set up JDK 11
-      uses: actions/setup-java@v3
-      with:
-        java-version: '11'
-        distribution: 'temurin'
+      - uses: actions/checkout@v3
+      - name: Set up JDK 11
+        uses: actions/setup-java@v3
+        with:
+          java-version: '11'
+          distribution: 'temurin'
 
-    - name: Set yml file
-      run: |
-        envsubst < $ENV_FILE > temp.yml
-        mv temp.yml $ENV_FILE
-      env:
-        SPRING_DATASOURCE_URL: ${{secrets.SPRING_DATASOURCE_URL}}
-        SPRING_DATASOURCE_USERNAME: ${{secrets.SPRING_DATASOURCE_USERNAME}}
-        SPRING_DATASOURCE_PASSWORD: ${{secrets.SPRING_DATASOURCE_PASSWORD}}
-        SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GOOGLE_CLIENTID: ${{secrets.SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GOOGLE_CLIENTID}}
-        SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GOOGLE_CLIENTSECRET: ${{secrets.SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GOOGLE_CLIENTSECRET}}
-        SPRING_JWT_KEY: ${{secrets.JWT_KEY}}
-        SPRING_JWT_ACCESS-TOKEN-EXPIRATION-MINUTES: ${{secrets.JWT_ACCESS_TOKEN_EXPIRATION}}
-        SPRING_JWT_REFRESH-TOKEN-EXPIRATION-MINUTES: ${{secrets.JWT_REFRESH_TOKEN_EXPIRATION}}
-      working-directory: ./server/src/main/resources
+      - name: Set yml file
+        uses: microsoft/variable-substitution@v1
+        with:
+          files: ${{ env.RESOURCE_PATH }}
+        env:
+          spring.datasource.url: ${{secrets.SPRING_DATASOURCE_URL}}
+          spring.datasource.username: ${{secrets.SPRING_DATASOURCE_USERNAME}}
+          spring.datasource.password: ${{secrets.SPRING_DATASOURCE_PASSWORD}}
+          spring.security.oauth2.client.registration.google.clientId: ${{secrets.SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GOOGLE_CLIENTID}}
+          spring.security.oauth2.client.registration.google.clientSecret: ${{secrets.SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GOOGLE_CLIENTSECRET}}
+          spring.jwt.key: ${{secrets.JWT_KEY}}
+          spring.jwt.access-token-expiration-minutes: ${{secrets.JWT_ACCESS_TOKEN_EXPIRATION}}
+          spring.jwt.refresh-token-expiration-minutes: ${{secrets.JWT_REFRESH_TOKEN_EXPIRATION}}
 
-
-    - name: Build with Gradle
-      run: ./gradlew build
-      working-directory: ./server
+      - name: Build with Gradle
+        uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
+        with:
+          gradle-version: 8.1.1
+          arguments: build
+          build-root-directory: ./server
 
 
   deploy:
@@ -76,25 +77,26 @@ jobs:
           java-version: '11'
 
       - name: Set yml file
-        run: |
-          envsubst < $ENV_FILE > temp.yml
-          mv temp.yml $ENV_FILE
+        uses: microsoft/variable-substitution@v1
+        with:
+          files: ${{ env.RESOURCE_PATH }}
         env:
-          SPRING_DATASOURCE_URL: ${{secrets.SPRING_DATASOURCE_URL}}
-          SPRING_DATASOURCE_USERNAME: ${{secrets.SPRING_DATASOURCE_USERNAME}}
-          SPRING_DATASOURCE_PASSWORD: ${{secrets.SPRING_DATASOURCE_PASSWORD}}
-          SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GOOGLE_CLIENTID: ${{secrets.SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GOOGLE_CLIENTID}}
-          SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GOOGLE_CLIENTSECRET: ${{secrets.SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GOOGLE_CLIENTSECRET}}
-          SPRING_JWT_KEY: ${{secrets.JWT_KEY}}
-          SPRING_JWT_ACCESS-TOKEN-EXPIRATION-MINUTES: ${{secrets.JWT_ACCESS_TOKEN_EXPIRATION}}
-          SPRING_JWT_REFRESH-TOKEN-EXPIRATION-MINUTES: ${{secrets.JWT_REFRESH_TOKEN_EXPIRATION}}
-        working-directory: ./server/src/main/resources
+          spring.datasource.url: ${{secrets.SPRING_DATASOURCE_URL}}
+          spring.datasource.username: ${{secrets.SPRING_DATASOURCE_USERNAME}}
+          spring.datasource.password: ${{secrets.SPRING_DATASOURCE_PASSWORD}}
+          spring.security.oauth2.client.registration.google.clientId: ${{secrets.SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GOOGLE_CLIENTID}}
+          spring.security.oauth2.client.registration.google.clientSecret: ${{secrets.SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GOOGLE_CLIENTSECRET}}
+          spring.jwt.key: ${{secrets.JWT_KEY}}
+          spring.jwt.access-token-expiration-minutes: ${{secrets.JWT_ACCESS_TOKEN_EXPIRATION}}
+          spring.jwt.refresh-token-expiration-minutes: ${{secrets.JWT_REFRESH_TOKEN_EXPIRATION}}
 
-
-      # (3) Gradle build
+      # (3) Gradle build (Test 제외)
       - name: Build with Gradle
-        run: ./gradlew build
-        working-directory: ./server
+        uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
+        with:
+          gradle-version: 8.1.1
+          arguments: build
+          build-root-directory: ./server
 
       # (4) AWS 인증 (IAM 사용자 Access Key, Secret Key 활용)
       - name: Configure AWS credentials
@@ -112,7 +114,6 @@ jobs:
             --ignore-hidden-files \
             --s3-location s3://$S3_BUCKET_NAME/$GITHUB_SHA.zip \
             --source .
-
       # (6) S3 버킷에 있는 파일을 대상으로 CodeDeploy 실행
       - name: Deploy to AWS EC2 from S3
         run: |
