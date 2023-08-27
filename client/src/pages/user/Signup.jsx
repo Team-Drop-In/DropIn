@@ -35,8 +35,8 @@ const Signup = () => {
       <Contain>
         <Logo src={LogoImage} alt="로고" className="logo_img" />
         <Title>회원가입</Title>
-        {/* <Form onSubmit={handleSubmit(onFormSubmit, onFormError)}> */}
-        <Form>
+        <Form onSubmit={handleSubmit()}>
+          {/* <Form> */}
           <Controller
             name={"email"}
             control={control}

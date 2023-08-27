@@ -5,7 +5,7 @@ import Input from "../../components/common/Input";
 import Button from "../../components/common/Button";
 import { useForm, Controller } from "react-hook-form";
 
-const FindPwd = () => {
+const FindEmail = () => {
   const {
     handleSubmit,
     control,
@@ -37,7 +37,7 @@ const FindPwd = () => {
   };
 
   const onFormSubmit = (data) => {
-    // console.log(data);
+    // 폼 제출 로직
   };
 
   return (
@@ -102,7 +102,7 @@ const FindPwd = () => {
   );
 };
 
-export default FindPwd;
+export default FindEmail;
 
 const Contain = styled(Content)`
   height: 100vh;

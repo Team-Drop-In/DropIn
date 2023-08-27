@@ -77,5 +77,6 @@ const InputComponent = styled.input`
 `;
 
 const AlertMessage = styled.span`
+  color: ${COLOR.btn_grey};
   margin-bottom: 7px;
 `;

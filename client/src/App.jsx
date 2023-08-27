@@ -5,6 +5,7 @@ import Header from "./components/Header";
 const Login = lazy(() => import("./pages/user/Login"));
 const Signup = lazy(() => import("./pages/user/Signup"));
 const FindPwd = lazy(() => import("./pages/user/FindPwd"));
+const FindEmail = lazy(() => import("./pages/user/FindEmail"));
 const Profile = lazy(() => import("./pages/user/Profile"));
 const Board = lazy(() => import("./pages/board/Board"));
 
@@ -18,6 +19,7 @@ const App = () => {
           <Route path="/signup" element={<Signup />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/findpwd" element={<FindPwd />} />
+          <Route path="/findemail" element={<FindEmail />} />
           <Route path="/board" element={<Board />} />
         </Routes>
       </Suspense>

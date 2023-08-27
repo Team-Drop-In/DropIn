@@ -42,7 +42,7 @@ const Login = () => {
         <Logo src={LogoImage} alt="로고" className="logo_img" />
         <Form onSubmit={handleSubmit(onFormSubmit)}>
           <Controller
-            name={"email"}
+            name={"username"}
             control={control}
             rules={emailOptions}
             render={({ field, fieldState: { error } }) => (
