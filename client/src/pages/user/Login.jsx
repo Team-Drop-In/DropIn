@@ -107,7 +107,7 @@ const Contain = styled(Content)`
 `;
 
 const Logo = styled.img`
-  width: 220px;
+  width: 180px;
 `;
 
 const Form = styled.form`
