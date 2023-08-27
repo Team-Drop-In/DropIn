@@ -47,3 +47,13 @@ export const duplicateEmailApi = async (data) => {
     throw error;
   }
 };
+
+export const duplicateNicknameApi = async (data) => {
+  try {
+    const response = await axiosApi.get("/api/check-duplicate/nickname", data);
+    return response.data;
+  } catch (error) {
+    console.error("API Error:", error);
+    throw error;
+  }
+};

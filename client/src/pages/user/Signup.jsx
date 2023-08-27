@@ -7,7 +7,11 @@ import { Controller, useForm } from "react-hook-form";
 import Input from "../../components/common/Input";
 import Button from "../../components/common/Button";
 import LogoImage from "../../images/logo.svg";
-import { signupApi, duplicateEmailApi } from "../../apis/api";
+import {
+  signupApi,
+  duplicateEmailApi,
+  duplicateNicknameApi,
+} from "../../apis/api";
 
 const Signup = () => {
   const navigate = useNavigate();
