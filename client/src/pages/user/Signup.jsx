@@ -80,7 +80,7 @@ const Signup = () => {
     },
   };
 
-  const onFormSubmit = (data) => {
+  const onFormSubmit = ({ emailAuth, passwordcheck, ...data }) => {
     console.log(data);
   };
 
@@ -93,7 +93,7 @@ const Signup = () => {
           {/* <Form> */}
           <div>
             <Controller
-              name={"email"}
+              name={"username"}
               control={control}
               rules={emailOptions}
               render={({ field, fieldState: { error } }) => (
@@ -326,6 +326,7 @@ const StyledRadioInput = styled.input`
     width: 54px;
     font-weight: bold;
     text-align: center;
+    color: black;
     cursor: pointer;
     text-align: center;
     padding: 11px;
