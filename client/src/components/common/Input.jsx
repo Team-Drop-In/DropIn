@@ -69,7 +69,7 @@ const InputComponent = styled.input`
   padding: 10px;
   background-color: ${COLOR.main_grey};
   outline: none;
-
+  width: ${(props) => (props.width ? `${props.width}` : "100%")};
   &::placeholder {
     color: black;
     font-weight: 500;
