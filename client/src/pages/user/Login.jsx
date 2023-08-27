@@ -6,6 +6,7 @@ import { Container, Content } from "../../styles/style";
 import Input from "../../components/common/Input";
 import Button from "../../components/common/Button";
 import LogoImage from "../../images/logo.svg";
+import { loginApi } from "../../apis/api";
 
 const Login = () => {
   const [error, setError] = useState(false);
@@ -21,19 +22,35 @@ const Login = () => {
       message: "@를 포함한 이메일 주소를 적어주세요.",
     },
   };
+
   const passwordOptions = {
-    required: "비밀번호를 입력해주세요.",
-    pattern: {
-      value:
-        /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
-      message:
-        "비밀번호는 8자 이상으로 하나 이상의 대문자, 소문자, 숫자, 특수문자를 포함해주세요.",
+    required: "비밀번호를 입력해주세요",
+    validate: (value) => {
+      if (value.length < 8) {
+        return "비밀번호는 8자 이상이어야 합니다";
+      }
+
+      const hasUppercase = /[A-Z]/.test(value);
+      const hasLowercase = /[a-z]/.test(value);
+      const hasNumber = /[0-9]/.test(value);
+      const hasSpecialChar = /[!@#$%^&()]/.test(value);
+
+      if (!(hasUppercase && hasLowercase && hasNumber && hasSpecialChar)) {
+        return "대/소문자, 숫자, 특수문자를 포함해야 합니다";
+      }
+
+      return true;
     },
   };
 
-  const onFormSubmit = (data) => {
-    console.log("폼 제출", data);
-    setError((prev) => !prev);
+  const onFormSubmit = async (data) => {
+    try {
+      const response = await loginApi(data);
+      localStorage.setItem("token", response.data.access_token);
+    } catch (error) {
+      console.error("로그인 실패:", error);
+      setError(true);
+    }
   };
 
   return (

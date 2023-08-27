@@ -6,6 +6,7 @@ import { COLOR } from "../../styles/theme";
 import Input from "../../components/common/Input";
 import Button from "../../components/common/Button";
 import LogoImage from "../../images/logo.svg";
+import { signupApi } from "../../apis/api";
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -80,8 +81,13 @@ const Signup = () => {
     },
   };
 
-  const onFormSubmit = ({ emailAuth, passwordcheck, ...data }) => {
-    console.log(data);
+  const onFormSubmit = async ({ emailAuth, passwordcheck, ...data }) => {
+    try {
+      await signupApi(data);
+      navigate("/signin");
+    } catch (error) {
+      console.error("로그인 실패:", error);
+    }
   };
 
   return (
