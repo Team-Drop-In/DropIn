@@ -20,9 +20,10 @@ const Container = styled.button`
   background-color: ${COLOR.btn_grey};
 `;
 
-const Button = ({ text, width, height, borderRadius, margin, style }) => {
+const Button = ({ text, width, height, borderRadius, margin, style, type }) => {
   return (
     <Container
+      type={type}
       style={style}
       width={width}
       height={height}

@@ -1,16 +1,20 @@
 import styled from "styled-components";
-import { useNavigate, Link } from "react-router-dom";
-import { Controller, useForm } from "react-hook-form";
 import { Container, Content } from "../../styles/style";
 import { COLOR } from "../../styles/theme";
+import { useNavigate, Link } from "react-router-dom";
+import { useState } from "react";
+import { Controller, useForm } from "react-hook-form";
 import Input from "../../components/common/Input";
 import Button from "../../components/common/Button";
 import LogoImage from "../../images/logo.svg";
-import { signupApi } from "../../apis/api";
+import { signupApi, duplicateEmailApi } from "../../apis/api";
 
 const Signup = () => {
   const navigate = useNavigate();
   const { handleSubmit, control } = useForm();
+  const [isEmailAvailable, setIsEmailAvailable] = useState(false); // 중복 확인 상태
+  const [emailValue, setEmailValue] = useState("");
+  const [isSignupDisabled, setIsSignupDisabled] = useState(true); // 회원가입 버튼 비활성화 상태
 
   const emailOptions = {
     required: "이메일을 입력해주세요.",
@@ -81,13 +85,26 @@ const Signup = () => {
     },
   };
 
+  const handleEmailAvailability = async (event) => {
+    event.preventDefault();
+    console.log(control.getValues("username"));
+    // try {
+    //   const response = await duplicateEmailApi(emailValue);
+    //   setIsEmailAvailable(response.isAvailable);
+    // } catch (error) {
+    //   console.error("중복 확인 실패:", error);
+    //   setIsEmailAvailable(false);
+    // }
+  };
+
   const onFormSubmit = async ({ emailAuth, passwordcheck, ...data }) => {
-    try {
-      await signupApi(data);
-      navigate("/signin");
-    } catch (error) {
-      console.error("로그인 실패:", error);
-    }
+    console.log(data);
+    // try {
+    //   await signupApi(data);
+    //   navigate("/signin");
+    // } catch (error) {
+    //   console.error("로그인 실패:", error);
+    // }
   };
 
   return (
@@ -110,16 +127,21 @@ const Signup = () => {
                   width={"300px"}
                   placeholder="이메일을 입력해주세요"
                   errorMessage={error?.message}
-                  onChange={field.onChange}
+                  onChange={(value) => {
+                    field.onChange(value);
+                    setEmailValue(value); // 이메일 값 상태 업데이트
+                  }}
                   value={field.value || ""}
                 />
               )}
             />
             <Button
               text={"중복확인"}
+              type="button"
               width={"110px"}
               height={"39px"}
               style={{ marginTop: "20px", marginLeft: "5px" }}
+              onClick={handleEmailAvailability}
             />
           </div>
           <div>
@@ -141,6 +163,7 @@ const Signup = () => {
             />
             <Button
               text={"인증번호 발송"}
+              type="button"
               width={"110px"}
               height={"39px"}
               style={{ marginTop: "20px", marginLeft: "5px" }}
@@ -249,6 +272,7 @@ const Signup = () => {
             />
             <Button
               text={"중복확인"}
+              type="button"
               width={"110px"}
               height={"39px"}
               style={{ marginTop: "20px", marginLeft: "5px" }}
