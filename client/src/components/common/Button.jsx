@@ -20,7 +20,16 @@ const Container = styled.button`
   background-color: ${COLOR.btn_grey};
 `;
 
-const Button = ({ text, width, height, borderRadius, margin, style, type }) => {
+const Button = ({
+  text,
+  width,
+  height,
+  borderRadius,
+  margin,
+  style,
+  type,
+  onClick,
+}) => {
   return (
     <Container
       type={type}
@@ -29,6 +38,7 @@ const Button = ({ text, width, height, borderRadius, margin, style, type }) => {
       height={height}
       borderRadius={borderRadius}
       margin={margin}
+      onClick={onClick}
     >
       {text}
     </Container>

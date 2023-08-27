@@ -12,9 +12,11 @@ import { signupApi, duplicateEmailApi } from "../../apis/api";
 const Signup = () => {
   const navigate = useNavigate();
   const { handleSubmit, control } = useForm();
-  const [isEmailAvailable, setIsEmailAvailable] = useState(false); // 중복 확인 상태
+  const [isEmailAvailable, setIsEmailAvailable] = useState(false);
   const [emailValue, setEmailValue] = useState("");
-  const [isSignupDisabled, setIsSignupDisabled] = useState(true); // 회원가입 버튼 비활성화 상태
+  const [isNicknameAvailable, setIsNicknameAvailable] = useState(false);
+  const [nicknameValue, setNicknameValue] = useState("");
+  const [isSignupDisabled, setIsSignupDisabled] = useState(false); // 회원가입 버튼 비활성화 상태
 
   const emailOptions = {
     required: "이메일을 입력해주세요.",
@@ -85,9 +87,22 @@ const Signup = () => {
     },
   };
 
-  const handleEmailAvailability = async (event) => {
-    event.preventDefault();
-    console.log(control.getValues("username"));
+  const handleEmailAvailability = async () => {
+    if (!emailValue.trim()) return;
+    console.log(emailValue);
+    // try {
+    //   const response = await duplicateEmailApi(emailValue);
+    //   setIsEmailAvailable(response.isAvailable);
+    // } catch (error) {
+    //   console.error("중복 확인 실패:", error);
+    //   setIsEmailAvailable(false);
+    // }
+  };
+
+  const handleNicknameAvailability = async () => {
+    if (!nicknameValue.trim()) return;
+
+    console.log(nicknameValue);
     // try {
     //   const response = await duplicateEmailApi(emailValue);
     //   setIsEmailAvailable(response.isAvailable);
@@ -116,20 +131,20 @@ const Signup = () => {
           {/* <Form> */}
           <div>
             <Controller
-              name={"username"}
+              name="username"
               control={control}
               rules={emailOptions}
               render={({ field, fieldState: { error } }) => (
                 <Input
-                  id="email"
+                  id="username"
                   label="이메일"
                   type="text"
                   width={"300px"}
                   placeholder="이메일을 입력해주세요"
                   errorMessage={error?.message}
-                  onChange={(value) => {
-                    field.onChange(value);
-                    setEmailValue(value); // 이메일 값 상태 업데이트
+                  onChange={(e) => {
+                    field.onChange(e.target.value);
+                    setEmailValue(e.target.value);
                   }}
                   value={field.value || ""}
                 />
@@ -140,7 +155,13 @@ const Signup = () => {
               type="button"
               width={"110px"}
               height={"39px"}
-              style={{ marginTop: "20px", marginLeft: "5px" }}
+              style={{
+                marginTop: "20px",
+                marginLeft: "5px",
+                backgroundColor: isEmailAvailable
+                  ? ` ${COLOR.main_yellow}`
+                  : ` ${COLOR.btn_grey}`,
+              }}
               onClick={handleEmailAvailability}
             />
           </div>
@@ -265,7 +286,10 @@ const Signup = () => {
                   width={"300px"}
                   placeholder="닉네임을 입력해 주세요"
                   errorMessage={error?.message}
-                  onChange={field.onChange}
+                  onChange={(e) => {
+                    field.onChange(e.target.value);
+                    setNicknameValue(e.target.value);
+                  }}
                   value={field.value || ""}
                 />
               )}
@@ -275,7 +299,15 @@ const Signup = () => {
               type="button"
               width={"110px"}
               height={"39px"}
-              style={{ marginTop: "20px", marginLeft: "5px" }}
+              style={{
+                marginTop: "20px",
+                marginLeft: "5px",
+                backgroundColor: isNicknameAvailable
+                  ? ` ${COLOR.main_yellow}`
+                  : ` ${COLOR.btn_grey}`,
+              }}
+              disabled={!nicknameValue.trim()}
+              onClick={handleNicknameAvailability}
             />
           </div>
           <Button

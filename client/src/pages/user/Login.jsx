@@ -64,7 +64,7 @@ const Login = () => {
             rules={emailOptions}
             render={({ field, fieldState: { error } }) => (
               <Input
-                id="email"
+                id="username"
                 label="이메일"
                 type="text"
                 placeholder="이메일"
