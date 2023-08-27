@@ -40,6 +40,8 @@ const Signup = () => {
     },
   };
 
+  const GENDER_OPTIONS = ["UNSELECTED", "MALE", "FEMALE"];
+
   const nameValidationOptions = {
     required: "이름을 입력해주세요.",
     minLength: {
@@ -56,7 +58,27 @@ const Signup = () => {
     },
   };
 
-  const nickValidationOptions = {};
+  const nickValidationOptions = {
+    required: "닉네임을 입력해주세요.",
+    minLength: {
+      value: 2,
+      message: "닉네임은 최소 2글자 이상이어야 합니다.",
+    },
+    maxLength: {
+      value: 20,
+      message: "닉네임은 최대 20글자까지 가능합니다.",
+    },
+    pattern: {
+      value: /^[A-Za-z가-힣]+$/,
+      message: "닉네임은 한글과 영어만 사용 가능합니다.",
+    },
+    validate: (value) => {
+      if (/\s/.test(value)) {
+        return "닉네임에 공백을 포함할 수 없습니다.";
+      }
+      return true;
+    },
+  };
 
   const onFormSubmit = (data) => {
     console.log(data);
@@ -171,12 +193,13 @@ const Signup = () => {
                 <Controller
                   name="gender"
                   control={control}
+                  defaultValue={GENDER_OPTIONS[0]} // 초기값을 "UNSELECTED"로 설정
                   render={({ field }) => (
                     <StyledRadioInput
                       type="radio"
-                      value="남"
-                      checked={field.value === "남"}
-                      onChange={(e) => field.onChange(e.target.value)}
+                      value={GENDER_OPTIONS[1]}
+                      checked={field.value === GENDER_OPTIONS[1]}
+                      onChange={() => field.onChange(GENDER_OPTIONS[1])}
                     />
                   )}
                 />
@@ -186,12 +209,13 @@ const Signup = () => {
                 <Controller
                   name="gender"
                   control={control}
+                  defaultValue={GENDER_OPTIONS[0]}
                   render={({ field }) => (
                     <StyledRadioInput
                       type="radio"
-                      value="여"
-                      checked={field.value === "여"}
-                      onChange={(e) => field.onChange(e.target.value)}
+                      value={GENDER_OPTIONS[2]}
+                      checked={field.value === GENDER_OPTIONS[2]}
+                      onChange={() => field.onChange(GENDER_OPTIONS[2])}
                     />
                   )}
                 />
