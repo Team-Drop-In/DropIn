@@ -93,7 +93,7 @@ const FindEmail = () => {
               backgroundColor: isValid
                 ? `${COLOR.main_yellow}`
                 : `${COLOR.btn_grey}`,
-              cursor: isValid ? "pointer" : "not-allowed",
+              cursor: isValid ? "pointer" : "default",
             }}
           />
         </Form>

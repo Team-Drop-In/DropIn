@@ -14,7 +14,7 @@ export const getHelloApi = async () => {
 };
 
 const axiosApi = axios.create({
-  baseURL: "https://www.pre-onboarding-selection-task.shop",
+  baseURL: "http://ec2-43-202-64-101.ap-northeast-2.compute.amazonaws.com:8080",
   headers: {
     "Content-Type": "application/json",
   },

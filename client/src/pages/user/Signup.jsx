@@ -93,37 +93,26 @@ const Signup = () => {
 
   const handleEmailAvailability = async () => {
     if (!emailValue.trim()) return;
-    console.log(emailValue);
-    // try {
-    //   const response = await duplicateEmailApi(emailValue);
-    //   setIsEmailAvailable(response.isAvailable);
-    // } catch (error) {
-    //   console.error("중복 확인 실패:", error);
-    //   setIsEmailAvailable(false);
-    // }
+    if (!emailOptions.pattern.value.test(emailValue)) return;
   };
 
   const handleNicknameAvailability = async () => {
+    const validateResult = nickValidationOptions.validate(nicknameValue);
     if (!nicknameValue.trim()) return;
-
-    console.log(nicknameValue);
-    // try {
-    //   const response = await duplicateEmailApi(emailValue);
-    //   setIsEmailAvailable(response.isAvailable);
-    // } catch (error) {
-    //   console.error("중복 확인 실패:", error);
-    //   setIsEmailAvailable(false);
-    // }
+    if (nickValidationOptions.minLength.value > nicknameValue.length) return;
+    if (nickValidationOptions.maxLength.value < nicknameValue.length) return;
+    if (!nickValidationOptions.pattern.value.test(nicknameValue)) return;
+    if (validateResult !== true) return;
   };
 
   const onFormSubmit = async ({ emailAuth, passwordcheck, ...data }) => {
-    console.log(data);
-    // try {
-    //   await signupApi(data);
-    //   navigate("/signin");
-    // } catch (error) {
-    //   console.error("로그인 실패:", error);
-    // }
+    try {
+      console.log(data);
+      await signupApi(data);
+      navigate("/signin");
+    } catch (error) {
+      console.error("로그인 실패:", error);
+    }
   };
 
   return (

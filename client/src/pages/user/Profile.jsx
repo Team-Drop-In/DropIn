@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { Container, Content } from "../../styles/style";
+import { COLOR } from "../../styles/theme";
 
 const Profile = () => {
   return (
@@ -11,7 +12,9 @@ const Profile = () => {
             <div>
               <img src="http://placehold.it/200" alt="프로필" />
             </div>
-            <span>닉네임</span>
+            <Username>
+              <span>닉네임</span>
+            </Username>
           </Img>
           <Info>
             <div>
@@ -24,15 +27,14 @@ const Profile = () => {
             </div>
             <div>
               <Label>좋아요한 박스 목록</Label>
-              <ul>
+              <BoxList>
                 <li>온오프짐</li>
                 <li>짐박스</li>
                 <li>피트니스</li>
-              </ul>
+              </BoxList>
             </div>
           </Info>
         </User>
-        <button></button>
       </Contain>
     </Container>
   );
@@ -55,32 +57,67 @@ const Contain = styled(Content)`
 const User = styled.section`
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
   flex-wrap: wrap;
 `;
 
 const Img = styled.div`
+  width: 400px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   object-fit: contain;
-  width: 400px;
+  padding: 20px;
 
-  div {
-    width: 200px;
-    height: 200px;
+  & > div:first-of-type {
+    width: 150px;
+    height: 150px;
     border-radius: 50%;
     overflow: hidden;
+  }
+
+  & > div:first-of-type > img {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+  }
+`;
+
+const Username = styled.div`
+  margin-top: 20px;
+
+  span {
+    color: ${COLOR.main_grey};
   }
 `;
 
 const Info = styled.div`
   width: 400px;
+  padding: 20px;
 
-  div {
-    margin-bottom: 15px;
+  & > div {
+    margin-bottom: 25px;
+  }
+
+  & > div > span {
+    color: ${COLOR.main_grey};
   }
 `;
 
-const Label = styled.div``;
+const BoxList = styled.ul`
+  display: flex;
+  flex-wrap: wrap;
+
+  li {
+    margin-right: 7px;
+    padding: 7px 12px;
+    border-radius: 7px;
+    background-color: ${COLOR.btn_grey};
+    font-size: 15px;
+  }
+`;
+
+const Label = styled.div`
+  margin-bottom: 10px;
+`;
