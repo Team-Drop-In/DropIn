@@ -40,8 +40,8 @@ public class MemberService {
                 });
     }
 
-    public Member findVerifyMember(String usernmae){
-        return memberRepository.findByUsername(usernmae)
+    public Member findVerifyMember(String username){
+        return memberRepository.findByUsername(username)
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.USER_NOT_FOUND));
     }
 

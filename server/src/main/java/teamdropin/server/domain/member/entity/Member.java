@@ -62,5 +62,8 @@ public class Member extends BaseTimeEntity {
     @OneToMany(mappedBy = "member")
     private List<PostLike> postLikes = new ArrayList<>();
 
-
+    public Member updatePassword(String encodedPassword){
+        this.password = encodedPassword;
+        return this;
+    }
 }

@@ -36,18 +36,27 @@ public class MemberController {
         return ResponseEntity.created(location).build();
     }
 
+    /**
+     * 이메일 중복 체크
+     */
     @GetMapping("check-duplicate/email")
-    public ResponseEntity<Void> checkDuplicateEmail(@RequestBody SignUpCheckEmailDto signUpCheckEmailDto){
-        memberService.validateDuplicateEmail(signUpCheckEmailDto.getUsername());
+    public ResponseEntity<Void> checkDuplicateEmail(@RequestBody SignUpDuplicateCheckEmailDto signUpDuplicateCheckEmailDto){
+        memberService.validateDuplicateEmail(signUpDuplicateCheckEmailDto.getUsername());
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    /**
+     * 닉네임 중복 체크
+     */
     @GetMapping("check-duplicate/nickname")
-    public ResponseEntity<Void> checkDuplicateNickname(@RequestBody SignUpCheckNicknameDto signUpCheckNicknameDto){
-        memberService.validateDuplicateNickname(signUpCheckNicknameDto.getNickname());
+    public ResponseEntity<Void> checkDuplicateNickname(@RequestBody SignUpDuplicateCheckNicknameDto signUpDuplicateCheckNicknameDto){
+        memberService.validateDuplicateNickname(signUpDuplicateCheckNicknameDto.getNickname());
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    /**
+     * 마이페이지
+     */
     @GetMapping("member/my-page")
     public ResponseEntity<SingleResponseDto> toMyPage(@AuthenticationPrincipal Member member){
         if(member == null){
@@ -58,6 +67,9 @@ public class MemberController {
         return new ResponseEntity<>(new SingleResponseDto(myInfoResponseDto), HttpStatus.OK);
     }
 
+    /**
+     * 특정 회원 조회
+     */
     @GetMapping("/member/{id}")
     public ResponseEntity<SingleResponseDto> getMember(@AuthenticationPrincipal Member member, @PathVariable("id") Long memberId ){
         if(member == null){
@@ -68,6 +80,9 @@ public class MemberController {
         return new ResponseEntity<>(new SingleResponseDto(getMemberResponseDto), HttpStatus.OK);
     }
 
+    /**
+     * 회원 탈퇴
+     */
     @DeleteMapping("/member")
     public ResponseEntity<Void> deleteMember(@AuthenticationPrincipal Member member){
         if(member == null){
@@ -75,5 +90,12 @@ public class MemberController {
         }
         memberService.deleteMember(member.getUsername());
         return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
+    }
+
+    /**
+     * 아이디 찾기
+     */
+    public ResponseEntity<Void> findUsername(){
+        return null;
     }
 }
