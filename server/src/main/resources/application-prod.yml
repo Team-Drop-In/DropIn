@@ -29,6 +29,6 @@ spring:
       mail.smtp.auth: true
       mail.smtp.ssl.enable: true
       mail.smtp.ssl.trust: smtp.gmail.com
-    redis:
-      host:
-      port:
+  redis:
+    host:
+    port:
