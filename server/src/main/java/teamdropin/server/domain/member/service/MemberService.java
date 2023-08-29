@@ -2,6 +2,7 @@ package teamdropin.server.domain.member.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import teamdropin.server.domain.member.entity.Member;
 import teamdropin.server.domain.member.repository.MemberRepository;
 import teamdropin.server.global.exception.BusinessLogicException;
@@ -11,6 +12,7 @@ import java.util.*;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class MemberService {
 
     private final MemberRepository memberRepository;
@@ -18,6 +20,7 @@ public class MemberService {
     /**
      * 회원가입
      */
+    @Transactional(readOnly = false)
     public Long join(Member member){
         validateDuplicateEmail(member.getUsername());
         validateDuplicateNickname(member.getNickname());
@@ -49,6 +52,7 @@ public class MemberService {
                 });
     }
 
+    @Transactional(readOnly = false)
     public String createRandomNickname(){
         String[] arr = new String[]{"풀업하는","머슬업하는","월볼샷하는","토투바하는","클린하는","스내치하는","스쿼트하는","로잉타는"};
         String anonymous = "크로스핏터";
@@ -58,9 +62,9 @@ public class MemberService {
         return arr[randomNum] + anonymous + uuid;
     }
 
+    @Transactional(readOnly = false)
     public void deleteMember(String username){
         Member findMember = findVerifyMember(username);
         memberRepository.delete(findMember);
     }
-
 }

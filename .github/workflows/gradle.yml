@@ -89,6 +89,10 @@ jobs:
           spring.jwt.key: ${{secrets.JWT_KEY}}
           spring.jwt.access-token-expiration-minutes: ${{secrets.JWT_ACCESS_TOKEN_EXPIRATION}}
           spring.jwt.refresh-token-expiration-minutes: ${{secrets.JWT_REFRESH_TOKEN_EXPIRATION}}
+          spring.mail.username: ${{secrets.SPRING_MAIL_USERNAME}}
+          spring.mail.password: ${{secrets.SPRING_MAIL_PASSWORD}}
+          spring.redis.host: ${{secrets.SPRING_REDIS_HOST}}
+          spring.redis.port: ${{secrets.SPRING_REDIS_PORT}}
 
       # (3) Gradle build (Test 제외)
       - name: Build with Gradle
