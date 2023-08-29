@@ -5,8 +5,8 @@ import lombok.Data;
 import javax.validation.constraints.NotBlank;
 
 @Data
-public class SignUpCheckNicknameDto {
+public class SignUpDuplicateCheckEmailDto {
 
     @NotBlank
-    private String nickname;
+    private String username;
 }
