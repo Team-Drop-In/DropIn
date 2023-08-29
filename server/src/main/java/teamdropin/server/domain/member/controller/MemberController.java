@@ -51,7 +51,7 @@ public class MemberController {
     @GetMapping("member/my-page")
     public ResponseEntity<SingleResponseDto> toMyPage(@AuthenticationPrincipal Member member){
         if(member == null){
-            throw new BusinessLogicException(ExceptionCode.USER_NOT_FOUND);
+            throw new BusinessLogicException(ExceptionCode.USER_NOT_AUTHORIZED);
         }
         Member findMember = memberService.getMember(member.getId());
         MyInfoResponseDto myInfoResponseDto = memberMapper.memberToGetMyInfoResponseDto(findMember);
@@ -59,9 +59,21 @@ public class MemberController {
     }
 
     @GetMapping("/member/{id}")
-    public ResponseEntity<SingleResponseDto> getMember(@PathVariable("id") Long memberId ){
+    public ResponseEntity<SingleResponseDto> getMember(@AuthenticationPrincipal Member member, @PathVariable("id") Long memberId ){
+        if(member == null){
+            throw new BusinessLogicException(ExceptionCode.USER_NOT_AUTHORIZED);
+        }
         Member findMember = memberService.getMember(memberId);
         GetMemberResponseDto getMemberResponseDto = memberMapper.memberToGetMemberResponseDto(findMember);
         return new ResponseEntity<>(new SingleResponseDto(getMemberResponseDto), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/member")
+    public ResponseEntity<Void> deleteMember(@AuthenticationPrincipal Member member){
+        if(member == null){
+            throw new BusinessLogicException(ExceptionCode.USER_NOT_AUTHORIZED);
+        }
+        memberService.deleteMember(member.getUsername());
+        return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
     }
 }

@@ -35,8 +35,10 @@ public enum ExceptionCode {
     PASSWORD_MISMATCH(403, "Password Mismatch"),
 
     // 회원가입 이메일 코드 불일치
+    CODE_MISMATCH(403,"Code MisMatch"),
 
-    CODE_MISMATCH(403,"Code MisMatch");
+    // 회원 권한이 없음
+    USER_NOT_AUTHORIZED(401, "User not Authorized");
 
     @Getter
     private final int status;
