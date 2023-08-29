@@ -37,6 +37,11 @@ public class MemberService {
                 });
     }
 
+    public Member findVerifyMember(String usernmae){
+        return memberRepository.findByUsername(usernmae)
+                .orElseThrow(() -> new BusinessLogicException(ExceptionCode.USER_NOT_FOUND));
+    }
+
     public void validateDuplicateNickname(String nickname) {
         memberRepository.findByNickname(nickname)
                 .ifPresent(m -> {
@@ -52,4 +57,10 @@ public class MemberService {
         int randomNum = random.nextInt(arr.length);
         return arr[randomNum] + anonymous + uuid;
     }
+
+    public void deleteMember(String username){
+        Member findMember = findVerifyMember(username);
+        memberRepository.delete(findMember);
+    }
+
 }
