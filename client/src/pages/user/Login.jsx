@@ -46,7 +46,9 @@ const Login = () => {
   const onFormSubmit = async (data) => {
     try {
       const response = await loginApi(data);
-      localStorage.setItem("token", response.data.access_token);
+      console.log(response);
+      localStorage.setItem("accessToken", response.data.access_token);
+      navigate("/");
     } catch (error) {
       console.error("로그인 실패:", error);
       setError(true);

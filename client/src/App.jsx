@@ -15,6 +15,7 @@ const App = () => {
       <Header />
       <Suspense fallback={<div>Loading</div>}>
         <Routes>
+          <Route path="/" element={<div>홈</div>} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/profile" element={<Profile />} />

@@ -109,7 +109,7 @@ const Signup = () => {
     try {
       console.log(data);
       await signupApi(data);
-      navigate("/signin");
+      navigate("/login");
     } catch (error) {
       console.error("로그인 실패:", error);
     }
