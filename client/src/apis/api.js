@@ -2,7 +2,7 @@ import httpService from "./httpService";
 
 export const getHelloApi = async () => {
   try {
-    const response = await httpService.get(`${API_BASE_URL}/hello`);
+    const response = await httpService.get("/hello");
     return response.data;
   } catch (error) {
     console.error("API Error:", error);
