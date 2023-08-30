@@ -1,11 +1,8 @@
-import axios from "axios";
-
-const API_BASE_URL =
-  "http://ec2-43-202-64-101.ap-northeast-2.compute.amazonaws.com:8080";
+import httpService from "./httpService";
 
 export const getHelloApi = async () => {
   try {
-    const response = await axios.get(`${API_BASE_URL}/hello`);
+    const response = await httpService.get(`${API_BASE_URL}/hello`);
     return response.data;
   } catch (error) {
     console.error("API Error:", error);
@@ -13,16 +10,9 @@ export const getHelloApi = async () => {
   }
 };
 
-const axiosApi = axios.create({
-  baseURL: "http://ec2-43-202-64-101.ap-northeast-2.compute.amazonaws.com:8080",
-  headers: {
-    "Content-Type": "application/json",
-  },
-});
-
 export const loginApi = async (data) => {
   try {
-    const res = await axiosApi.post("/api/login", data);
+    const res = await httpService.post("/api/login", data);
     return res;
   } catch (error) {
     throw new Error(error.response.data.message);
@@ -31,7 +21,7 @@ export const loginApi = async (data) => {
 
 export const signupApi = async (data) => {
   try {
-    const res = await axiosApi.post("/api/member", data);
+    const res = await httpService.post("/api/member", data);
     return res;
   } catch (error) {
     throw new Error(error.response.data.message);
@@ -40,7 +30,7 @@ export const signupApi = async (data) => {
 
 export const duplicateEmailApi = async (data) => {
   try {
-    const response = await axiosApi.get("/api/check-duplicate/email", data);
+    const response = await httpService.get("/api/check-duplicate/email", data);
     return response.data;
   } catch (error) {
     console.error("API Error:", error);
@@ -50,7 +40,10 @@ export const duplicateEmailApi = async (data) => {
 
 export const duplicateNicknameApi = async (data) => {
   try {
-    const response = await axiosApi.get("/api/check-duplicate/nickname", data);
+    const response = await httpService.get(
+      "/api/check-duplicate/nickname",
+      data
+    );
     return response.data;
   } catch (error) {
     console.error("API Error:", error);
