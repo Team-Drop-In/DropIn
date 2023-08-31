@@ -1,4 +1,12 @@
+import axios from "axios";
 import httpService from "./httpService";
+
+const axiosApi = axios.create({
+  baseURL: "http://ec2-43-202-64-101.ap-northeast-2.compute.amazonaws.com:8080",
+  headers: {
+    "Content-Type": "application/json",
+  },
+});
 
 export const getHelloApi = async () => {
   try {
@@ -12,7 +20,7 @@ export const getHelloApi = async () => {
 
 export const loginApi = async (data) => {
   try {
-    const res = await httpService.post("/api/login", data);
+    const res = await axiosApi.post("/api/login", data);
     return res;
   } catch (error) {
     throw new Error(error.response.data.message);
