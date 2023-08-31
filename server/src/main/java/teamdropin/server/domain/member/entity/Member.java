@@ -1,7 +1,6 @@
 package teamdropin.server.domain.member.entity;
 
 import lombok.*;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import teamdropin.server.domain.comment.entity.Comment;
 import teamdropin.server.domain.like.postLike.entity.PostLike;
 import teamdropin.server.domain.member.utils.MemberValidation;
@@ -64,6 +63,12 @@ public class Member extends BaseTimeEntity {
 
     public Member updatePassword(String encodedPassword){
         this.password = encodedPassword;
+        return this;
+    }
+
+    public Member updateInfo(String nickname, String profileImageUrl){
+        this.nickname = nickname;
+        this.profileImageUrl = profileImageUrl;
         return this;
     }
 }
