@@ -12,6 +12,8 @@ import teamdropin.server.domain.member.entity.Gender;
 import teamdropin.server.domain.member.entity.Member;
 import teamdropin.server.domain.member.repository.MemberRepository;
 import teamdropin.server.domain.member.service.MemberService;
+import teamdropin.server.global.exception.BusinessLogicException;
+import teamdropin.server.global.exception.ExceptionCode;
 import teamdropin.server.security.oauth2.OAuthAttributes;
 import teamdropin.server.security.utils.CustomAuthorityUtils;
 
@@ -55,9 +57,8 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
                 .roles(authorityUtils.createUserRoles())
                 .build();
 
-        if(memberRepository.findByUsername(member.getUsername()).isEmpty()) {
-            memberRepository.save(member);
-        }
+        memberService.validateDuplicateEmail(member.getUsername());
+        memberRepository.save(member);
         return member;
     }
 }

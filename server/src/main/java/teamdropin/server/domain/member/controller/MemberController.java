@@ -10,8 +10,6 @@ import teamdropin.server.domain.member.entity.Member;
 import teamdropin.server.domain.member.mapper.MemberMapper;
 import teamdropin.server.domain.member.service.MemberService;
 import teamdropin.server.global.dto.SingleResponseDto;
-import teamdropin.server.global.exception.BusinessLogicException;
-import teamdropin.server.global.exception.ExceptionCode;
 import teamdropin.server.global.util.UriCreator;
 
 import javax.validation.Valid;
@@ -59,9 +57,7 @@ public class MemberController {
      */
     @GetMapping("member/my-page")
     public ResponseEntity<SingleResponseDto> toMyPage(@AuthenticationPrincipal Member member){
-        if(member == null){
-            throw new BusinessLogicException(ExceptionCode.USER_NOT_AUTHORIZED);
-        }
+        memberService.findVerifyMember(member.getUsername());
         Member findMember = memberService.getMember(member.getId());
         MyInfoResponseDto myInfoResponseDto = memberMapper.memberToGetMyInfoResponseDto(findMember);
         return new ResponseEntity<>(new SingleResponseDto(myInfoResponseDto), HttpStatus.OK);
@@ -72,9 +68,7 @@ public class MemberController {
      */
     @GetMapping("/member/{id}")
     public ResponseEntity<SingleResponseDto> getMember(@AuthenticationPrincipal Member member, @PathVariable("id") Long memberId ){
-        if(member == null){
-            throw new BusinessLogicException(ExceptionCode.USER_NOT_AUTHORIZED);
-        }
+        memberService.findVerifyMember(member.getUsername());
         Member findMember = memberService.getMember(memberId);
         GetMemberResponseDto getMemberResponseDto = memberMapper.memberToGetMemberResponseDto(findMember);
         return new ResponseEntity<>(new SingleResponseDto(getMemberResponseDto), HttpStatus.OK);
@@ -85,17 +79,25 @@ public class MemberController {
      */
     @DeleteMapping("/member")
     public ResponseEntity<Void> deleteMember(@AuthenticationPrincipal Member member){
-        if(member == null){
-            throw new BusinessLogicException(ExceptionCode.USER_NOT_AUTHORIZED);
-        }
+        memberService.findVerifyMember(member.getUsername());
         memberService.deleteMember(member.getUsername());
         return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
     }
 
     /**
-     * 아이디 찾기
+     * 회원 정보 수정
      */
-    public ResponseEntity<Void> findUsername(){
-        return null;
+    @PutMapping("/member")
+    public ResponseEntity<Void> updateProfile(@AuthenticationPrincipal Member member,
+                                             @RequestBody @Valid MemberUpdateProfileRequestDto memberUpdateProfileRequestDto){
+        memberService.updateProfile(member.getUsername(), memberUpdateProfileRequestDto);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PutMapping("/member/password")
+    public ResponseEntity<Void> updatePassword(@AuthenticationPrincipal Member member,
+                                               @RequestBody @Valid MemberUpdatePasswordRequestDto memberUpdatePasswordRequestDto){
+        memberService.updatePassword(member.getUsername(), memberUpdatePasswordRequestDto);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }
