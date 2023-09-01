@@ -32,3 +32,13 @@ spring:
   redis:
     host:
     port:
+cloud:
+  aws:
+    imageS3:
+      bucket:
+      bucketUrl:
+      credentials:
+        accessKey:
+        secretKey:
+      region:
+        static:

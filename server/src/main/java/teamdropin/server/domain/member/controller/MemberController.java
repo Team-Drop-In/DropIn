@@ -2,9 +2,11 @@ package teamdropin.server.domain.member.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import teamdropin.server.domain.member.dto.*;
 import teamdropin.server.domain.member.entity.Member;
 import teamdropin.server.domain.member.mapper.MemberMapper;
@@ -13,6 +15,7 @@ import teamdropin.server.global.dto.SingleResponseDto;
 import teamdropin.server.global.util.UriCreator;
 
 import javax.validation.Valid;
+import java.io.IOException;
 import java.net.URI;
 
 @RestController
@@ -87,10 +90,12 @@ public class MemberController {
     /**
      * 회원 정보 수정
      */
-    @PutMapping("/member")
+    @PutMapping(value = "/member",
+            consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<Void> updateProfile(@AuthenticationPrincipal Member member,
-                                             @RequestBody @Valid MemberUpdateProfileRequestDto memberUpdateProfileRequestDto){
-        memberService.updateProfile(member.getUsername(), memberUpdateProfileRequestDto);
+                                              @RequestPart MemberUpdateProfileRequestDto memberUpdateProfileRequestDto,
+                                              @RequestPart(value = "image", required = false)MultipartFile image) throws IOException {
+        memberService.updateProfile(member.getUsername(), memberUpdateProfileRequestDto, image);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

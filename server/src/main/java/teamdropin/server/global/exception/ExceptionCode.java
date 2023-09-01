@@ -38,7 +38,10 @@ public enum ExceptionCode {
     CODE_MISMATCH(403,"Code MisMatch"),
 
     // 회원 권한이 없음
-    USER_NOT_AUTHORIZED(401, "User not Authorized");
+    USER_NOT_AUTHORIZED(401, "User not Authorized"),
+
+    //파일 컨버트에 실패
+    FILE_CONVERT_FAILED(500, "MultipartFile cannot convert to file" );
 
     @Getter
     private final int status;
