@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 @SpringBootApplication
 @EnableJpaAuditing
-
 public class ServerApplication {
 
 	public static void main(String[] args) {
