@@ -58,7 +58,7 @@ jobs:
           cloud.aws.imageS3.bucketUrl: ${{secrets.CLOUD_AWS_IMAGES3_BUCKETURL}}
           cloud.aws.imageS3.credentials.accessKey: ${{secrets.CLOUD_AWS_IMAGES3_CREDENTIALS_ACCESSKEY}}
           cloud.aws.imageS3.credentials.secretKey: ${{secrets.CLOUD_AWS_IMAGES3_CREDENTIALS_SECRETKEY}}
-          cloud.aws.imageS3.region.static: ${{ env.AWS_REGION }}
+          cloud.aws.imageS3.region.static: ${{ secrets.CLOUD_AWS_IMAGES3_REGION_STATIC }}
 
 
 
