@@ -5,6 +5,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
+import teamdropin.server.aws.service.S3Uploader;
 import teamdropin.server.domain.member.dto.MemberUpdatePasswordRequestDto;
 import teamdropin.server.domain.member.dto.MemberUpdateProfileRequestDto;
 import teamdropin.server.domain.member.entity.Member;
@@ -13,6 +15,7 @@ import teamdropin.server.global.exception.BusinessLogicException;
 import teamdropin.server.global.exception.ExceptionCode;
 
 import javax.validation.Valid;
+import java.io.IOException;
 import java.util.*;
 
 @Service
@@ -23,6 +26,7 @@ public class MemberService {
 
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
+    private final S3Uploader s3Uploader;
 
     /**
      * 회원가입
@@ -98,9 +102,16 @@ public class MemberService {
      * 회원정보 수정
      */
     @Transactional(readOnly = false)
-    public void updateProfile(String username, MemberUpdateProfileRequestDto memberUpdateProfileRequestDto){
+    public void updateProfile(String username, MemberUpdateProfileRequestDto memberUpdateProfileRequestDto, MultipartFile image) throws IOException {
         Member member = findVerifyMember(username);
-        member.updateInfo(memberUpdateProfileRequestDto.getNickname(), memberUpdateProfileRequestDto.getProfileImageUrl());
+        String profileImageUrl = null;
+        if(image == null && member.getProfileImageUrl() != null){
+            s3Uploader.deleteFile(member.getProfileImageUrl());
+        }
+        if(image != null){
+            profileImageUrl = uploadProfileImageToS3(member, image);
+        }
+        member.updateInfo(memberUpdateProfileRequestDto.getNickname(), profileImageUrl);
     }
 
     @Transactional(readOnly = false)
@@ -114,5 +125,19 @@ public class MemberService {
             throw new BusinessLogicException(ExceptionCode.PASSWORD_MISMATCH);
         }
         member.updatePassword(passwordEncoder.encode(memberUpdatePasswordRequestDto.getUpdatePassword()));
+    }
+
+    private String getFileExtension(String fileName){
+        int dotIndex = fileName.lastIndexOf(".");
+        if(dotIndex > 0 && dotIndex < fileName.length() -1){
+            return fileName.substring(dotIndex);
+        }
+        return "";
+    }
+
+    private String uploadProfileImageToS3(Member member, MultipartFile image) throws IOException{
+        String fileExtension = getFileExtension(image.getOriginalFilename());
+        String newFileName = String.valueOf(member.getId()) + "-profileImage" + fileExtension;
+        return s3Uploader.upload(image, newFileName, "member");
     }
 }
