@@ -10,13 +10,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PathVariable;
 
 @SpringBootApplication
-		(
-		exclude = {
-				org.springframework.cloud.aws.autoconfigure.context.ContextInstanceDataAutoConfiguration.class,
-				org.springframework.cloud.aws.autoconfigure.context.ContextStackAutoConfiguration.class,
-				org.springframework.cloud.aws.autoconfigure.context.ContextRegionProviderAutoConfiguration.class
-		}
-)
 @EnableJpaAuditing
 public class ServerApplication {
 
