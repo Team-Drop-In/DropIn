@@ -15,7 +15,11 @@ import {
 
 const Signup = () => {
   const navigate = useNavigate();
-  const { handleSubmit, control } = useForm();
+  const {
+    handleSubmit,
+    control,
+    formState: { isValid },
+  } = useForm();
   const [isEmailAvailable, setIsEmailAvailable] = useState(false);
   const [emailValue, setEmailValue] = useState("");
   const [isNicknameAvailable, setIsNicknameAvailable] = useState(false);
@@ -307,7 +311,13 @@ const Signup = () => {
             text={"회원가입"}
             width={"100%"}
             height={"40px"}
-            style={{ marginTop: "10px" }}
+            style={{
+              marginTop: "10px",
+              backgroundColor: isValid
+                ? `${COLOR.main_yellow}`
+                : `${COLOR.btn_grey}`,
+              cursor: isValid ? "pointer" : "default",
+            }}
             type="submit"
           />
         </Form>

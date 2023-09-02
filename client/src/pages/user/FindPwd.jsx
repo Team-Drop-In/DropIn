@@ -3,7 +3,10 @@ import { Container, Content } from "../../styles/style";
 import { COLOR } from "../../styles/theme";
 import Input from "../../components/common/Input";
 import Button from "../../components/common/Button";
+import FindMessage from "../../components/user/FindMessage";
 import { useForm, Controller } from "react-hook-form";
+
+const findword = "임시 비밀번호";
 
 const FindPwd = () => {
   const {
@@ -97,6 +100,7 @@ const FindPwd = () => {
             }}
           />
         </Form>
+        <FindMessage findword={findword} />
       </Contain>
     </Container>
   );

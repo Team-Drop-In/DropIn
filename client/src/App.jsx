@@ -1,7 +1,6 @@
-import { useEffect, useState, Suspense, lazy } from "react";
-import axios from "axios";
+import { Suspense, lazy } from "react";
 import { Routes, Route } from "react-router-dom";
-import Header from "./components/Header";
+import Header from "./components/common/Header";
 const Login = lazy(() => import("./pages/user/Login"));
 const Signup = lazy(() => import("./pages/user/Signup"));
 const FindPwd = lazy(() => import("./pages/user/FindPwd"));

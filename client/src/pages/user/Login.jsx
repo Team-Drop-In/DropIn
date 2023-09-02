@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { Controller, useForm } from "react-hook-form";
 import { Container, Content } from "../../styles/style";
+import { COLOR } from "../../styles/theme";
 import Input from "../../components/common/Input";
 import Button from "../../components/common/Button";
 import LogoImage from "../../images/logo.svg";
@@ -12,7 +13,11 @@ const Login = () => {
   const [error, setError] = useState(false);
 
   const navigate = useNavigate();
-  const { handleSubmit, control } = useForm();
+  const {
+    handleSubmit,
+    control,
+    formState: { isValid },
+  } = useForm();
 
   const emailOptions = {
     required: "이메일을 입력해주세요.",
@@ -46,8 +51,8 @@ const Login = () => {
   const onFormSubmit = async (data) => {
     try {
       const response = await loginApi(data);
-      console.log(response);
-      localStorage.setItem("accessToken", response.data.access_token);
+      console.log(response.headers);
+      // localStorage.setItem("accessToken", response.data.access_token);
       navigate("/");
     } catch (error) {
       console.error("로그인 실패:", error);
@@ -96,13 +101,20 @@ const Login = () => {
             text={"로그인"}
             width={"100%"}
             height={"40px"}
-            style={{ marginTop: "10px" }}
+            style={{
+              backgroundColor: isValid
+                ? `${COLOR.main_yellow}`
+                : `${COLOR.btn_grey}`,
+              cursor: isValid ? "pointer" : "default",
+              marginTop: "10px",
+            }}
             type="submit"
           />
         </Form>
         <More>
           <Find>
-            <Link>아이디</Link> / <Link to="/findpwd">비밀번호</Link> 찾기
+            <Link to="/findemail">아이디</Link> /{" "}
+            <Link to="/findpwd">비밀번호</Link> 찾기
           </Find>
           <Google>구글</Google>
         </More>

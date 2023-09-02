@@ -1,6 +1,6 @@
 import styled from "styled-components";
-import { Container, Content } from "../styles/style";
-import LogoImage from "../images/logo.svg";
+import { Container, Content } from "../../styles/style";
+import LogoImage from "../../images/logo.svg";
 import { useNavigate, Link } from "react-router-dom";
 
 const Header = () => {
@@ -13,7 +13,7 @@ const Header = () => {
           <button onClick={() => navigate("/")}>
             <Logo src={LogoImage} alt="로고" className="logo_img" />
           </button>
-          <Link>DropIn</Link>
+          <Link to="/">DropIn</Link>
           <Link>커뮤니티</Link>
         </Tab>
         <User>

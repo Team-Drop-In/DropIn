@@ -3,7 +3,10 @@ import { Container, Content } from "../../styles/style";
 import { COLOR } from "../../styles/theme";
 import Input from "../../components/common/Input";
 import Button from "../../components/common/Button";
+import FindMessage from "../../components/user/FindMessage";
 import { useForm, Controller } from "react-hook-form";
+
+const findword = "아이디";
 
 const FindEmail = () => {
   const {
@@ -44,7 +47,7 @@ const FindEmail = () => {
     <Container>
       <Contain>
         <Title>
-          <h2>비밀번호 찾기</h2>
+          <h2>아이디 찾기</h2>
           <p>회원가입 시 입력한 이메일과 이름을 입력해주세요</p>
         </Title>
 
@@ -97,6 +100,7 @@ const FindEmail = () => {
             }}
           />
         </Form>
+        <FindMessage findword={findword} />
       </Contain>
     </Container>
   );
