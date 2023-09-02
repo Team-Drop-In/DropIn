@@ -50,7 +50,6 @@ const FindPwd = () => {
           <h2>비밀번호 찾기</h2>
           <p>회원가입 시 입력한 이메일과 이름을 입력해주세요</p>
         </Title>
-
         <Form onSubmit={handleSubmit(onFormSubmit)}>
           <Controller
             name={"username"}
@@ -58,7 +57,7 @@ const FindPwd = () => {
             rules={emailValidationOptions}
             render={({ field, fieldState: { error } }) => (
               <Input
-                id="email"
+                id="username"
                 label="이메일"
                 type="text"
                 placeholder="이메일"
@@ -140,7 +139,7 @@ const Form = styled.form`
 `;
 
 const ErrorMsg = styled.div`
-  color: red;
+  color: ${COLOR.main_yellow};
   font-size: 12px;
   margin-top: 4px;
 `;

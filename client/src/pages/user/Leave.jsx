@@ -3,39 +3,32 @@ import { Container, Content } from "../../styles/style";
 import { COLOR } from "../../styles/theme";
 import Input from "../../components/common/Input";
 import Button from "../../components/common/Button";
-import FindMessage from "../../components/user/FindMessage";
 import { useForm, Controller } from "react-hook-form";
 
-const findword = "아이디";
-
-const FindEmail = () => {
+const Leave = () => {
   const {
     handleSubmit,
     control,
     formState: { errors, isValid },
   } = useForm();
 
-  const emailValidationOptions = {
-    required: "이메일을 입력해주세요.",
-    pattern: {
-      value: /\S+@\S+\.\S+/,
-      message: "올바른 이메일 형식이 아닙니다.",
-    },
-  };
+  const passwordOptions = {
+    required: "비밀번호를 입력해주세요",
+    validate: (value) => {
+      if (value.length < 8) {
+        return "비밀번호는 8자 이상이어야 합니다";
+      }
 
-  const nameValidationOptions = {
-    required: "이름을 입력해주세요.",
-    minLength: {
-      value: 2,
-      message: "이름은 최소 2글자 이상이어야 합니다.",
-    },
-    maxLength: {
-      value: 10,
-      message: "이름은 최대 10글자까지 가능합니다.",
-    },
-    pattern: {
-      value: /^[^\s0-9]+$/,
-      message: "이름에는 공백과 숫자를 포함할 수 없습니다.",
+      const hasUppercase = /[A-Z]/.test(value);
+      const hasLowercase = /[a-z]/.test(value);
+      const hasNumber = /[0-9]/.test(value);
+      const hasSpecialChar = /[!@#$%^&()]/.test(value);
+
+      if (!(hasUppercase && hasLowercase && hasNumber && hasSpecialChar)) {
+        return "대/소문자, 숫자, 특수문자를 포함해야 합니다";
+      }
+
+      return true;
     },
   };
 
@@ -47,21 +40,20 @@ const FindEmail = () => {
     <Container>
       <Contain>
         <Title>
-          <h2>아이디 찾기</h2>
-          <p>회원가입 시 입력한 이메일과 이름을 입력해주세요</p>
+          <h2>회원 탈퇴</h2>
+          <p>비밀번호를 입력해주세요</p>
         </Title>
 
         <Form onSubmit={handleSubmit(onFormSubmit)}>
           <Controller
-            name={"username"}
+            name={"password"}
             control={control}
-            rules={emailValidationOptions}
+            rules={passwordOptions}
             render={({ field, fieldState: { error } }) => (
               <Input
-                id="username"
-                label="이메일"
-                type="text"
-                placeholder="이메일"
+                label="비밀번호"
+                type="password"
+                placeholder="비밀번호를 입력해주세요"
                 errorMessage={error?.message}
                 onChange={field.onChange}
                 value={field.value || ""}
@@ -69,19 +61,14 @@ const FindEmail = () => {
             )}
           />
           <Controller
-            name={"name"}
+            name={"passwordcheck"}
             control={control}
-            rules={nameValidationOptions}
             render={({ field, fieldState: { error } }) => (
               <Input
-                id="name"
-                label="이름"
-                type="text"
-                height={"39px"}
-                placeholder="이름을 입력해 주세요"
+                label="비밀번호 확인"
+                type="password"
+                placeholder="비밀번호를 한번 더 입력해주세요"
                 errorMessage={error?.message}
-                onChange={field.onChange}
-                value={field.value || ""}
               />
             )}
           />
@@ -100,13 +87,12 @@ const FindEmail = () => {
             }}
           />
         </Form>
-        <FindMessage findword={findword} />
       </Contain>
     </Container>
   );
 };
 
-export default FindEmail;
+export default Leave;
 
 const Contain = styled(Content)`
   height: 100vh;
