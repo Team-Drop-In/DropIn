@@ -7,6 +7,7 @@ const FindPwd = lazy(() => import("./pages/user/FindPwd"));
 const FindEmail = lazy(() => import("./pages/user/FindEmail"));
 const ChangePwd = lazy(() => import("./pages/user/ChangePwd"));
 const Leave = lazy(() => import("./pages/user/Leave"));
+const LeaveConfirm = lazy(() => import("./pages/user/LeaveConfirm"));
 const Profile = lazy(() => import("./pages/user/Profile"));
 const Board = lazy(() => import("./pages/board/Board"));
 
@@ -24,6 +25,7 @@ const App = () => {
           <Route path="/findemail" element={<FindEmail />} />
           <Route path="/changePwd" element={<ChangePwd />} />
           <Route path="/leave" element={<Leave />} />
+          <Route path="/leaveconfirm" element={<LeaveConfirm />} />
           <Route path="/board" element={<Board />} />
         </Routes>
       </Suspense>
