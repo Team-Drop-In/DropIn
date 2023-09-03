@@ -69,3 +69,23 @@ export const duplicateNicknameApi = async (data) => {
     throw error;
   }
 };
+
+export const getAuthCodeApi = async (data) => {
+  try {
+    const response = await axiosApi.post("/api/email/send-verification", data);
+    return response.data;
+  } catch (error) {
+    console.error("API Error:", error);
+    throw error;
+  }
+};
+
+export const sendAuthCodeApi = async (data) => {
+  try {
+    const response = await axiosApi.post("/api/email/verify-code", data);
+    return response.data;
+  } catch (error) {
+    console.error("API Error:", error);
+    throw error;
+  }
+};

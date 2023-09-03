@@ -11,6 +11,8 @@ import {
   signupApi,
   duplicateEmailApi,
   duplicateNicknameApi,
+  getAuthCodeApi,
+  sendAuthCodeApi,
 } from "../../apis/api";
 
 const Signup = () => {
@@ -21,9 +23,11 @@ const Signup = () => {
     formState: { isValid },
   } = useForm();
   const [emailValue, setEmailValue] = useState("");
+  const [nicknameValue, setNicknameValue] = useState("");
+  const [authcodeValue, setAuthcodeValue] = useState("");
   const [isEmailAvailable, setIsEmailAvailable] = useState(false);
   const [isNicknameAvailable, setIsNicknameAvailable] = useState(false);
-  const [nicknameValue, setNicknameValue] = useState("");
+  const [getAuthCode, setIsGetAuthCode] = useState(false);
   const [isSignupDisabled, setIsSignupDisabled] = useState(false); // 회원가입 버튼 비활성화 상태
 
   const emailOptions = {
@@ -118,6 +122,36 @@ const Signup = () => {
     if (nickValidationOptions.maxLength.value < nicknameValue.length) return;
     if (!nickValidationOptions.pattern.value.test(nicknameValue)) return;
     if (validateResult !== true) return;
+
+    try {
+      await duplicateNicknameApi({ nickname: nicknameValue });
+      setIsNicknameAvailable(true);
+    } catch (error) {
+      console.error("로그인 실패:", error);
+    }
+  };
+
+  const handleGetAuthCode = async () => {
+    try {
+      await getAuthCodeApi({ username: emailValue });
+      setIsGetAuthCode(true);
+    } catch (error) {
+      console.error("로그인 실패:", error);
+    }
+  };
+
+  const handleSendAuthCode = async () => {
+    const data = {
+      username: emailValue,
+      verificationCode: authcodeValue,
+    };
+
+    try {
+      await sendAuthCodeApi(data);
+      setIsGetAuthCode(true);
+    } catch (error) {
+      console.error("로그인 실패:", error);
+    }
   };
 
   const onFormSubmit = async ({ emailAuth, passwordcheck, ...data }) => {
@@ -185,18 +219,32 @@ const Signup = () => {
                   width={"300px"}
                   placeholder="발송된 인증번호를 입력해주세요"
                   errorMessage={error?.message}
-                  onChange={field.onChange}
+                  onChange={(e) => {
+                    field.onChange(e.target.value);
+                    setAuthcodeValue(e.target.value);
+                  }}
                   value={field.value || ""}
                 />
               )}
             />
-            <Button
-              text={"인증번호 발송"}
-              type="button"
-              width={"110px"}
-              height={"39px"}
-              style={{ marginTop: "20px", marginLeft: "5px" }}
-            />
+            {getAuthCode ? (
+              <Button
+                text={"인증번호 발송"}
+                type="button"
+                width={"110px"}
+                height={"39px"}
+                style={{ marginTop: "20px", marginLeft: "5px" }}
+              />
+            ) : (
+              <Button
+                text={"인증번호 발송"}
+                type="button"
+                width={"110px"}
+                height={"39px"}
+                style={{ marginTop: "20px", marginLeft: "5px" }}
+                onClick={handleGetAuthCode}
+              />
+            )}
           </div>
           <Controller
             name={"password"}
