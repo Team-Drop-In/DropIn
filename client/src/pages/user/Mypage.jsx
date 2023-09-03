@@ -1,13 +1,16 @@
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { Container, Content } from "../../styles/style";
 import { COLOR } from "../../styles/theme";
 import { GiMale } from "react-icons/gi";
+import { AiOutlineRight } from "react-icons/ai";
+import Button from "../../components/common/Button";
 
-const Profile = () => {
+const Mypage = () => {
   return (
     <Container>
       <Contain>
-        <h2>회원 정보</h2>
+        <h2>내 정보</h2>
         <User>
           <Img>
             <div>
@@ -19,6 +22,14 @@ const Profile = () => {
             </Username>
           </Img>
           <Info>
+            <div>
+              <Label>이메일</Label>
+              <span>Test@gmail.com</span>
+            </div>
+            <div>
+              <Label>이름</Label>
+              <span>테스트</span>
+            </div>
             <div>
               <Label>작성한 게시글수</Label>
               <span>5개</span>
@@ -37,12 +48,27 @@ const Profile = () => {
             </div>
           </Info>
         </User>
+        <ButtonWrapper>
+          <Button
+            text={"회원수정"}
+            type="button"
+            width={"100%"}
+            height={"39px"}
+            style={{
+              backgroundColor: ` ${COLOR.main_yellow}`,
+            }}
+          />
+          <StyledLink>
+            <span>회원탈퇴</span>
+            <AiOutlineRight />
+          </StyledLink>
+        </ButtonWrapper>
       </Contain>
     </Container>
   );
 };
 
-export default Profile;
+export default Mypage;
 
 const Contain = styled(Content)`
   height: 100vh;
@@ -125,4 +151,24 @@ const BoxList = styled.ul`
 
 const Label = styled.div`
   margin-bottom: 10px;
+`;
+
+const ButtonWrapper = styled.div`
+  margin-top: 20px;
+  width: 350px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+
+  button {
+    margin-bottom: 10px;
+  }
+  span {
+    color: ${COLOR.main_grey};
+  }
+`;
+
+const StyledLink = styled(Link)`
+  display: flex;
+  align-items: center;
 `;
