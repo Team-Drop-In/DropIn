@@ -229,11 +229,15 @@ const Signup = () => {
             />
             {getAuthCode ? (
               <Button
-                text={"인증번호 발송"}
+                text={"이메일 인증"}
                 type="button"
                 width={"110px"}
                 height={"39px"}
-                style={{ marginTop: "20px", marginLeft: "5px" }}
+                style={{
+                  marginTop: "20px",
+                  marginLeft: "5px",
+                }}
+                onClick={handleSendAuthCode}
               />
             ) : (
               <Button
