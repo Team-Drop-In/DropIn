@@ -20,8 +20,8 @@ const Signup = () => {
     control,
     formState: { isValid },
   } = useForm();
-  const [isEmailAvailable, setIsEmailAvailable] = useState(false);
   const [emailValue, setEmailValue] = useState("");
+  const [isEmailAvailable, setIsEmailAvailable] = useState(false);
   const [isNicknameAvailable, setIsNicknameAvailable] = useState(false);
   const [nicknameValue, setNicknameValue] = useState("");
   const [isSignupDisabled, setIsSignupDisabled] = useState(false); // 회원가입 버튼 비활성화 상태
@@ -33,6 +33,10 @@ const Signup = () => {
         /^[0-9a-zA-Z]([-_\\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i,
       message: "@를 포함한 이메일 주소를 적어주세요",
     },
+  };
+
+  const authOptions = {
+    required: "인증번호를 입력해주세요", // 필드가 비어있을 때 표시될 오류 메시지
   };
 
   const passwordOptions = {
@@ -98,6 +102,13 @@ const Signup = () => {
   const handleEmailAvailability = async () => {
     if (!emailValue.trim()) return;
     if (!emailOptions.pattern.value.test(emailValue)) return;
+
+    try {
+      await duplicateEmailApi({ username: emailValue });
+      setIsEmailAvailable(true);
+    } catch (error) {
+      console.error("로그인 실패:", error);
+    }
   };
 
   const handleNicknameAvailability = async () => {
@@ -125,7 +136,6 @@ const Signup = () => {
         <Logo src={LogoImage} alt="로고" className="logo_img" />
         <Title>회원가입</Title>
         <Form onSubmit={handleSubmit(onFormSubmit)}>
-          {/* <Form> */}
           <div>
             <Controller
               name="username"
@@ -165,6 +175,7 @@ const Signup = () => {
           <div>
             <Controller
               name={"emailAuth"}
+              rules={authOptions}
               control={control}
               render={({ field, fieldState: { error } }) => (
                 <Input
