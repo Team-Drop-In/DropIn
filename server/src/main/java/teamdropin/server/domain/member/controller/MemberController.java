@@ -19,7 +19,7 @@ import java.io.IOException;
 import java.net.URI;
 
 @RestController
-@RequestMapping("api")
+@RequestMapping("/api")
 @RequiredArgsConstructor
 public class MemberController {
     private final static String MEMBER_DEFAULT_URL = "/api/members";

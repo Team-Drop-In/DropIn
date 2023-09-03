@@ -41,8 +41,16 @@ public enum ExceptionCode {
     USER_NOT_AUTHORIZED(401, "User not Authorized"),
 
     //파일 컨버트에 실패
-    FILE_CONVERT_FAILED(500, "MultipartFile cannot convert to file" );
+    FILE_CONVERT_FAILED(500, "MultipartFile cannot convert to file" ),
 
+    //토큰 기한 만료
+    TOKEN_EXPIRED(401, "Token is expired"),
+
+    //토큰 없을 때
+    TOKEN_NOT_FOUND(401, "Token is exists"),
+
+    //유효하지 않는 토큰
+    TOKEN_INVALID(401, "Token is invalid");
     @Getter
     private final int status;
     @Getter
