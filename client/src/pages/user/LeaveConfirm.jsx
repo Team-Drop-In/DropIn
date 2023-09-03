@@ -1,10 +1,13 @@
 import { Container, Content } from "../../styles/style";
 import { styled } from "styled-components";
 import { COLOR } from "../../styles/theme";
+import { useNavigate } from "react-router-dom";
 import LogoImage from "../../images/logo.svg";
 import Button from "../../components/common/Button";
 
 const LeaveConfirm = () => {
+  const navigate = useNavigate();
+
   return (
     <Container>
       <Contain>
@@ -20,6 +23,7 @@ const LeaveConfirm = () => {
           style={{
             backgroundColor: `${COLOR.main_yellow}`,
           }}
+          onClick={() => navigate("/")}
           type="button"
         />
       </Contain>
@@ -54,6 +58,6 @@ const Text = styled.div`
 `;
 
 const Title = styled.span`
-  font-size: 24px;
-  margin-bottom: 7px;
+  font-size: 22px;
+  margin-bottom: 9px;
 `;
