@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { Container, Content } from "../../styles/style";
 import { COLOR } from "../../styles/theme";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import Input from "../../components/common/Input";

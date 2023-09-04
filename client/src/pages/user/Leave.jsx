@@ -4,8 +4,11 @@ import { COLOR } from "../../styles/theme";
 import Input from "../../components/common/Input";
 import Button from "../../components/common/Button";
 import { useForm, Controller } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
+import { leaveMemberApi } from "../../apis/api";
 
 const Leave = () => {
+  const navigate = useNavigate();
   const {
     handleSubmit,
     control,
@@ -32,8 +35,14 @@ const Leave = () => {
     },
   };
 
-  const onFormSubmit = (data) => {
-    // 폼 제출 로직
+  const onFormSubmit = async () => {
+    try {
+      console.log();
+      await leaveMemberApi();
+      navigate("/leaveconfirm");
+    } catch (error) {
+      console.error("로그인 실패:", error);
+    }
   };
 
   return (

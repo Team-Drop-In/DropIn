@@ -89,3 +89,13 @@ export const sendAuthCodeApi = async (data) => {
     throw error;
   }
 };
+
+export const leaveMemberApi = async () => {
+  try {
+    const response = await axiosApi.delete("/api/member");
+    return response.data;
+  } catch (error) {
+    console.error("API Error:", error);
+    throw error;
+  }
+};
