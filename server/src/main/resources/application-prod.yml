@@ -16,7 +16,7 @@ spring:
           google:
             clientId:
             clientSecret:
-            scope: 
+            scope:
   jwt:
     key:
     access-token-expiration-minutes:
