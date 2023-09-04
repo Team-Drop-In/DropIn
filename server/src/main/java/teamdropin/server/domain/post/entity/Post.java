@@ -1,7 +1,6 @@
 package teamdropin.server.domain.post.entity;
 
-import lombok.Builder;
-import lombok.Getter;
+import lombok.*;
 import teamdropin.server.domain.comment.entity.Comment;
 import teamdropin.server.domain.like.postLike.entity.PostLike;
 import teamdropin.server.domain.member.entity.Member;
@@ -16,6 +15,8 @@ import java.util.List;
 @Entity
 @Getter
 @Builder
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 public class Post extends BaseTimeEntity {
 
     @Id @GeneratedValue
@@ -34,16 +35,28 @@ public class Post extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     @ValidEnum(enumClass = Category.class)
     private Category category;
+
+    @Column(columnDefinition = "integer default 0")
+    private int likeCount;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
-
     @OneToMany(mappedBy = "post")
     private List<Comment> comments = new ArrayList<>();
-    @OneToMany(mappedBy = "post")
-    private List<PostLike> postLikes = new ArrayList<>();
+//    @OneToMany(mappedBy = "post")
+//    private List<PostLike> postLikes = new ArrayList<>();
 
     public void addMember(Member member){
         this.member = member;
     }
+
+    public void viewCountUp(){
+        this.viewCount = this.viewCount + 1 ;
+    }
+
+    public void getlikeCount(int count){
+        this.likeCount = count;
+    }
+
 }

@@ -4,22 +4,11 @@ import lombok.Getter;
 
 public enum ExceptionCode {
 
-    //이미 존재하는 게시판
-    BOARD_EXISTS(409, "Board already exists"),
 
-    //존재 하지 않는 게시판
-    BOARD_NOT_FOUND(404, "Board not found"),
+    //존재 하지 않는 포스트
+    POST_NOT_FOUND(404, "Post not found"),
 
-    //이미 존재하는 답글
-    REPLY_EXISTS(409, "Reply already exists"),
-
-    //이미 존재하는 답글
-    REPLY_NOT_FOUND(404, "Reply not found"),
-
-    //이미 존재하는 덧글
-    COMMENT_EXISTS(409, "Comment already exists"),
-
-    //이미 존재하는 덧글
+    //존재 하지 않는 댓글
     COMMENT_NOT_FOUND(404, "Comment not found"),
 
     //이미 존재하는 아이디(이메일)
@@ -50,7 +39,8 @@ public enum ExceptionCode {
     TOKEN_NOT_FOUND(401, "Token is exists"),
 
     //유효하지 않는 토큰
-    TOKEN_INVALID(401, "Token is invalid");
+    TOKEN_INVALID(401, "Token is invalid"),
+    LIKE_NOT_FOUND(404, "Like not found" );
     @Getter
     private final int status;
     @Getter

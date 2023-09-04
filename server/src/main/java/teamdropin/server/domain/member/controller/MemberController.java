@@ -22,7 +22,7 @@ import java.net.URI;
 @RequestMapping("/api")
 @RequiredArgsConstructor
 public class MemberController {
-    private final static String MEMBER_DEFAULT_URL = "/api/members";
+    private final static String MEMBER_DEFAULT_URL = "/api/member";
     private final MemberService memberService;
     private final MemberMapper memberMapper;
 

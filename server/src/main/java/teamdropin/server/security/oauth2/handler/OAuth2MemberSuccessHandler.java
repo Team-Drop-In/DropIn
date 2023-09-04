@@ -41,6 +41,7 @@ public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         OAuth2User oAuth2User = (OAuth2User) authentication.getPrincipal();
         log.info("authorities={}", authentication.getAuthorities());
+        log.info("email ={}",String.valueOf(oAuth2User.getAttributes().get("email")) );
         Member member = memberRepository.findByUsername(String.valueOf(oAuth2User.getAttributes().get("email")))
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.USER_NOT_FOUND));
 
@@ -86,8 +87,8 @@ public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
                 .newInstance()
                 .scheme("http")
                 .host("localhost")
-                .port(80)
-                .path("/receive-token.html")
+                .port(3000)
+                .path("/token")
                 .queryParams(queryParams)
                 .build()
                 .toUri();

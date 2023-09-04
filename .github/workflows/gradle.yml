@@ -47,6 +47,7 @@ jobs:
           spring.datasource.password: ${{secrets.SPRING_DATASOURCE_PASSWORD}}
           spring.security.oauth2.client.registration.google.clientId: ${{secrets.SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GOOGLE_CLIENTID}}
           spring.security.oauth2.client.registration.google.clientSecret: ${{secrets.SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GOOGLE_CLIENTSECRET}}
+          spring.security.oauth2.client.registration.google.scope: ${{secrets.SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GOOGLE_SCOPE}}
           spring.jwt.key: ${{secrets.JWT_KEY}}
           spring.jwt.access-token-expiration-minutes: ${{secrets.JWT_ACCESS_TOKEN_EXPIRATION}}
           spring.jwt.refresh-token-expiration-minutes: ${{secrets.JWT_REFRESH_TOKEN_EXPIRATION}}
@@ -97,6 +98,7 @@ jobs:
           spring.datasource.password: ${{secrets.SPRING_DATASOURCE_PASSWORD}}
           spring.security.oauth2.client.registration.google.clientId: ${{secrets.SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GOOGLE_CLIENTID}}
           spring.security.oauth2.client.registration.google.clientSecret: ${{secrets.SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GOOGLE_CLIENTSECRET}}
+          spring.security.oauth2.client.registration.google.scope: ${{secrets.SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GOOGLE_SCOPE}}
           spring.jwt.key: ${{secrets.JWT_KEY}}
           spring.jwt.access-token-expiration-minutes: ${{secrets.JWT_ACCESS_TOKEN_EXPIRATION}}
           spring.jwt.refresh-token-expiration-minutes: ${{secrets.JWT_REFRESH_TOKEN_EXPIRATION}}
