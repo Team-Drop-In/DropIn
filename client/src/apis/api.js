@@ -5,10 +5,11 @@ const axiosApi = axios.create({
   headers: {
     "Content-Type": "application/json",
   },
+  // withCredentials: true,
 });
 
 const getAuthorizedApi = () => {
-  const token = localStorage.getItem("token");
+  const token = localStorage.getItem("accessToken");
 
   const authorizedApi = axios.create({
     baseURL:
@@ -92,7 +93,11 @@ export const sendAuthCodeApi = async (data) => {
 
 export const leaveMemberApi = async () => {
   try {
-    const response = await axiosApi.delete("/api/member");
+    const response = await axiosApi.delete("/api/member", {
+      headers: {
+        Authorization: `${localStorage.getItem("accessToken")}`,
+      },
+    });
     return response.data;
   } catch (error) {
     console.error("API Error:", error);

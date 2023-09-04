@@ -37,10 +37,10 @@ const Leave = () => {
 
   const onFormSubmit = async () => {
     try {
-      console.log();
       await leaveMemberApi();
       navigate("/leaveconfirm");
     } catch (error) {
+      console.log(error);
       console.error("로그인 실패:", error);
     }
   };
@@ -94,6 +94,7 @@ const Leave = () => {
                 : `${COLOR.btn_grey}`,
               cursor: isValid ? "pointer" : "default",
             }}
+            onClick={onFormSubmit}
           />
         </Form>
       </Contain>

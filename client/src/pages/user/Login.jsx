@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import axios from "axios";
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { Controller, useForm } from "react-hook-form";
@@ -49,15 +50,31 @@ const Login = () => {
   };
 
   const onFormSubmit = async (data) => {
-    try {
-      const response = await loginApi(data);
-      console.log(response.headers);
-      // localStorage.setItem("accessToken", response.data.access_token);
-      navigate("/");
-    } catch (error) {
-      console.error("로그인 실패:", error);
-      setError(true);
-    }
+    // try {
+    //   const response = await loginApi(data);
+    //   console.log(response);
+    //   const accessToken = response.headers.get["authorization"];
+    //   localStorage.setItem("accessToken", accessToken);
+    //   console.log(accessToken);
+    //   // localStorage.setItem("accessToken", response.data.access_token);
+    //   navigate("/");
+    // } catch (error) {
+    //   console.error("로그인 실패:", error);
+    //   setError(true);
+    // }
+    loginApi(data)
+      .then((response) => {
+        console.log(response);
+        const accessToken = response.headers["authorization"];
+        localStorage.setItem("accessToken", accessToken);
+
+        axios.defaults.headers["Authorization"] = accessToken;
+        navigate("/");
+      })
+      .catch((error) => {
+        console.error("로그인 실패:", error);
+        setError(true);
+      });
   };
 
   return (
