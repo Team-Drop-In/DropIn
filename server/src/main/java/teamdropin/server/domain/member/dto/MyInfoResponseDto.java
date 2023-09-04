@@ -13,5 +13,6 @@ public class MyInfoResponseDto {
     private String name;
     private String nickname;
     private Gender gender;
+    private String oauthProvider;
     private String profileImageUrl;
 }
