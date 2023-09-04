@@ -1,6 +1,7 @@
 package teamdropin.server.security.oauth2.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
@@ -17,6 +18,7 @@ import teamdropin.server.security.utils.CustomAuthorityUtils;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequest, OAuth2User> {
 
     private final MemberService memberService;
@@ -56,8 +58,11 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
                 .build();
 
         if(memberRepository.findByUsername(member.getUsername()).isEmpty()) {
+            log.info("username = {}" ,memberRepository.findByUsername(member.getUsername()).isEmpty());
+            log.info(member.getUsername());
             memberRepository.save(member);
         }
+
         return member;
     }
 }

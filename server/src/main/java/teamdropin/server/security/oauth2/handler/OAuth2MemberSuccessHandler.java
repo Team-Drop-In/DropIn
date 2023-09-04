@@ -42,13 +42,8 @@ public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
         OAuth2User oAuth2User = (OAuth2User) authentication.getPrincipal();
         log.info("authorities={}", authentication.getAuthorities());
         log.info("email ={}",String.valueOf(oAuth2User.getAttributes().get("email")) );
-        Member member = null;
-        try {
-            member = memberRepository.findByUsername(String.valueOf(oAuth2User.getAttributes().get("email")))
-                    .orElseThrow(Exception::new);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        Member member = memberRepository.findByUsername(String.valueOf(oAuth2User.getAttributes().get("email")))
+                .orElseThrow(() -> new BusinessLogicException(ExceptionCode.USER_NOT_FOUND));
 
 //        saveMember(member);
         redirect(request, response, member);
