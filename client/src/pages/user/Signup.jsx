@@ -28,6 +28,7 @@ const Signup = () => {
   const [isEmailAvailable, setIsEmailAvailable] = useState(false);
   const [isNicknameAvailable, setIsNicknameAvailable] = useState(false);
   const [getAuthCode, setIsGetAuthCode] = useState(false);
+  const [checkAuthCode, setIsCheckAuthCode] = useState(false);
   const [isSignupDisabled, setIsSignupDisabled] = useState(false); // 회원가입 버튼 비활성화 상태
 
   const emailOptions = {
@@ -104,11 +105,16 @@ const Signup = () => {
   };
 
   const handleEmailAvailability = async () => {
+    const data = {
+      username: emailValue,
+    };
+
     if (!emailValue.trim()) return;
     if (!emailOptions.pattern.value.test(emailValue)) return;
 
     try {
-      await duplicateEmailApi({ username: emailValue });
+      console.log(data);
+      await duplicateEmailApi(data);
       setIsEmailAvailable(true);
     } catch (error) {
       console.error("로그인 실패:", error);
@@ -148,7 +154,7 @@ const Signup = () => {
 
     try {
       await sendAuthCodeApi(data);
-      setIsGetAuthCode(true);
+      setIsCheckAuthCode(true);
     } catch (error) {
       console.error("로그인 실패:", error);
     }
@@ -236,6 +242,9 @@ const Signup = () => {
                 style={{
                   marginTop: "20px",
                   marginLeft: "5px",
+                  backgroundColor: checkAuthCode
+                    ? ` ${COLOR.main_yellow}`
+                    : ` ${COLOR.btn_grey}`,
                 }}
                 onClick={handleSendAuthCode}
               />
