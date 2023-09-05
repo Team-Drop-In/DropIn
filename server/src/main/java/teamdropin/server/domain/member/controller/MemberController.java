@@ -40,7 +40,7 @@ public class MemberController {
     /**
      * 이메일 중복 체크
      */
-    @GetMapping("check-duplicate/email")
+    @PostMapping("check-duplicate/email")
     public ResponseEntity<Void> checkDuplicateEmail(@RequestBody SignUpDuplicateCheckEmailDto signUpDuplicateCheckEmailDto){
         memberService.validateDuplicateEmail(signUpDuplicateCheckEmailDto.getUsername());
         return new ResponseEntity<>(HttpStatus.OK);
@@ -49,7 +49,7 @@ public class MemberController {
     /**
      * 닉네임 중복 체크
      */
-    @GetMapping("check-duplicate/nickname")
+    @PostMapping("check-duplicate/nickname")
     public ResponseEntity<Void> checkDuplicateNickname(@RequestBody SignUpDuplicateCheckNicknameDto signUpDuplicateCheckNicknameDto){
         memberService.validateDuplicateNickname(signUpDuplicateCheckNicknameDto.getNickname());
         return new ResponseEntity<>(HttpStatus.OK);
