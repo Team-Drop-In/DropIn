@@ -2,6 +2,7 @@ package teamdropin.server.domain.post.mapper;
 
 import org.springframework.stereotype.Component;
 import teamdropin.server.domain.post.dto.GetPostResponseDto;
+import teamdropin.server.domain.post.dto.UpdatePostRequestDto;
 import teamdropin.server.domain.post.entity.Post;
 
 @Component

@@ -12,6 +12,7 @@ import teamdropin.server.domain.member.entity.Member;
 import teamdropin.server.domain.member.service.MemberService;
 import teamdropin.server.domain.post.dto.CreatePostRequest;
 import teamdropin.server.domain.post.dto.GetPostResponseDto;
+import teamdropin.server.domain.post.dto.UpdatePostRequestDto;
 import teamdropin.server.domain.post.entity.Post;
 import teamdropin.server.domain.post.mapper.PostMapper;
 import teamdropin.server.domain.post.service.PostService;
@@ -40,7 +41,6 @@ public class PostController {
     @PostMapping("/post")
     public ResponseEntity<URI> createPost(@AuthenticationPrincipal Member member,
                                           @RequestBody CreatePostRequest createPostRequest){
-        memberService.findVerifyMember(member.getUsername());
         Post createdPost = createPostRequest.toEntity(createPostRequest);
         Long postId = postService.createPost(member, createdPost);
         URI location = UriCreator.createUri(POST_DEFAULT_URL, postId);
@@ -58,5 +58,20 @@ public class PostController {
         boolean checkLike = postLikeService.checkLike(member,postId);
         getPostResponseDto.setCheckLike(checkLike);
         return new ResponseEntity<>(new SingleResponseDto<>(getPostResponseDto), HttpStatus.OK);
+    }
+
+    @PutMapping("/post/{id}")
+    public ResponseEntity<Void> updatePost(@AuthenticationPrincipal Member member,
+                                           @PathVariable("id") Long postId,
+                                           @RequestBody UpdatePostRequestDto updatePostRequestDto){
+        Post post = postService.updatePost(postId,updatePostRequestDto,member);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @DeleteMapping("/post/{id}")
+    public ResponseEntity<Void> deletePost(@PathVariable("id") Long postId,
+                                           @AuthenticationPrincipal Member member){
+        postService.deletePost(postId, member);
+        return ResponseEntity.noContent().build();
     }
 }
