@@ -36,5 +36,6 @@ out/
 ### VS Code ###
 .vscode/
 
-### Enviroment variable
+### environment variable ###
+application-local.yml
 application.yml
