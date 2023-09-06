@@ -3,6 +3,7 @@ package teamdropin.server.security.config;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -62,6 +63,9 @@ public class SecurityConfig {
                 .oauth2Login(oauth2 -> oauth2
                         .successHandler(new OAuth2MemberSuccessHandler(jwtTokenizer,jwtService, authorityUtils, memberService,memberRepository)))
                 .authorizeHttpRequests()
+                .antMatchers( "/api/post").hasAnyRole("USER")
+                .antMatchers(HttpMethod.PUT, "/api/post/{id}").hasAnyRole("USER")
+                .antMatchers(HttpMethod.DELETE, "/api/post/{id}").hasAnyRole("USER")
                 .anyRequest()
                 .permitAll();
         return http.build();
