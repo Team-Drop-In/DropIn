@@ -6,10 +6,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.client.web.OAuth2LoginAuthenticationFilter;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
@@ -17,6 +16,9 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import teamdropin.server.domain.member.repository.MemberRepository;
 import teamdropin.server.domain.member.service.MemberService;
+import teamdropin.server.security.filter.JwtExceptionResponseFilter;
+import teamdropin.server.security.handler.MemberAccessDeniedHandler;
+import teamdropin.server.security.handler.MemberAuthenticationEntryPoint;
 import teamdropin.server.security.jwt.JwtService;
 import teamdropin.server.security.jwt.JwtTokenizer;
 import teamdropin.server.security.filter.CustomAuthenticationFilter;
@@ -30,6 +32,7 @@ import java.util.Arrays;
 
 @Configuration
 @RequiredArgsConstructor
+@EnableWebSecurity
 public class SecurityConfig {
 
     private final JwtTokenizer jwtTokenizer;
@@ -50,6 +53,10 @@ public class SecurityConfig {
                 .formLogin().disable()
                 .httpBasic().disable()
                 .apply(new CustomFilterConfigurer())
+                .and()
+                .exceptionHandling()
+                .authenticationEntryPoint(new MemberAuthenticationEntryPoint())
+                .accessDeniedHandler(new MemberAccessDeniedHandler())
                 .and()
                 .oauth2Login(oauth2 -> oauth2
                         .successHandler(new OAuth2MemberSuccessHandler(jwtTokenizer,jwtService, authorityUtils, memberService,memberRepository)))
@@ -82,13 +89,14 @@ public class SecurityConfig {
             customAuthenticationFilter.setAuthenticationSuccessHandler(new MemberAuthenticationSuccessHandler());
             customAuthenticationFilter.setAuthenticationFailureHandler(new MemberAuthenticationFailureHandler());
 
-            CustomVerificationFilter customVerificationFilter = new CustomVerificationFilter(jwtTokenizer, authorityUtils);  // (2) 추가
+            CustomVerificationFilter customVerificationFilter = new CustomVerificationFilter(jwtTokenizer, authorityUtils);
+            JwtExceptionResponseFilter jwtExceptionResponseFilter = new JwtExceptionResponseFilter();
 
             builder
                     .addFilter(customAuthenticationFilter)
                     .addFilterAfter(customVerificationFilter, CustomAuthenticationFilter.class)
-                    .addFilterAfter(customVerificationFilter, OAuth2LoginAuthenticationFilter.class);
+                    .addFilterAfter(customVerificationFilter, OAuth2LoginAuthenticationFilter.class)
+                    .addFilterAfter(jwtExceptionResponseFilter,CustomVerificationFilter.class);
         }
     }
-
 }
