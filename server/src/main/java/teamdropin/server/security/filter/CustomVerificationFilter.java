@@ -1,16 +1,15 @@
 package teamdropin.server.security.filter;
 
 import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.JwtException;
+import io.jsonwebtoken.security.SignatureException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 import teamdropin.server.domain.member.entity.Member;
-import teamdropin.server.global.exception.BusinessLogicException;
-import teamdropin.server.global.exception.ExceptionCode;
 import teamdropin.server.security.jwt.JwtTokenizer;
 import teamdropin.server.security.utils.CustomAuthorityUtils;
 
@@ -19,13 +18,12 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.security.SignatureException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.jar.JarException;
 
 @RequiredArgsConstructor
+@Slf4j
 public class CustomVerificationFilter extends OncePerRequestFilter {
     private final JwtTokenizer jwtTokenizer;
     private final CustomAuthorityUtils customAuthorityUtils;
@@ -37,12 +35,12 @@ public class CustomVerificationFilter extends OncePerRequestFilter {
         try {
             Map<String, Object> claims = verifyJws(request);
             setAuthenticationToContext(claims);
-        } catch (NullPointerException ne){
-            throw new BusinessLogicException(ExceptionCode.TOKEN_NOT_FOUND);
-        } catch (IllegalStateException ie){
-            throw new BusinessLogicException(ExceptionCode.TOKEN_INVALID);
-        } catch (ExpiredJwtException ee){
-            throw new BusinessLogicException(ExceptionCode.TOKEN_EXPIRED);
+        } catch (SignatureException se) {
+            request.setAttribute("exception", se);
+        } catch (ExpiredJwtException ee) {
+            request.setAttribute("exception", ee);
+        } catch (Exception e) {
+            request.setAttribute("exception", e);
         }
         filterChain.doFilter(request, response);
     }
