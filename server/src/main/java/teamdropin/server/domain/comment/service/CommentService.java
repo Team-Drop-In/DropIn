@@ -37,4 +37,10 @@ public class CommentService {
         return commentRepository.findById(commentId)
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.COMMENT_NOT_FOUND));
     }
+
+    public void deleteComment(Long postId, Long commentId, Member member) {
+        Comment comment = commentRepository.findByPostIdAndMemberIdAndId(postId, member.getId(), commentId).orElseThrow(
+                () -> new BusinessLogicException(ExceptionCode.COMMENT_NOT_FOUND));
+        commentRepository.delete(comment);
+    }
 }
