@@ -66,6 +66,7 @@ public class SecurityConfig {
                 .antMatchers( "/api/post").hasAnyRole("USER")
                 .antMatchers(HttpMethod.PUT, "/api/post/{id}").hasAnyRole("USER")
                 .antMatchers(HttpMethod.DELETE, "/api/post/{id}").hasAnyRole("USER")
+                .antMatchers("/api/post/{id}/comment/**").hasAnyRole("USER")
                 .anyRequest()
                 .permitAll();
         return http.build();

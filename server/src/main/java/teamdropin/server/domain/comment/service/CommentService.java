@@ -3,6 +3,7 @@ package teamdropin.server.domain.comment.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import teamdropin.server.domain.comment.dto.UpdateCommentRequestDto;
 import teamdropin.server.domain.comment.entity.Comment;
 import teamdropin.server.domain.comment.repository.CommentRepository;
 import teamdropin.server.domain.member.entity.Member;
@@ -24,5 +25,16 @@ public class CommentService {
                 () -> new BusinessLogicException(ExceptionCode.POST_NOT_FOUND)));
         commentRepository.save(comment);
         return comment.getId();
+    }
+
+    public void updateComment(Long postId, Long commentId, UpdateCommentRequestDto updateCommentRequestDto, Member member) {
+        Comment comment = commentRepository.findByPostIdAndId(postId, commentId).orElseThrow(
+                () -> new BusinessLogicException(ExceptionCode.COMMENT_NOT_FOUND));
+        comment.updateCommentInfo(updateCommentRequestDto.getBody());
+    }
+
+    private Comment findVerifiedComment(Long commentId) {
+        return commentRepository.findById(commentId)
+                .orElseThrow(() -> new BusinessLogicException(ExceptionCode.COMMENT_NOT_FOUND));
     }
 }
