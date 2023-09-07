@@ -23,7 +23,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-@Transactional
+@Transactional(readOnly = true)
 public class PostService {
 
     private final MemberRepository memberRepository;
@@ -32,6 +32,7 @@ public class PostService {
     private final PostMapper postMapper;
     private final MemberService memberService;
 
+    @Transactional
     public Long createPost(Member member, Post post) {
         post.addMember(member);
         postRepository.save(post);
@@ -46,6 +47,7 @@ public class PostService {
         return post;
     }
 
+    @Transactional
     public Post updatePost(Long postId, UpdatePostRequestDto updatePostRequestDto, Member member){
         Post post = findVerifiedPost(postId);
         if(!post.getMember().getId().equals(member.getId())){
@@ -55,6 +57,7 @@ public class PostService {
         return post;
     }
 
+    @Transactional
     public void deletePost(Long id, Member member){
         Post findPost = findVerifiedPost(id);
         if(!findPost.getMember().getId().equals(member.getId())){
