@@ -13,12 +13,13 @@ import teamdropin.server.global.exception.ExceptionCode;
 
 @Service
 @RequiredArgsConstructor
-@Transactional
+@Transactional(readOnly = true)
 public class CommentService {
 
     private final PostRepository postRepository;
     private final CommentRepository commentRepository;
 
+    @Transactional
     public Long createComment(Comment comment, Member member, Long postId) {
         comment.addMember(member);
         comment.addPost(postRepository.findById(postId).orElseThrow(
@@ -27,20 +28,23 @@ public class CommentService {
         return comment.getId();
     }
 
+    @Transactional
     public void updateComment(Long postId, Long commentId, UpdateCommentRequestDto updateCommentRequestDto, Member member) {
         Comment comment = commentRepository.findByPostIdAndId(postId, commentId).orElseThrow(
                 () -> new BusinessLogicException(ExceptionCode.COMMENT_NOT_FOUND));
+        if(!comment.getMember().getId().equals(member.getId())){
+            throw new BusinessLogicException(ExceptionCode.USER_NOT_AUTHORIZED);
+        }
         comment.updateCommentInfo(updateCommentRequestDto.getBody());
     }
 
-    private Comment findVerifiedComment(Long commentId) {
-        return commentRepository.findById(commentId)
-                .orElseThrow(() -> new BusinessLogicException(ExceptionCode.COMMENT_NOT_FOUND));
-    }
-
+    @Transactional
     public void deleteComment(Long postId, Long commentId, Member member) {
         Comment comment = commentRepository.findByPostIdAndMemberIdAndId(postId, member.getId(), commentId).orElseThrow(
                 () -> new BusinessLogicException(ExceptionCode.COMMENT_NOT_FOUND));
+        if(!comment.getMember().getId().equals(member.getId())){
+            throw new BusinessLogicException(ExceptionCode.USER_NOT_AUTHORIZED);
+        }
         commentRepository.delete(comment);
     }
 }
