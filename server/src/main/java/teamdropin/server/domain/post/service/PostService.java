@@ -1,6 +1,9 @@
 package teamdropin.server.domain.post.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,6 +18,7 @@ import teamdropin.server.domain.post.repository.PostRepository;
 import teamdropin.server.global.exception.BusinessLogicException;
 import teamdropin.server.global.exception.ExceptionCode;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -62,5 +66,10 @@ public class PostService {
     private Post findVerifiedPost(Long id){
         return postRepository.findById(id)
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.POST_NOT_FOUND));
+    }
+
+    public Page<Post> getAllPosts(int page, int size) {
+        return postRepository.findAll(PageRequest.of(page, size,
+                                                    Sort.by("id").descending()));
     }
 }

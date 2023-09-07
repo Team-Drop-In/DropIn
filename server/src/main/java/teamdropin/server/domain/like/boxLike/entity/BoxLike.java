@@ -9,8 +9,8 @@ import javax.persistence.*;
 @Entity
 @Getter
 public class BoxLike {
-    @Id
-    @GeneratedValue
+
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "box_like_id")
     private Long id;
 
