@@ -11,7 +11,7 @@ import java.util.List;
 @Entity
 @Getter
 public class Box extends BaseEntity {
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "box_id")
     private Long id;
     private String boxName;
