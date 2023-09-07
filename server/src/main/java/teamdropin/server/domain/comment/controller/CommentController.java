@@ -12,6 +12,7 @@ import teamdropin.server.domain.comment.service.CommentService;
 import teamdropin.server.domain.member.entity.Member;
 import teamdropin.server.global.util.UriCreator;
 
+import javax.validation.Valid;
 import java.net.URI;
 
 @RestController
@@ -27,7 +28,7 @@ public class CommentController {
     @PostMapping("/post/{id}/comment")
     public ResponseEntity<Void> createComment(@AuthenticationPrincipal Member member,
                                               @PathVariable("id") Long postId,
-                                              @RequestBody CreateCommentRequestDto createCommentRequestDto){
+                                              @RequestBody @Valid CreateCommentRequestDto createCommentRequestDto){
         Comment comment = commentMapper.toEntity(createCommentRequestDto);
         Long commentId = commentService.createComment(comment, member, postId);
         URI location = UriCreator.createUri(COMMENT_DEFAULT_URL + postId.toString() + "/comment", commentId);
@@ -38,7 +39,7 @@ public class CommentController {
     public ResponseEntity<Void> updateComment(@AuthenticationPrincipal Member member,
                                               @PathVariable("postId") Long postId,
                                               @PathVariable("commentId") Long commentId,
-                                              @RequestBody UpdateCommentRequestDto updateCommentRequestDto){
+                                              @RequestBody @Valid UpdateCommentRequestDto updateCommentRequestDto){
         commentService.updateComment(postId, commentId, updateCommentRequestDto, member);
         return ResponseEntity.ok().build();
     }

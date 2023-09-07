@@ -10,6 +10,9 @@ import teamdropin.server.domain.post.entity.Post;
 import teamdropin.server.global.audit.BaseEntity;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,6 +25,9 @@ public class Comment extends BaseEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "comment_id")
     private Long id;
+
+    @Size(min= 1, max = 50)
+    @NotNull
     private String body;
 
     @ManyToOne(fetch = FetchType.LAZY)
