@@ -7,6 +7,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PostMapping;
+import teamdropin.server.domain.like.postLike.entity.PostLike;
 import teamdropin.server.domain.like.postLike.repository.PostLikeRepository;
 import teamdropin.server.domain.member.entity.Member;
 import teamdropin.server.domain.member.repository.MemberRepository;
@@ -42,8 +43,9 @@ public class PostService {
     public Post getPost(Long id, Member member) {
         Post post = findVerifiedPost(id);
         post.viewCountUp();
-        int likeCount =  postLikeRepository.countByPostId(post.getId());
-        post.getlikeCount(likeCount);
+//        int likeCount =  postLikeRepository.countByPostId(post.getId());
+        List<PostLike> postLikes = postLikeRepository.findByPostId(post.getId());
+        post.addPostLikes(postLikes);
         return post;
     }
 

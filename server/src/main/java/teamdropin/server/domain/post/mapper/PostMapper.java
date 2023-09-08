@@ -28,7 +28,7 @@ public class PostMapper {
                 .category(post.getCategory())
                 .nickname(post.getMember().getNickname())
                 .comments(commentMapper.commentsToCommentResponseDtoList(post.getComments()))
-                .likeCount(post.getLikeCount())
+                .likeCount(post.getPostLikes().size())
                 .checkLike(false)
                 .build();
     }
@@ -40,7 +40,7 @@ public class PostMapper {
                 .body(post.getBody())
                 .viewCount(post.getViewCount())
                 .category(post.getCategory())
-                .likeCount(post.getLikeCount())
+                .likeCount(post.getPostLikes().size())
                 .nickname(post.getMember().getNickname())
                 .commentCount(post.getComments().size())
                 .build();

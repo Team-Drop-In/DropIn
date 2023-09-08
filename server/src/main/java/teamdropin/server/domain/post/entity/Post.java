@@ -36,16 +36,18 @@ public class Post extends BaseTimeEntity {
     @ValidEnum(enumClass = Category.class)
     private Category category;
 
-    @Column(columnDefinition = "integer default 0")
-    private int likeCount;
+//    @Column(columnDefinition = "integer default 0")
+//    private int likeCount;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
+
     @OneToMany(mappedBy = "post")
     private List<Comment> comments = new ArrayList<>();
-//    @OneToMany(mappedBy = "post")
-//    private List<PostLike> postLikes = new ArrayList<>();
+
+    @OneToMany(mappedBy = "post")
+    private List<PostLike> postLikes = new ArrayList<>();
 
     public void addMember(Member member){
         this.member = member;
@@ -55,8 +57,8 @@ public class Post extends BaseTimeEntity {
         this.viewCount = this.viewCount + 1 ;
     }
 
-    public void getlikeCount(int count){
-        this.likeCount = count;
+    public void addPostLikes(List<PostLike> postLikes){
+        this.postLikes = postLikes;
     }
 
     public void updatePostInfo(String title, String body, Category category){
