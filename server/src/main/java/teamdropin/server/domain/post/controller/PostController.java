@@ -24,6 +24,7 @@ import teamdropin.server.global.dto.MultiResponseDto;
 import teamdropin.server.global.dto.SingleResponseDto;
 import teamdropin.server.global.util.UriCreator;
 
+import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 import java.net.URI;
 import java.util.ArrayList;
@@ -49,7 +50,7 @@ public class PostController {
      */
     @PostMapping("/post")
     public ResponseEntity<URI> createPost(@AuthenticationPrincipal Member member,
-                                          @RequestBody CreatePostRequest createPostRequest){
+                                          @RequestBody @Valid CreatePostRequest createPostRequest){
         Post createdPost = createPostRequest.toEntity(createPostRequest);
         Long postId = postService.createPost(member, createdPost);
         URI location = UriCreator.createUri(POST_DEFAULT_URL, postId);
@@ -85,7 +86,7 @@ public class PostController {
     @PutMapping("/post/{id}")
     public ResponseEntity<Void> updatePost(@AuthenticationPrincipal Member member,
                                            @PathVariable("id") Long postId,
-                                           @RequestBody UpdatePostRequestDto updatePostRequestDto){
+                                           @RequestBody @Valid UpdatePostRequestDto updatePostRequestDto){
         Post post = postService.updatePost(postId,updatePostRequestDto,member);
         return new ResponseEntity<>(HttpStatus.OK);
     }
