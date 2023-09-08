@@ -13,8 +13,11 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class CommentResponseDto {
 
+    private Long id;
     private String nickname;
     private String body;
+    private boolean checkCommentLike;
+    private int likeCommentCount;
     private LocalDateTime createdAt;
 
 }

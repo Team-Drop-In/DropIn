@@ -3,11 +3,7 @@ package teamdropin.server.domain.post.dto;
 import lombok.Builder;
 import lombok.Data;
 import teamdropin.server.domain.comment.dto.CommentResponseDto;
-import teamdropin.server.domain.comment.entity.Comment;
-import teamdropin.server.domain.like.postLike.entity.PostLike;
-import teamdropin.server.domain.member.entity.Member;
 import teamdropin.server.domain.post.entity.Category;
-import teamdropin.server.domain.post.entity.Post;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -24,7 +20,7 @@ public class GetPostResponseDto {
     private String nickname;
     private List<CommentResponseDto> comments;
     private int likeCount;
-    private boolean checkLike;
+    private boolean checkPostLike;
     private LocalDateTime createdDate;
 
 }

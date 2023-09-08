@@ -3,11 +3,9 @@ package teamdropin.server.domain.post.mapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import teamdropin.server.domain.comment.dto.CommentResponseDto;
-import teamdropin.server.domain.comment.entity.Comment;
 import teamdropin.server.domain.comment.mapper.CommentMapper;
 import teamdropin.server.domain.post.dto.GetAllPostResponseDto;
 import teamdropin.server.domain.post.dto.GetPostResponseDto;
-import teamdropin.server.domain.post.dto.UpdatePostRequestDto;
 import teamdropin.server.domain.post.entity.Post;
 
 import java.util.List;
@@ -19,7 +17,7 @@ public class PostMapper {
 
     private final CommentMapper commentMapper;
 
-    public GetPostResponseDto postToGetPostResponseDto(Post post){
+    public GetPostResponseDto postToGetPostResponseDto(Post post, List<CommentResponseDto> commentResponseDtoList){
         return GetPostResponseDto.builder()
                 .id(post.getId())
                 .title(post.getTitle())
@@ -27,9 +25,9 @@ public class PostMapper {
                 .viewCount(post.getViewCount())
                 .category(post.getCategory())
                 .nickname(post.getMember().getNickname())
-                .comments(commentMapper.commentsToCommentResponseDtoList(post.getComments()))
-                .likeCount(post.getPostLikes().size())
-                .checkLike(false)
+                .comments(commentResponseDtoList)
+                .likeCount(post.getLikes().size())
+                .checkPostLike(false)
                 .createdDate(post.getCreatedDate())
                 .build();
     }
@@ -41,7 +39,7 @@ public class PostMapper {
                 .body(post.getBody())
                 .viewCount(post.getViewCount())
                 .category(post.getCategory())
-                .likeCount(post.getPostLikes().size())
+                .likeCount(post.getLikes().size())
                 .nickname(post.getMember().getNickname())
                 .commentCount(post.getComments().size())
                 .createdDate(post.getCreatedDate())

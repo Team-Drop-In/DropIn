@@ -6,12 +6,15 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PostMapping;
-import teamdropin.server.domain.like.postLike.entity.PostLike;
-import teamdropin.server.domain.like.postLike.repository.PostLikeRepository;
+import teamdropin.server.domain.comment.dto.CommentResponseDto;
+import teamdropin.server.domain.comment.entity.Comment;
+import teamdropin.server.domain.comment.mapper.CommentMapper;
+import teamdropin.server.domain.like.repository.LikeRepository;
+import teamdropin.server.domain.like.service.LikeService;
 import teamdropin.server.domain.member.entity.Member;
 import teamdropin.server.domain.member.repository.MemberRepository;
 import teamdropin.server.domain.member.service.MemberService;
+import teamdropin.server.domain.post.dto.GetPostResponseDto;
 import teamdropin.server.domain.post.dto.UpdatePostRequestDto;
 import teamdropin.server.domain.post.entity.Post;
 import teamdropin.server.domain.post.mapper.PostMapper;
@@ -19,8 +22,8 @@ import teamdropin.server.domain.post.repository.PostRepository;
 import teamdropin.server.global.exception.BusinessLogicException;
 import teamdropin.server.global.exception.ExceptionCode;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -29,9 +32,12 @@ public class PostService {
 
     private final MemberRepository memberRepository;
     private final PostRepository postRepository;
-    private final PostLikeRepository postLikeRepository;
+    private final LikeRepository likeRepository;
     private final PostMapper postMapper;
+    private final CommentMapper commentMapper;
     private final MemberService memberService;
+    private final LikeService likeService;
+
 
     @Transactional
     public Long createPost(Member member, Post post) {
@@ -40,10 +46,11 @@ public class PostService {
         return post.getId();
     }
 
-    public Post getPost(Long id, Member member) {
-        Post post = findVerifiedPost(id);
+    public Post getPost(Long postId, Member member) {
+        Post post = findVerifiedPost(postId);
         post.viewCountUp();
-        
+
+
         return post;
     }
 

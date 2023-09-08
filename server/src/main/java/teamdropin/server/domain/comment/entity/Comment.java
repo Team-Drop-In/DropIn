@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import teamdropin.server.domain.like.commentLike.entity.CommentLike;
+import teamdropin.server.domain.like.entity.Like;
 import teamdropin.server.domain.member.entity.Member;
 import teamdropin.server.domain.post.entity.Post;
 import teamdropin.server.global.audit.BaseEntity;
@@ -39,7 +39,7 @@ public class Comment extends BaseEntity {
     private Post post;
 
     @OneToMany(mappedBy = "comment", cascade = CascadeType.REMOVE, orphanRemoval = true)
-    private List<CommentLike> commentLikes = new ArrayList<>();
+    private List<Like> commentLikes = new ArrayList<>();
 
     public void addMember(Member member){
         this.member = member;

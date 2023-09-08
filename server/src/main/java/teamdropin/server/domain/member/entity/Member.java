@@ -2,7 +2,7 @@ package teamdropin.server.domain.member.entity;
 
 import lombok.*;
 import teamdropin.server.domain.comment.entity.Comment;
-import teamdropin.server.domain.like.postLike.entity.PostLike;
+import teamdropin.server.domain.like.entity.Like;
 import teamdropin.server.domain.member.utils.MemberValidation;
 import teamdropin.server.domain.post.entity.Post;
 import teamdropin.server.global.audit.BaseTimeEntity;
@@ -61,7 +61,7 @@ public class Member extends BaseTimeEntity {
     private List<Comment> comments = new ArrayList<>();
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE, orphanRemoval = true)
-    private List<PostLike> postLikes = new ArrayList<>();
+    private List<Like> likes = new ArrayList<>();
 
     public Member updatePassword(String encodedPassword){
         this.password = encodedPassword;
