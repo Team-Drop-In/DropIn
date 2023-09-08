@@ -8,6 +8,7 @@ import teamdropin.server.global.audit.BaseTimeEntity;
 import teamdropin.server.global.util.enumValid.ValidEnum;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,9 +24,11 @@ public class Post extends BaseTimeEntity {
     @Column(name = "post_id")
     private Long id;
 
+    @NotBlank
     @Size(min = 3 , max = 50)
     private String title;
 
+    @NotBlank
     @Size(max = 500)
     private String body;
 
