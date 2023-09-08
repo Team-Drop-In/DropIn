@@ -3,8 +3,10 @@ package teamdropin.server.domain.comment.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import teamdropin.server.domain.comment.dto.CreateCommentRequestDto;
 import teamdropin.server.domain.comment.dto.UpdateCommentRequestDto;
 import teamdropin.server.domain.comment.entity.Comment;
+import teamdropin.server.domain.comment.mapper.CommentMapper;
 import teamdropin.server.domain.comment.repository.CommentRepository;
 import teamdropin.server.domain.member.entity.Member;
 import teamdropin.server.domain.post.repository.PostRepository;
@@ -18,9 +20,13 @@ public class CommentService {
 
     private final PostRepository postRepository;
     private final CommentRepository commentRepository;
+    private final CommentMapper commentMapper;
 
     @Transactional
-    public Long createComment(Comment comment, Member member, Long postId) {
+    public Long createComment(CreateCommentRequestDto createCommentRequestDto, Member member, Long postId) {
+
+        Comment comment = commentMapper.toEntity(createCommentRequestDto);
+
         comment.addMember(member);
         comment.addPost(postRepository.findById(postId).orElseThrow(
                 () -> new BusinessLogicException(ExceptionCode.POST_NOT_FOUND)));
@@ -47,4 +53,5 @@ public class CommentService {
         }
         commentRepository.delete(comment);
     }
+
 }

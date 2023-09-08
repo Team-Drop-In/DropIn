@@ -23,14 +23,12 @@ public class CommentController {
     private final static String COMMENT_DEFAULT_URL = "/api/post/";
 
     private final CommentService commentService;
-    private final CommentMapper commentMapper;
 
     @PostMapping("/post/{id}/comment")
     public ResponseEntity<Void> createComment(@AuthenticationPrincipal Member member,
                                               @PathVariable("id") Long postId,
                                               @RequestBody @Valid CreateCommentRequestDto createCommentRequestDto){
-        Comment comment = commentMapper.toEntity(createCommentRequestDto);
-        Long commentId = commentService.createComment(comment, member, postId);
+        Long commentId = commentService.createComment(createCommentRequestDto, member, postId);
         URI location = UriCreator.createUri(COMMENT_DEFAULT_URL + postId.toString() + "/comment", commentId);
         return ResponseEntity.created(location).build();
     }
