@@ -36,17 +36,14 @@ public class Post extends BaseTimeEntity {
     @ValidEnum(enumClass = Category.class)
     private Category category;
 
-//    @Column(columnDefinition = "integer default 0")
-//    private int likeCount;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
 
-    @OneToMany(mappedBy = "post")
+    @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<Comment> comments = new ArrayList<>();
 
-    @OneToMany(mappedBy = "post")
+    @OneToMany(mappedBy = "post",cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<PostLike> postLikes = new ArrayList<>();
 
     public void addMember(Member member){
