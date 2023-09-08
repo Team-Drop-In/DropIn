@@ -30,6 +30,7 @@ public class PostMapper {
                 .comments(commentMapper.commentsToCommentResponseDtoList(post.getComments()))
                 .likeCount(post.getPostLikes().size())
                 .checkLike(false)
+                .createdDate(post.getCreatedDate())
                 .build();
     }
 
@@ -43,6 +44,7 @@ public class PostMapper {
                 .likeCount(post.getPostLikes().size())
                 .nickname(post.getMember().getNickname())
                 .commentCount(post.getComments().size())
+                .createdDate(post.getCreatedDate())
                 .build();
     }
 

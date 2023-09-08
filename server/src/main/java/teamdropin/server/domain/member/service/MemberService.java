@@ -7,13 +7,17 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import teamdropin.server.aws.service.S3Uploader;
+import teamdropin.server.domain.comment.entity.Comment;
 import teamdropin.server.domain.member.dto.MemberUpdatePasswordRequestDto;
 import teamdropin.server.domain.member.dto.MemberUpdateProfileRequestDto;
+import teamdropin.server.domain.member.entity.Gender;
 import teamdropin.server.domain.member.entity.Member;
 import teamdropin.server.domain.member.repository.MemberRepository;
+import teamdropin.server.domain.post.entity.Post;
 import teamdropin.server.global.exception.BusinessLogicException;
 import teamdropin.server.global.exception.ExceptionCode;
 
+import javax.annotation.PostConstruct;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.util.*;
@@ -23,6 +27,8 @@ import java.util.*;
 @Transactional(readOnly = true)
 @Slf4j
 public class MemberService {
+
+    private static final String REASSIGN_EMAIL = "reassign@dropin.com";
 
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
@@ -95,6 +101,22 @@ public class MemberService {
     @Transactional(readOnly = false)
     public void deleteMember(String username){
         Member findMember = findVerifyMember(username);
+
+        List<Post> posts = findMember.getPosts();
+        List<Comment> comments = findMember.getComments();
+
+        for(Post post : posts){
+            post.addMember(memberRepository.findByUsername(REASSIGN_EMAIL).orElseThrow(
+                    () -> new BusinessLogicException(ExceptionCode.USER_NOT_FOUND)
+            ));
+        }
+
+        for(Comment comment : comments){
+            comment.addMember(memberRepository.findByUsername(REASSIGN_EMAIL).orElseThrow(
+                    () -> new BusinessLogicException(ExceptionCode.USER_NOT_FOUND)
+            ));
+        }
+
         memberRepository.delete(findMember);
     }
 
@@ -142,5 +164,19 @@ public class MemberService {
         String fileExtension = getFileExtension(image.getOriginalFilename());
         String newFileName = UUID.randomUUID().toString() + "-profileImage" + fileExtension;
         return s3Uploader.upload(image, newFileName, "member");
+    }
+
+    @PostConstruct
+    public void createReassignMember(){
+
+        Member reassignMember =
+                Member.builder()
+                        .username(REASSIGN_EMAIL)
+                        .nickname("탈퇴한회원")
+                        .name("탈퇴한회원")
+                        .oauthProvider("dropin")
+                        .gender(Gender.NOT_SELECT)
+                        .build();
+        memberRepository.save(reassignMember);
     }
 }

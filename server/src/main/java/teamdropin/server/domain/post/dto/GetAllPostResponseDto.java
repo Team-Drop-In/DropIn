@@ -4,6 +4,8 @@ import lombok.Builder;
 import lombok.Data;
 import teamdropin.server.domain.post.entity.Category;
 
+import java.time.LocalDateTime;
+
 @Data
 @Builder
 public class GetAllPostResponseDto {
@@ -16,5 +18,6 @@ public class GetAllPostResponseDto {
     private int likeCount;
     private String nickname;
     private int commentCount;
+    private LocalDateTime createdDate;
 
 }
