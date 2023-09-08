@@ -26,8 +26,7 @@ public class PostLikeService {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.POST_NOT_FOUND));
 
-        Optional<PostLike> optionalPostLike = postLikeRepository.findByMemberAndPost(member, post);
-
+        Optional<PostLike> optionalPostLike = postLikeRepository.findByMemberIdAndPostId(member.getId(), post.getId());
 
         if(optionalPostLike.isEmpty()){
             postLikeRepository.save(new PostLike(member,post));
@@ -40,12 +39,14 @@ public class PostLikeService {
     public boolean checkLike(Member member, Long postId){
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.POST_NOT_FOUND));
-        Optional<PostLike> optionalPostLike = postLikeRepository.findByMemberAndPost(member,post);
-
-        if(optionalPostLike.isEmpty()){
-            return false;
-        } else {
-            return true;
+        if(member != null && post != null) {
+            Optional<PostLike> optionalPostLike = postLikeRepository.findByMemberIdAndPostId(member.getId(), post.getId());
+            if (optionalPostLike.isPresent()) {
+                return true;
+            } else {
+                return false;
+            }
         }
+        return false;
     }
 }

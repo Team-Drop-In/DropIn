@@ -15,7 +15,7 @@ public class PostLikeController {
 
     private final PostLikeService postLikeService;
 
-    @PostMapping("/postlike/{postId}")
+    @PostMapping("/post/{postId}/post-like")
     public ResponseEntity<Void> postLike(@AuthenticationPrincipal Member member,
                                          @PathVariable Long postId){
         postLikeService.like(member, postId);

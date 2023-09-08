@@ -5,10 +5,13 @@ import teamdropin.server.domain.like.postLike.entity.PostLike;
 import teamdropin.server.domain.member.entity.Member;
 import teamdropin.server.domain.post.entity.Post;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface PostLikeRepository extends JpaRepository<PostLike, Long> {
 
-    Optional<PostLike> findByMemberAndPost(Member member, Post post);
+    Optional<PostLike> findByMemberIdAndPostId(Long memberId, Long postId);
     Integer countByPostId(Long id);
+
+    List<PostLike> findByPostId(Long postId);
 }
