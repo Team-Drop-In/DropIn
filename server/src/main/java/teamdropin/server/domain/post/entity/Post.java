@@ -44,7 +44,7 @@ public class Post extends BaseTimeEntity {
     private List<Comment> comments = new ArrayList<>();
 
     @OneToMany(mappedBy = "post",cascade = CascadeType.REMOVE, orphanRemoval = true)
-    private List<Like> likes = new ArrayList<>();
+    private List<Like> postLikes = new ArrayList<>();
 
     public void addMember(Member member){
         this.member = member;
