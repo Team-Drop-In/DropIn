@@ -43,9 +43,7 @@ public class PostService {
     public Post getPost(Long id, Member member) {
         Post post = findVerifiedPost(id);
         post.viewCountUp();
-//        int likeCount =  postLikeRepository.countByPostId(post.getId());
-        List<PostLike> postLikes = postLikeRepository.findByPostId(post.getId());
-        post.addPostLikes(postLikes);
+        
         return post;
     }
 

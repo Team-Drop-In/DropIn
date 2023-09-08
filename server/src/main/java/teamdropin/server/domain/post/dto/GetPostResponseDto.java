@@ -9,6 +9,7 @@ import teamdropin.server.domain.member.entity.Member;
 import teamdropin.server.domain.post.entity.Category;
 import teamdropin.server.domain.post.entity.Post;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
@@ -24,5 +25,6 @@ public class GetPostResponseDto {
     private List<CommentResponseDto> comments;
     private int likeCount;
     private boolean checkLike;
+    private LocalDateTime createdDate;
 
 }
