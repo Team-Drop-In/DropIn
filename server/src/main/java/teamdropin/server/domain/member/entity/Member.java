@@ -56,8 +56,10 @@ public class Member extends BaseTimeEntity {
 
     @OneToMany(mappedBy = "member")
     private List<Post> posts = new ArrayList<>();
+
     @OneToMany(mappedBy = "member")
     private List<Comment> comments = new ArrayList<>();
+
     @OneToMany(mappedBy = "member")
     private List<PostLike> postLikes = new ArrayList<>();
 
