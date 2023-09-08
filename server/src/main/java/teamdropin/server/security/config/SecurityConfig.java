@@ -63,11 +63,13 @@ public class SecurityConfig {
                 .oauth2Login(oauth2 -> oauth2
                         .successHandler(new OAuth2MemberSuccessHandler(jwtTokenizer,jwtService, authorityUtils, memberService,memberRepository)))
                 .authorizeHttpRequests()
+                .antMatchers("/api/member/my-page").hasAnyRole("USER")
                 .antMatchers( "/api/post").hasAnyRole("USER")
                 .antMatchers(HttpMethod.PUT, "/api/post/{id}").hasAnyRole("USER")
                 .antMatchers(HttpMethod.DELETE, "/api/post/{id}").hasAnyRole("USER")
                 .antMatchers("/api/post/{id}/comment/**").hasAnyRole("USER")
-                .antMatchers("/api/post/{id}/post-like").hasAnyRole("USER")
+                .antMatchers("/api/post/like").hasAnyRole("USER")
+                .antMatchers("/api/comment/like").hasAnyRole("USER")
                 .anyRequest()
                 .permitAll();
         return http.build();

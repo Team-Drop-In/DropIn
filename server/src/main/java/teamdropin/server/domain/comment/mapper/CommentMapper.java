@@ -20,8 +20,11 @@ public class CommentMapper {
 
     public CommentResponseDto commentToCommentResponseDto(Comment comment){
         return CommentResponseDto.builder()
+                .id(comment.getId())
                 .nickname(comment.getMember().getNickname())
                 .body(comment.getBody())
+                .checkCommentLike(false)
+                .likeCommentCount(comment.getCommentLikes().size())
                 .createdAt(comment.getCreatedDate())
                 .build();
     }

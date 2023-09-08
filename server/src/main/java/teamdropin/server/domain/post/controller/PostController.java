@@ -6,9 +6,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
-import teamdropin.server.domain.like.postLike.service.PostLikeService;
+import teamdropin.server.domain.comment.dto.CommentResponseDto;
+import teamdropin.server.domain.comment.entity.Comment;
+import teamdropin.server.domain.comment.mapper.CommentMapper;
+import teamdropin.server.domain.like.service.LikeService;
 import teamdropin.server.domain.member.entity.Member;
 import teamdropin.server.domain.member.service.MemberService;
 import teamdropin.server.domain.post.dto.CreatePostRequest;
@@ -23,8 +25,8 @@ import teamdropin.server.global.dto.SingleResponseDto;
 import teamdropin.server.global.util.UriCreator;
 
 import javax.validation.constraints.Positive;
-import java.awt.print.Pageable;
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -38,7 +40,8 @@ public class PostController {
     private final PostService postService;
     private final MemberService memberService;
     private final PostMapper postMapper;
-    private final PostLikeService postLikeService;
+    private final CommentMapper commentMapper;
+    private final LikeService likeService;
 
 
     /**
@@ -60,10 +63,23 @@ public class PostController {
     public ResponseEntity<SingleResponseDto> getPost(@PathVariable("id") Long postId,
                                                      @AuthenticationPrincipal Member member){
         Post post = postService.getPost(postId, member);
-        GetPostResponseDto getPostResponseDto = postMapper.postToGetPostResponseDto(post);
-        boolean checkLike = postLikeService.checkLike(member,postId);
-        getPostResponseDto.setCheckLike(checkLike);
+        GetPostResponseDto getPostResponseDto = translateGetPostResponseDto(member, post);
         return new ResponseEntity<>(new SingleResponseDto<>(getPostResponseDto), HttpStatus.OK);
+    }
+
+    private GetPostResponseDto translateGetPostResponseDto(Member member, Post post) {
+        List<Comment> comments = post.getComments();
+        List<CommentResponseDto> commentResponseDtoList = new ArrayList<>();
+        for(Comment comment : comments){
+            CommentResponseDto commentResponseDto = commentMapper.commentToCommentResponseDto(comment);
+            boolean checkCommentLike = likeService.checkCommentLike(member, comment.getId());
+            commentResponseDto.setCheckCommentLike(checkCommentLike);
+            commentResponseDtoList.add(commentResponseDto);
+        }
+        GetPostResponseDto getPostResponseDto = postMapper.postToGetPostResponseDto(post, commentResponseDtoList);
+        boolean checkPostLike = likeService.checkPostLike(member, post.getId());
+        getPostResponseDto.setCheckPostLike(checkPostLike);
+        return getPostResponseDto;
     }
 
     @PutMapping("/post/{id}")

@@ -2,7 +2,7 @@ package teamdropin.server.domain.post.entity;
 
 import lombok.*;
 import teamdropin.server.domain.comment.entity.Comment;
-import teamdropin.server.domain.like.postLike.entity.PostLike;
+import teamdropin.server.domain.like.entity.Like;
 import teamdropin.server.domain.member.entity.Member;
 import teamdropin.server.global.audit.BaseTimeEntity;
 import teamdropin.server.global.util.enumValid.ValidEnum;
@@ -44,7 +44,7 @@ public class Post extends BaseTimeEntity {
     private List<Comment> comments = new ArrayList<>();
 
     @OneToMany(mappedBy = "post",cascade = CascadeType.REMOVE, orphanRemoval = true)
-    private List<PostLike> postLikes = new ArrayList<>();
+    private List<Like> postLikes = new ArrayList<>();
 
     public void addMember(Member member){
         this.member = member;
@@ -52,10 +52,6 @@ public class Post extends BaseTimeEntity {
 
     public void viewCountUp(){
         this.viewCount = this.viewCount + 1 ;
-    }
-
-    public void addPostLikes(List<PostLike> postLikes){
-        this.postLikes = postLikes;
     }
 
     public void updatePostInfo(String title, String body, Category category){

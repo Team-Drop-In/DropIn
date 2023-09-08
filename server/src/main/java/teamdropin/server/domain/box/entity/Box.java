@@ -1,7 +1,7 @@
 package teamdropin.server.domain.box.entity;
 
 import lombok.Getter;
-import teamdropin.server.domain.like.boxLike.entity.BoxLike;
+import teamdropin.server.domain.like.entity.Like;
 import teamdropin.server.global.audit.BaseEntity;
 
 import javax.persistence.*;
@@ -18,5 +18,5 @@ public class Box extends BaseEntity {
     private String boxLocation;
 
     @OneToMany(mappedBy = "box")
-    private List<BoxLike> boxLikes = new ArrayList<>();
+    private List<Like> boxLikes = new ArrayList<>();
 }

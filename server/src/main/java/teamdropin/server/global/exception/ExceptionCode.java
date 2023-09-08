@@ -40,7 +40,8 @@ public enum ExceptionCode {
 
     //유효하지 않는 토큰
     TOKEN_INVALID(401, "Token is invalid"),
-    LIKE_NOT_FOUND(404, "Like not found" );
+    LIKE_NOT_FOUND(404, "Like not found" ),
+    BOX_NOT_FOUND(404, "BOX not found" );
     @Getter
     private final int status;
     @Getter
