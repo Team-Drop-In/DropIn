@@ -3,6 +3,7 @@ package teamdropin.server.domain.post.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,9 +16,12 @@ import teamdropin.server.domain.member.entity.Member;
 import teamdropin.server.domain.member.repository.MemberRepository;
 import teamdropin.server.domain.member.service.MemberService;
 import teamdropin.server.domain.post.dto.GetPostResponseDto;
+import teamdropin.server.domain.post.dto.PostSearchCondition;
+import teamdropin.server.domain.post.dto.PostSearchDto;
 import teamdropin.server.domain.post.dto.UpdatePostRequestDto;
 import teamdropin.server.domain.post.entity.Post;
 import teamdropin.server.domain.post.mapper.PostMapper;
+import teamdropin.server.domain.post.repository.PostQuerydslRepository;
 import teamdropin.server.domain.post.repository.PostRepository;
 import teamdropin.server.global.exception.BusinessLogicException;
 import teamdropin.server.global.exception.ExceptionCode;
@@ -37,6 +41,7 @@ public class PostService {
     private final CommentMapper commentMapper;
     private final MemberService memberService;
     private final LikeService likeService;
+    private final PostQuerydslRepository postQuerydslRepository;
 
 
     @Transactional
@@ -82,4 +87,9 @@ public class PostService {
         return postRepository.findAll(PageRequest.of(page, size,
                                                     Sort.by("id").descending()));
     }
+
+    public Page<PostSearchDto> getSearchPosts(PostSearchCondition condition, Pageable pageable){
+        return postQuerydslRepository.search(condition,pageable);
+    }
+
 }

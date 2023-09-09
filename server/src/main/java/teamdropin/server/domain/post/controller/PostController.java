@@ -3,6 +3,8 @@ package teamdropin.server.domain.post.controller;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -13,10 +15,7 @@ import teamdropin.server.domain.comment.mapper.CommentMapper;
 import teamdropin.server.domain.like.service.LikeService;
 import teamdropin.server.domain.member.entity.Member;
 import teamdropin.server.domain.member.service.MemberService;
-import teamdropin.server.domain.post.dto.CreatePostRequest;
-import teamdropin.server.domain.post.dto.GetAllPostResponseDto;
-import teamdropin.server.domain.post.dto.GetPostResponseDto;
-import teamdropin.server.domain.post.dto.UpdatePostRequestDto;
+import teamdropin.server.domain.post.dto.*;
 import teamdropin.server.domain.post.entity.Post;
 import teamdropin.server.domain.post.mapper.PostMapper;
 import teamdropin.server.domain.post.service.PostService;
@@ -99,12 +98,19 @@ public class PostController {
     }
 
     @GetMapping("/posts")
-    public ResponseEntity<MultiResponseDto> getPosts(@Positive @RequestParam int page,
-                                                     @Positive @RequestParam int size){
-
-        Page<Post> pagePosts = postService.getAllPosts(page -1 , size);
+    public ResponseEntity<MultiResponseDto> getPosts(@RequestParam int page,
+                                                     @RequestParam int size){
+        Page<Post> pagePosts = postService.getAllPosts(page , size);
         List<Post> posts = pagePosts.getContent();
         List<GetAllPostResponseDto> getAllPostResponseDtoList = postMapper.postToGetAllPostResponseDtoList(posts);
         return new ResponseEntity<>(new MultiResponseDto<>(getAllPostResponseDtoList,pagePosts),HttpStatus.OK);
+    }
+
+
+    @GetMapping("post/search")
+    public ResponseEntity<MultiResponseDto> searchPostsPage(PostSearchCondition condition, Pageable pageable){
+        Page<PostSearchDto> searchPosts = postService.getSearchPosts(condition,pageable);
+        List<PostSearchDto> posts = searchPosts.getContent();
+        return new ResponseEntity<>(new MultiResponseDto<>(posts,searchPosts),HttpStatus.OK);
     }
 }
