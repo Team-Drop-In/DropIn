@@ -45,7 +45,9 @@ public class PostQuerydslRepository {
                 .where(
                         post.member.nickname.contains(condition.getSearch()).or(
                                 post.title.contains(condition.getSearch())).or(
-                                post.body.contains(condition.getSearch()))
+                                post.body.contains(condition.getSearch())).or(
+                                comment.body.contains(condition.getSearch())
+                        )
                 )
                 .orderBy(post.createdDate.desc())
                 .offset(pageable.getOffset())
