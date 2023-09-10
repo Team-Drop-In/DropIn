@@ -3,6 +3,7 @@ import { COLOR } from "../../styles/theme";
 import { GiMale } from "react-icons/gi";
 import Input from "../common/Input";
 import Button from "../common/Button";
+import ImageUpload from "./ImageUpload";
 import { AiOutlineRight } from "react-icons/ai";
 import { Controller, useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
@@ -12,6 +13,9 @@ import { duplicateNicknameApi } from "../../apis/api";
 const ModifyForm = ({ setChangeInfo }) => {
   const [nicknameValue, setNicknameValue] = useState("");
   const [isNicknameAvailable, setIsNicknameAvailable] = useState(false);
+  const [imageUrl, setImageUrl] = useState(null);
+  const [imageData, setImageData] = useState(new FormData());
+
   const {
     handleSubmit,
     control,
@@ -56,13 +60,20 @@ const ModifyForm = ({ setChangeInfo }) => {
     }
   };
 
+  const onFormSubmit = async () => {
+    console.log(nicknameValue);
+  };
+
   return (
     <>
       <User>
         <Img>
-          <div>
-            <img src="http://placehold.it/200" alt="프로필" />
-          </div>
+          <ImageUpload
+            imageUrl={imageUrl}
+            setImageUrl={setImageUrl}
+            imageData={imageData}
+            setImageData={setImageData}
+          />
           <Username>
             <span>닉네임</span>
             <GiMale size={20} color={COLOR.gender_blue} />
@@ -77,7 +88,7 @@ const ModifyForm = ({ setChangeInfo }) => {
             <Label>이름</Label>
             <span>테스트</span>
           </div>
-          <Form>
+          <Form onSubmit={handleSubmit(onFormSubmit)}>
             <Controller
               name={"nickname"}
               control={control}
@@ -119,11 +130,12 @@ const ModifyForm = ({ setChangeInfo }) => {
       <ButtonWrapper>
         <Button
           text={"수정완료"}
-          type="button"
+          type="submit"
           width={"100%"}
           height={"39px"}
           style={{
             backgroundColor: ` ${COLOR.main_yellow}`,
+            cursor: isValid ? "pointer" : "default",
           }}
         />
         <StyledLink to="/changepwd">
@@ -153,19 +165,6 @@ const Img = styled.div`
   align-items: center;
   object-fit: contain;
   padding: 20px;
-
-  & > div:first-of-type {
-    width: 150px;
-    height: 150px;
-    border-radius: 50%;
-    overflow: hidden;
-  }
-
-  & > div:first-of-type > img {
-    width: 150px;
-    height: 150px;
-    object-fit: cover;
-  }
 `;
 
 const Username = styled.div`
