@@ -4,7 +4,7 @@ import Header from "./components/common/Header";
 const Login = lazy(() => import("./pages/user/Login"));
 const Signup = lazy(() => import("./pages/user/Signup"));
 const FindPwd = lazy(() => import("./pages/user/FindPwd"));
-const FindEmail = lazy(() => import("./pages/user/FindEmail"));
+// const FindEmail = lazy(() => import("./pages/user/FindEmail"));
 const ChangePwd = lazy(() => import("./pages/user/ChangePwd"));
 const Leave = lazy(() => import("./pages/user/Leave"));
 const LeaveConfirm = lazy(() => import("./pages/user/LeaveConfirm"));
@@ -23,7 +23,7 @@ const App = () => {
           <Route path="/profile" element={<Profile />} />
           <Route path="/mypage" element={<Mypage />} />
           <Route path="/findpwd" element={<FindPwd />} />
-          <Route path="/findemail" element={<FindEmail />} />
+          {/* <Route path="/findemail" element={<FindEmail />} /> */}
           <Route path="/changePwd" element={<ChangePwd />} />
           <Route path="/leave" element={<Leave />} />
           <Route path="/leaveconfirm" element={<LeaveConfirm />} />

@@ -50,18 +50,6 @@ const Login = () => {
   };
 
   const onFormSubmit = async (data) => {
-    // try {
-    //   const response = await loginApi(data);
-    //   console.log(response);
-    //   const accessToken = response.headers.get["authorization"];
-    //   localStorage.setItem("accessToken", accessToken);
-    //   console.log(accessToken);
-    //   // localStorage.setItem("accessToken", response.data.access_token);
-    //   navigate("/");
-    // } catch (error) {
-    //   console.error("로그인 실패:", error);
-    //   setError(true);
-    // }
     loginApi(data)
       .then((response) => {
         console.log(response);
@@ -130,7 +118,7 @@ const Login = () => {
         </Form>
         <More>
           <Find>
-            <Link to="/findemail">아이디</Link> /{" "}
+            {/* <Link to="/findemail">아이디</Link> /{" "} */}
             <Link to="/findpwd">비밀번호</Link> 찾기
           </Find>
           <Google>구글</Google>
