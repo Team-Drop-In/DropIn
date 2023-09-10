@@ -9,7 +9,7 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 import { duplicateNicknameApi } from "../../apis/api";
 
-const ModifyForm = () => {
+const ModifyForm = ({ setChangeInfo }) => {
   const [nicknameValue, setNicknameValue] = useState("");
   const [isNicknameAvailable, setIsNicknameAvailable] = useState(false);
   const {
@@ -142,6 +142,7 @@ const User = styled.section`
   justify-content: center;
   align-items: flex-start;
   flex-wrap: wrap;
+  margin-bottom: 30px;
 `;
 
 const Img = styled.div`

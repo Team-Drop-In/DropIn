@@ -5,7 +5,7 @@ import { AiOutlineRight } from "react-icons/ai";
 import Button from "../../components/common/Button";
 import { Link } from "react-router-dom";
 
-const MyInfo = () => {
+const MyInfo = ({ setChangeInfo }) => {
   return (
     <>
       <User>
@@ -54,6 +54,7 @@ const MyInfo = () => {
           style={{
             backgroundColor: ` ${COLOR.main_yellow}`,
           }}
+          onClick={() => setChangeInfo(true)}
         />
         <StyledLink to="/leave">
           <span>회원탈퇴</span>

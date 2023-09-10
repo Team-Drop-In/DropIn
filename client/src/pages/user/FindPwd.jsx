@@ -4,11 +4,15 @@ import { COLOR } from "../../styles/theme";
 import Input from "../../components/common/Input";
 import Button from "../../components/common/Button";
 import FindMessage from "../../components/user/FindMessage";
+import { useState } from "react";
 import { useForm, Controller } from "react-hook-form";
+import { findPwdApi } from "../../apis/api";
 
 const findword = "임시 비밀번호";
 
 const FindPwd = () => {
+  const [findpwd, setFindPwd] = useState(false);
+
   const {
     handleSubmit,
     control,
@@ -39,8 +43,14 @@ const FindPwd = () => {
     },
   };
 
-  const onFormSubmit = (data) => {
-    // console.log(data);
+  const onFormSubmit = async (data) => {
+    try {
+      await findPwdApi(data);
+      setFindPwd(true);
+    } catch (error) {
+      console.log(error);
+      console.error("비밀번호 찾기 실패:", error);
+    }
   };
 
   return (
@@ -50,56 +60,59 @@ const FindPwd = () => {
           <h2>비밀번호 찾기</h2>
           <p>회원가입 시 입력한 이메일과 이름을 입력해주세요</p>
         </Title>
-        <Form onSubmit={handleSubmit(onFormSubmit)}>
-          <Controller
-            name={"username"}
-            control={control}
-            rules={emailValidationOptions}
-            render={({ field, fieldState: { error } }) => (
-              <Input
-                id="username"
-                label="이메일"
-                type="text"
-                placeholder="이메일"
-                errorMessage={error?.message}
-                onChange={field.onChange}
-                value={field.value || ""}
-              />
-            )}
-          />
-          <Controller
-            name={"name"}
-            control={control}
-            rules={nameValidationOptions}
-            render={({ field, fieldState: { error } }) => (
-              <Input
-                id="name"
-                label="이름"
-                type="text"
-                height={"39px"}
-                placeholder="이름을 입력해 주세요"
-                errorMessage={error?.message}
-                onChange={field.onChange}
-                value={field.value || ""}
-              />
-            )}
-          />
-          {errors.form && <ErrorMsg>일치하는 정보가 없습니다</ErrorMsg>}
-          <Button
-            type="submit"
-            text={"확인"}
-            height={"39px"}
-            margin={"10px 0 0 0"}
-            disabled={!isValid}
-            style={{
-              backgroundColor: isValid
-                ? `${COLOR.main_yellow}`
-                : `${COLOR.btn_grey}`,
-              cursor: isValid ? "pointer" : "default",
-            }}
-          />
-        </Form>
-        <FindMessage findword={findword} />
+        {!findpwd ? (
+          <Form onSubmit={handleSubmit(onFormSubmit)}>
+            <Controller
+              name={"username"}
+              control={control}
+              rules={emailValidationOptions}
+              render={({ field, fieldState: { error } }) => (
+                <Input
+                  id="username"
+                  label="이메일"
+                  type="text"
+                  placeholder="이메일"
+                  errorMessage={error?.message}
+                  onChange={field.onChange}
+                  value={field.value || ""}
+                />
+              )}
+            />
+            <Controller
+              name={"name"}
+              control={control}
+              rules={nameValidationOptions}
+              render={({ field, fieldState: { error } }) => (
+                <Input
+                  id="name"
+                  label="이름"
+                  type="text"
+                  height={"39px"}
+                  placeholder="이름을 입력해 주세요"
+                  errorMessage={error?.message}
+                  onChange={field.onChange}
+                  value={field.value || ""}
+                />
+              )}
+            />
+            {errors.form && <ErrorMsg>일치하는 정보가 없습니다</ErrorMsg>}
+            <Button
+              type="submit"
+              text={"확인"}
+              height={"39px"}
+              margin={"10px 0 0 0"}
+              disabled={!isValid}
+              style={{
+                backgroundColor: isValid
+                  ? `${COLOR.main_yellow}`
+                  : `${COLOR.btn_grey}`,
+                cursor: isValid ? "pointer" : "default",
+              }}
+            />
+          </Form>
+        ) : (
+          <FindMessage findword={findword} />
+        )}
       </Contain>
     </Container>
   );

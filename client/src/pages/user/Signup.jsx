@@ -12,7 +12,7 @@ import {
   duplicateEmailApi,
   duplicateNicknameApi,
   getAuthCodeApi,
-  sendAuthCodeApi,
+  checkAuthCodeApi,
 } from "../../apis/api";
 
 const Signup = () => {
@@ -29,7 +29,6 @@ const Signup = () => {
   const [isNicknameAvailable, setIsNicknameAvailable] = useState(false);
   const [getAuthCode, setIsGetAuthCode] = useState(false);
   const [checkAuthCode, setIsCheckAuthCode] = useState(false);
-  const [isSignupDisabled, setIsSignupDisabled] = useState(false); // 회원가입 버튼 비활성화 상태
 
   const emailOptions = {
     required: "이메일을 입력해주세요.",
@@ -153,7 +152,7 @@ const Signup = () => {
     };
 
     try {
-      await sendAuthCodeApi(data);
+      await checkAuthCodeApi(data);
       setIsCheckAuthCode(true);
     } catch (error) {
       console.error("로그인 실패:", error);

@@ -8,20 +8,20 @@ const api = axios.create({
   // withCredentials: true,
 });
 
-const getAuthorizedApi = () => {
-  const token = localStorage.getItem("accessToken");
+// const getAuthorizedApi = () => {
+//   const token = localStorage.getItem("accessToken");
 
-  const authorizedApi = axios.create({
-    baseURL:
-      "http://ec2-43-202-64-101.ap-northeast-2.compute.amazonaws.com:8080",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-  });
+//   const authorizedApi = axios.create({
+//     baseURL:
+//       "http://ec2-43-202-64-101.ap-northeast-2.compute.amazonaws.com:8080",
+//     headers: {
+//       "Content-Type": "application/json",
+//       Authorization: `Bearer ${token}`,
+//     },
+//   });
 
-  return authorizedApi;
-};
+//   return authorizedApi;
+// };
 
 export const getHelloApi = async () => {
   try {
@@ -82,7 +82,7 @@ export const getAuthCodeApi = async (data) => {
   }
 };
 
-export const sendAuthCodeApi = async (data) => {
+export const checkAuthCodeApi = async (data) => {
   try {
     const response = await api.post("/api/email/verify-code", data);
     return response.data;
