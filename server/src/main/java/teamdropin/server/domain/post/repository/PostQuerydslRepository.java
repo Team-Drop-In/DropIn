@@ -4,6 +4,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.stereotype.Repository;
 import teamdropin.server.domain.post.dto.PostSearchCondition;
 import teamdropin.server.domain.post.dto.PostSearchDto;
@@ -44,17 +45,30 @@ public class PostQuerydslRepository {
                 .leftJoin(post.comments, comment)
                 .where(
                         post.member.nickname.contains(condition.getSearch()).or(
-                                post.title.contains(condition.getSearch())).or(
-                                post.body.contains(condition.getSearch())).or(
-                                comment.body.contains(condition.getSearch())
+                        post.title.contains(condition.getSearch())).or(
+                        post.body.contains(condition.getSearch())).or(
+                        comment.body.contains(condition.getSearch())
                         )
                 )
                 .orderBy(post.createdDate.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
-                .fetch()
-                ;
+                .fetch();
+
+//        Long total = queryFactory
+//                .select(post.count())
+//                .from(member)
+//                .leftJoin(post.member, member)
+//                .leftJoin(post.comments, comment)
+//                .where(
+//                post.member.nickname.contains(condition.getSearch()).or(
+//                post.title.contains(condition.getSearch())).or(
+//                post.body.contains(condition.getSearch())).or(
+//                comment.body.contains(condition.getSearch())))
+//                .fetchOne();
+
+
         long total = content.size();
-        return new PageImpl<>(content, pageable, total);
+        return PageableExecutionUtils.getPage(content, pageable, () -> total);
     }
 }
