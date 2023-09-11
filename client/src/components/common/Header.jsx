@@ -4,12 +4,12 @@ import LogoImage from "../../images/logo.svg";
 import { BiSolidUser } from "react-icons/bi";
 import { useNavigate, Link } from "react-router-dom";
 import { useRecoilValue } from "recoil";
-import { isLoginState } from "../../atoms/auth";
+import { loginState } from "../../atoms/auth";
 import { COLOR } from "../../styles/theme";
 
 const Header = () => {
   const navigate = useNavigate();
-  const isLogin = useRecoilValue(isLoginState);
+  const isLogin = useRecoilValue(loginState);
 
   return (
     <Wrap>
@@ -22,7 +22,7 @@ const Header = () => {
           <Link>커뮤니티</Link>
         </Tab>
 
-        {!isLogin ? (
+        {isLogin ? (
           <LoginUser>
             <BiSolidUser size={25} color={COLOR.main_yellow} />
           </LoginUser>
@@ -85,4 +85,5 @@ const LoginUser = styled.div`
   justify-content: center;
   align-items: center;
   background-color: ${COLOR.btn_grey};
+  cursor: pointer;
 `;

@@ -1,20 +1,35 @@
 import styled from "styled-components";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Container, Content } from "../../styles/style";
 import MyInfo from "../../components/user/MyInfo";
 import ModifyForm from "../../components/user/ModifyForm";
+import { getMyInfo } from "../../apis/api";
 
 const Mypage = () => {
   const [changeInfo, setChangeInfo] = useState(false);
+  const [userInfo, setUserInfo] = useState({});
+  const [error, setError] = useState(false);
 
+  useEffect(() => {
+    getMyInfo()
+      .then((res) => {
+        setUserInfo(res.data);
+      })
+      .catch((error) => {
+        console.error("로그인 실패:", error);
+        setError(true);
+      });
+  }, []);
+
+  // console.log(userInfo);
   return (
     <Container>
       <Contain>
         <h2>내 정보</h2>
         {!changeInfo ? (
-          <MyInfo setChangeInfo={setChangeInfo} />
+          <MyInfo setChangeInfo={setChangeInfo} data={userInfo} />
         ) : (
-          <ModifyForm setChangeInfo={setChangeInfo} />
+          <ModifyForm setChangeInfo={setChangeInfo} data={userInfo} />
         )}
       </Contain>
     </Container>

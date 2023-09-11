@@ -5,7 +5,7 @@ import { AiOutlineRight } from "react-icons/ai";
 import Button from "../../components/common/Button";
 import { Link } from "react-router-dom";
 
-const MyInfo = ({ setChangeInfo }) => {
+const MyInfo = ({ setChangeInfo, data }) => {
   return (
     <>
       <User>
@@ -21,11 +21,11 @@ const MyInfo = ({ setChangeInfo }) => {
         <Info>
           <div>
             <Label>이메일</Label>
-            <span>Test@gmail.com</span>
+            <span>{data.username}</span>
           </div>
           <div>
             <Label>이름</Label>
-            <span>테스트</span>
+            <span>{data.name}</span>
           </div>
           <div>
             <Label>작성한 게시글수</Label>

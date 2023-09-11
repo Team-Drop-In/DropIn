@@ -10,7 +10,7 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 import { duplicateNicknameApi } from "../../apis/api";
 
-const ModifyForm = ({ setChangeInfo }) => {
+const ModifyForm = ({ setChangeInfo, data }) => {
   const [nicknameValue, setNicknameValue] = useState("");
   const [isNicknameAvailable, setIsNicknameAvailable] = useState(false);
   const [imageUrl, setImageUrl] = useState(null);
@@ -82,11 +82,11 @@ const ModifyForm = ({ setChangeInfo }) => {
         <Info>
           <div>
             <Label>이메일</Label>
-            <span>Test@gmail.com</span>
+            <span>{data.username}</span>
           </div>
           <div>
             <Label>이름</Label>
-            <span>테스트</span>
+            <span>{data.name}</span>
           </div>
           <Form onSubmit={handleSubmit(onFormSubmit)}>
             <Controller
@@ -109,6 +109,7 @@ const ModifyForm = ({ setChangeInfo }) => {
                 />
               )}
             />
+
             <Button
               text={"중복확인"}
               type="button"
@@ -138,10 +139,12 @@ const ModifyForm = ({ setChangeInfo }) => {
             cursor: isValid ? "pointer" : "default",
           }}
         />
-        <StyledLink to="/changepwd">
-          <span>비밀번호 변경</span>
-          <AiOutlineRight />
-        </StyledLink>
+        {data.oauthProvider === "dropin" && (
+          <StyledLink to="/changepwd">
+            <span>비밀번호 변경</span>
+            <AiOutlineRight />
+          </StyledLink>
+        )}
       </ButtonWrapper>
     </>
   );

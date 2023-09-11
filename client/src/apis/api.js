@@ -37,7 +37,8 @@ export const loginApi = async (data) => {
   try {
     const res = await api.post("/api/login", data);
     const accessToken = res.headers["authorization"];
-    api.defaults.headers.common["Authorization"] = `Bearer ${accessToken}`;
+    localStorage.setItem("accessToken", accessToken);
+    axios.defaults.headers["Authorization"] = accessToken;
   } catch (error) {
     throw new Error(error.response.data.message);
   }
@@ -109,6 +110,20 @@ export const leaveMemberApi = async () => {
 export const findPwdApi = async (data) => {
   try {
     const response = await api.post("/api/email/send-new-password", data);
+    return response.data;
+  } catch (error) {
+    console.error("API Error:", error);
+    throw error;
+  }
+};
+
+export const getMyInfo = async () => {
+  try {
+    const response = await api.get("/api/member/my-page", {
+      headers: {
+        Authorization: `${localStorage.getItem("accessToken")}`,
+      },
+    });
     return response.data;
   } catch (error) {
     console.error("API Error:", error);

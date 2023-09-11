@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import axios from "axios";
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { Controller, useForm } from "react-hook-form";
@@ -9,9 +8,12 @@ import Input from "../../components/common/Input";
 import Button from "../../components/common/Button";
 import LogoImage from "../../images/logo.svg";
 import { loginApi } from "../../apis/api";
+import { loginState } from "../../atoms/auth";
+import { useSetRecoilState } from "recoil";
 
 const Login = () => {
   const [error, setError] = useState(false);
+  const setLogin = useSetRecoilState(loginState);
 
   const navigate = useNavigate();
   const {
@@ -49,15 +51,11 @@ const Login = () => {
     },
   };
 
-  const onFormSubmit = async (data) => {
+  const onFormSubmit = (data) => {
     loginApi(data)
-      .then((response) => {
-        console.log(response);
-        const accessToken = response.headers["authorization"];
-        localStorage.setItem("accessToken", accessToken);
-
-        axios.defaults.headers["Authorization"] = accessToken;
+      .then(() => {
         navigate("/");
+        setLogin(true);
       })
       .catch((error) => {
         console.error("로그인 실패:", error);
