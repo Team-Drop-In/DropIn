@@ -17,6 +17,8 @@ spring:
             clientId:
             clientSecret:
             scope:
+            redirectUrl:
+
   jwt:
     key:
     access-token-expiration-minutes:
