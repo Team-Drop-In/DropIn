@@ -1,8 +1,8 @@
 package teamdropin.server.domain.post.repository;
 
+import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.stereotype.Repository;
@@ -55,20 +55,17 @@ public class PostQuerydslRepository {
                 .limit(pageable.getPageSize())
                 .fetch();
 
-//        Long total = queryFactory
-//                .select(post.count())
-//                .from(member)
-//                .leftJoin(post.member, member)
-//                .leftJoin(post.comments, comment)
-//                .where(
-//                post.member.nickname.contains(condition.getSearch()).or(
-//                post.title.contains(condition.getSearch())).or(
-//                post.body.contains(condition.getSearch())).or(
-//                comment.body.contains(condition.getSearch())))
-//                .fetchOne();
+        JPAQuery<Long> count = queryFactory
+                .select(post.count())
+                .from(post)
+                .leftJoin(post.member, member)
+                .leftJoin(post.comments, comment)
+                .where(
+                post.member.nickname.contains(condition.getSearch()).or(
+                post.title.contains(condition.getSearch())).or(
+                post.body.contains(condition.getSearch())).or(
+                comment.body.contains(condition.getSearch())));
 
-
-        long total = content.size();
-        return PageableExecutionUtils.getPage(content, pageable, () -> total);
+        return PageableExecutionUtils.getPage(content, pageable, count::fetchOne);
     }
 }
