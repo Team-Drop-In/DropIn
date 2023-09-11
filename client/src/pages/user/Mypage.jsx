@@ -8,7 +8,6 @@ import { getMyInfo } from "../../apis/api";
 const Mypage = () => {
   const [changeInfo, setChangeInfo] = useState(false);
   const [userInfo, setUserInfo] = useState({});
-  const [error, setError] = useState(false);
 
   useEffect(() => {
     getMyInfo()
@@ -17,7 +16,6 @@ const Mypage = () => {
       })
       .catch((error) => {
         console.error("로그인 실패:", error);
-        setError(true);
       });
   }, []);
 
