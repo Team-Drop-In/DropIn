@@ -11,5 +11,4 @@ public class AwsLoadBalancerHeathCheckController {
     @GetMapping("/health-check")
     public void check(){
     }
-
 }
