@@ -17,6 +17,8 @@ spring:
             clientId:
             clientSecret:
             scope:
+            redirectUrl: http://ec2-43-202-64-101.ap-northeast-2.compute.amazonaws.com:8080/oauth2/authorization/google
+
   jwt:
     key:
     access-token-expiration-minutes:
