@@ -234,7 +234,7 @@ const Signup = () => {
             />
             {getAuthCode ? (
               <Button
-                text={"이메일 인증"}
+                text={"인증 완료"}
                 type="button"
                 width={"110px"}
                 height={"39px"}

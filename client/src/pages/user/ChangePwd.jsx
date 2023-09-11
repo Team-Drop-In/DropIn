@@ -4,8 +4,11 @@ import { COLOR } from "../../styles/theme";
 import Input from "../../components/common/Input";
 import Button from "../../components/common/Button";
 import { useForm, Controller } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
+import { changePwdApi } from "../../apis/api";
 
 const ChangePwd = () => {
+  const navigate = useNavigate();
   const {
     handleSubmit,
     control,
@@ -32,8 +35,15 @@ const ChangePwd = () => {
     },
   };
 
-  const onFormSubmit = (data) => {
-    // 폼 제출 로직
+  const onFormSubmit = async (data) => {
+    try {
+      console.log(data);
+      await changePwdApi(data);
+      navigate("/login");
+    } catch (error) {
+      console.log(error);
+      console.error("비밀번호 찾기 실패:", error);
+    }
   };
 
   return (
@@ -84,6 +94,7 @@ const ChangePwd = () => {
                 type="password"
                 placeholder="비밀번호를 한번 더 입력해주세요"
                 errorMessage={error?.message}
+                onChange={field.onChange}
               />
             )}
           />

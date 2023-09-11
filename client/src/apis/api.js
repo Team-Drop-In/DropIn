@@ -109,7 +109,11 @@ export const leaveMemberApi = async () => {
 
 export const findPwdApi = async (data) => {
   try {
-    const response = await api.post("/api/email/send-new-password", data);
+    const response = await api.post("/api/email/send-new-password", data, {
+      headers: {
+        Authorization: `${localStorage.getItem("accessToken")}`,
+      },
+    });
     return response.data;
   } catch (error) {
     console.error("API Error:", error);
@@ -120,6 +124,34 @@ export const findPwdApi = async (data) => {
 export const getMyInfo = async () => {
   try {
     const response = await api.get("/api/member/my-page", {
+      headers: {
+        Authorization: `${localStorage.getItem("accessToken")}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("API Error:", error);
+    throw error;
+  }
+};
+
+export const getNewPwdApi = async (data) => {
+  try {
+    const response = await api.post("/api/email/send-new-password", data, {
+      headers: {
+        Authorization: `${localStorage.getItem("accessToken")}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("API Error:", error);
+    throw error;
+  }
+};
+
+export const changePwdApi = async (data) => {
+  try {
+    const response = await api.put("/api/member/password", data, {
       headers: {
         Authorization: `${localStorage.getItem("accessToken")}`,
       },
