@@ -109,8 +109,8 @@ public class SecurityConfig {
         }
     }
 
-    @Bean
-    public WebSecurityCustomizer webSecurityCustomizer(){
-        return (web) -> web.ignoring().antMatchers("/api/check-duplicate/**", "/api/email/**");
-     }
+//    @Bean
+//    public WebSecurityCustomizer webSecurityCustomizer(){
+//        return (web) -> web.ignoring().antMatchers("/api/check-duplicate/**", "/api/email/**");
+//     }
 }
