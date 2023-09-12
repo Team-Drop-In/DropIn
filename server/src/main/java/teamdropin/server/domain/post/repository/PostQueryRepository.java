@@ -18,17 +18,18 @@ import static teamdropin.server.domain.member.entity.QMember.member;
 import static teamdropin.server.domain.post.entity.QPost.post;
 
 @Repository
-public class PostQuerydslRepository {
+public class PostQueryRepository {
 
     private final EntityManager em;
     private final JPAQueryFactory queryFactory;
 
-    public PostQuerydslRepository(EntityManager em){
+    public PostQueryRepository(EntityManager em){
         this.em = em;
         this.queryFactory = new JPAQueryFactory(em);
     }
 
     public Page<PostSearchDto> search(PostSearchCondition condition, Pageable pageable){
+
         List<PostSearchDto> content = queryFactory
                 .select(new QPostSearchDto(
                         post.id.as("postId"),
