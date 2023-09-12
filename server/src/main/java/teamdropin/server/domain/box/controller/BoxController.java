@@ -84,4 +84,11 @@ public class BoxController {
         List<GetAllBoxResponseDto> getAllPostResponseDtoList = boxMapper.boxToGetAllBoxResponseDtoList(boxes);
         return new ResponseEntity<>(new MultiResponseDto<>(getAllPostResponseDtoList,pageBoxes), HttpStatus.OK);
     }
+
+    @DeleteMapping("box/{id}")
+    public ResponseEntity<Void> deleteBox(@AuthenticationPrincipal Member member,
+                                          @PathVariable("id") Long boxId){
+        boxService.deleteBox(boxId);
+        return ResponseEntity.noContent().build();
+    }
 }

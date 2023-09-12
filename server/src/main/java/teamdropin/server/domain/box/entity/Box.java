@@ -40,7 +40,7 @@ public class Box extends BaseTimeEntity {
 
     private String detail;
 
-    @OneToMany(mappedBy = "box")
+    @OneToMany(mappedBy = "box", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<BoxImage> boxImageList;
 
     @ManyToOne(fetch = FetchType.LAZY)

@@ -53,12 +53,21 @@ public class BoxService {
     }
 
     public Box getBox(Long boxId) {
-        return boxRepository.findById(boxId)
-                .orElseThrow(() -> new BusinessLogicException(ExceptionCode.BOX_NOT_FOUND));
+        return findVerifyBox(boxId);
     }
 
     public Page<Box> getAllBoxes(Pageable pageable) {
         return boxRepository.findAll(pageable);
+    }
 
+    @Transactional(readOnly = false)
+    public void deleteBox(Long boxId) {
+        Box box = findVerifyBox(boxId);
+        boxRepository.delete(box);
+    }
+
+    public Box findVerifyBox(Long boxId){
+        return boxRepository.findById(boxId)
+                .orElseThrow(() -> new BusinessLogicException(ExceptionCode.BOX_NOT_FOUND));
     }
 }
