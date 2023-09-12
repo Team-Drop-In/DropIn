@@ -1,6 +1,7 @@
 package teamdropin.server.domain.box.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -60,9 +61,14 @@ public class BoxService {
         return boxRepository.findAll(pageable);
     }
 
+    @SneakyThrows
     @Transactional(readOnly = false)
     public void deleteBox(Long boxId) {
         Box box = findVerifyBox(boxId);
+        List<BoxImage> boxImageList = box.getBoxImageList();
+        for (BoxImage boxImage : boxImageList) {
+            s3Uploader.deleteFile(boxImage.getBoxImageUrl());
+        }
         boxRepository.delete(box);
     }
 
