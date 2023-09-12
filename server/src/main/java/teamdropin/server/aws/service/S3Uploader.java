@@ -3,6 +3,7 @@ package teamdropin.server.aws.service;
 import com.amazonaws.SdkClientException;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
+import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,7 +16,10 @@ import teamdropin.server.global.exception.ExceptionCode;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -23,13 +27,18 @@ import java.util.Optional;
 public class S3Uploader {
     private final AmazonS3Client amazonS3Client;
 
+    private final List<String> IMAGE_FILE_FORMAT = List.of("jpg",".jpeg",".png","JPG","JPEG","PNG");
+
     @Value("${cloud.aws.imageS3.bucket}")
     private String bucket;
 
     @Value("${cloud.aws.imageS3.bucketUrl}")
     private String bucketUrl;
 
-    public String upload(MultipartFile multipartFile, String newFileName, String dirName) throws IOException{
+    public String upload(MultipartFile multipartFile, String dirName) throws IOException{
+
+        String newFileName = createFileName(multipartFile.getOriginalFilename());
+
         File uploadFile = convert(multipartFile, newFileName)
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.FILE_CONVERT_FAILED));
         return upload(uploadFile, dirName);
@@ -80,5 +89,30 @@ public class S3Uploader {
         } catch (SdkClientException e){
             throw new IOException("Error deleting file from S3");
         }
+    }
+
+    public List<String> uploadImages(List<MultipartFile> multipartFileList, String dirName) throws IOException {
+        List<String> imageUrlList = new ArrayList<>();
+
+        for (MultipartFile file : multipartFileList) {
+            String uploadImageUrl = upload(file, dirName);
+            imageUrlList.add(uploadImageUrl);
+        }
+        return imageUrlList;
+    }
+
+    private String createFileName(String filename) {
+        return UUID.randomUUID().toString().concat(getFileExtension(filename));
+    }
+
+    private String getFileExtension(String filename) {
+        if(filename.length() == 0){
+            throw new BusinessLogicException(ExceptionCode.WRONG_INPUT_IMAGE);
+        }
+        String fileExtension = filename.substring(filename.lastIndexOf("."));
+        if(!IMAGE_FILE_FORMAT.contains(fileExtension)){
+            throw new BusinessLogicException(ExceptionCode.WRONG_IMAGE_FORMAT);
+        }
+        return fileExtension;
     }
 }

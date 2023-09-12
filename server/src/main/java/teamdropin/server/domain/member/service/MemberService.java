@@ -161,9 +161,8 @@ public class MemberService {
         if(member.getProfileImageUrl() != null) {
             s3Uploader.deleteFile(member.getProfileImageUrl());
         }
-        String fileExtension = getFileExtension(image.getOriginalFilename());
-        String newFileName = UUID.randomUUID().toString() + "-profileImage" + fileExtension;
-        return s3Uploader.upload(image, newFileName, "member");
+        String dirName = "member";
+        return s3Uploader.upload(image,dirName);
     }
 
     @PostConstruct
