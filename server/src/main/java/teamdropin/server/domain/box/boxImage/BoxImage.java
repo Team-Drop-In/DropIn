@@ -17,15 +17,19 @@ import javax.persistence.*;
 public class BoxImage {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "boxImage_id")
     private Long id;
+
+    private int imageIdx;
     private String boxImageUrl;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "box_id")
     private Box box;
 
-    public BoxImage(String boxImageUrl, Box box){
+    public BoxImage(String boxImageUrl, int imageIdx, Box box){
         this.boxImageUrl = boxImageUrl;
+        this.imageIdx = imageIdx;
         this.box = box;
     }
 }

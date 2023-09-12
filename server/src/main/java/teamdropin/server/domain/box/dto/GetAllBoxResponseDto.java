@@ -5,20 +5,14 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-
 @Data
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class BoxCreateRequestDto {
-
+@Builder
+public class GetAllBoxResponseDto {
+    private Long id;
     private String name;
+    private String mainImageUrl;
+    private int likeCount;
     private String location;
-    private String phoneNumber;
-    private int cost;
-    private int area;
-    private boolean barbellDrop;
-    private String url;
-    private String detail;
-
 }
