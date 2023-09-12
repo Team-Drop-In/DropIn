@@ -28,17 +28,17 @@ public class BoxService {
     @Transactional(readOnly = false)
     public Long createBox(Member member, Box box, List<MultipartFile> multipartFileList) throws IOException {
 
-        List<String> imageUrlList = s3Uploader.uploadImages(multipartFileList, "box");
-
         box.addMember(member);
-
         boxRepository.save(box);
 
-        for (String imageUrl : imageUrlList) {
-            BoxImage boxImage = new BoxImage(imageUrl, box);
-            boxImageRepository.save(boxImage);
-        }
+        if(multipartFileList != null) {
+            List<String> imageUrlList = s3Uploader.uploadImages(multipartFileList, "box");
+            for (String imageUrl : imageUrlList) {
+                BoxImage boxImage = new BoxImage(imageUrl, box);
+                boxImageRepository.save(boxImage);
+            }
 
+        }
         return box.getId();
     }
 }

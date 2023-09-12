@@ -32,7 +32,7 @@ public class BoxController {
      */
     @PostMapping("/box")
     public ResponseEntity<URI> createBox(@AuthenticationPrincipal Member member,
-                                          @RequestPart("image") List<MultipartFile> multipartFileList,
+                                          @RequestPart(value = "image", required = false) List<MultipartFile> multipartFileList,
                                           @RequestPart("boxCreateRequest") BoxCreateRequestDto boxCreateRequestDto) throws IOException {
         Box box = boxMapper.toEntity(boxCreateRequestDto);
         Long boxId = boxService.createBox(member, box, multipartFileList);

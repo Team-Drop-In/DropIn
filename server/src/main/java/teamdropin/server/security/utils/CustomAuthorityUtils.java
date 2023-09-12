@@ -26,4 +26,8 @@ public class CustomAuthorityUtils {
         return USER_ROLES_STRING;
     }
 
+    public List<String> createManagerRoles() {
+        return MANAGER_ROLES_STRING;
+    }
+
 }
