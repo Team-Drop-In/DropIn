@@ -14,8 +14,8 @@ const Mypage = lazy(() => import("./pages/user/Mypage"));
 const App = () => {
   return (
     <div>
-      <Header />
       <Suspense fallback={<div>Loading</div>}>
+        <Header />
         <Routes>
           <Route path="/" element={<div>홈</div>} />
           <Route path="/login" element={<Login />} />

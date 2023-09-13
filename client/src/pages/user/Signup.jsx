@@ -20,6 +20,7 @@ const Signup = () => {
   const {
     handleSubmit,
     control,
+    getValues,
     formState: { isValid },
   } = useForm();
   const [emailValue, setEmailValue] = useState("");
