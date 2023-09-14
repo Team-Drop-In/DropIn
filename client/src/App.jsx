@@ -1,6 +1,7 @@
 import { Suspense, lazy } from "react";
 import { Routes, Route } from "react-router-dom";
 import Header from "./components/common/Header";
+import Menu from "./components/common/Menu";
 const Login = lazy(() => import("./pages/user/Login"));
 const Signup = lazy(() => import("./pages/user/Signup"));
 const FindPwd = lazy(() => import("./pages/user/FindPwd"));
@@ -16,6 +17,7 @@ const App = () => {
     <div>
       <Suspense fallback={<div>Loading</div>}>
         <Header />
+        <Menu />
         <Routes>
           <Route path="/" element={<div>홈</div>} />
           <Route path="/login" element={<Login />} />

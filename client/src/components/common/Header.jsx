@@ -41,7 +41,7 @@ export default Header;
 
 const Wrap = styled(Container)`
   position: fixed;
-  z-index: 9999;
+  z-index: 10;
   border-bottom: 1px solid #2c2c2c;
 
   button {
