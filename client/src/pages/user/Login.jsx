@@ -8,7 +8,7 @@ import Input from "../../components/common/Input";
 import Button from "../../components/common/Button";
 import LogoImage from "../../images/logo.svg";
 import { loginApi } from "../../apis/api";
-import { loginState } from "../../atoms/auth";
+import { loginState } from "../../atoms/atom";
 import { useSetRecoilState } from "recoil";
 
 const Login = () => {

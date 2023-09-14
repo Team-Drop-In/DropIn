@@ -9,3 +9,8 @@ export const loginState = atom({
   key: "loginState",
   default: getInitialLoginState(),
 });
+
+export const ModalState = atom({
+  key: "ModalState",
+  default: false,
+});

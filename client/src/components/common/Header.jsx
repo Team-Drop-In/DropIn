@@ -4,7 +4,7 @@ import LogoImage from "../../images/logo.svg";
 import { BiSolidUser } from "react-icons/bi";
 import { useNavigate, Link } from "react-router-dom";
 import { useRecoilValue } from "recoil";
-import { loginState } from "../../atoms/auth";
+import { loginState } from "../../atoms/atom";
 import { COLOR } from "../../styles/theme";
 
 const Header = () => {
