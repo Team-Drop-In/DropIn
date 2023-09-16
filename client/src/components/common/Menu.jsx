@@ -1,11 +1,18 @@
 import styled from "styled-components";
 import { Container, Content } from "../../styles/style";
 import { COLOR } from "../../styles/theme";
-import { Link } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
+import { loginState } from "../../atoms/atom";
+import { useSetRecoilState } from "recoil";
 
 const Menu = () => {
+  const setLogin = useSetRecoilState(loginState);
+  const navigate = useNavigate();
+
   const handleLogout = () => {
-    //로그아웃 시 실행
+    localStorage.removeItem("accessToken");
+    setLogin(false);
+    navigate("/leaveconfirm");
   };
 
   return (
@@ -27,7 +34,6 @@ export default Menu;
 
 const Contain = styled(Container)`
   position: absolute;
-  z-index: 100;
 `;
 
 const Wrap = styled(Content)`
@@ -37,6 +43,7 @@ const Wrap = styled(Content)`
 `;
 
 const Tabmenu = styled.div`
+  z-index: 100;
   position: relative;
   bottom: 10px;
   display: flex;
@@ -81,4 +88,5 @@ const Button = styled.button`
   font-family: "Pretendard-Regular";
   background-color: transparent;
   border: none;
+  cursor: pointer;
 `;

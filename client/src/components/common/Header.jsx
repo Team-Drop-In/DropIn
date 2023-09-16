@@ -5,11 +5,15 @@ import { BiSolidUser } from "react-icons/bi";
 import { useNavigate, Link } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import { loginState } from "../../atoms/atom";
+import { ModalState } from "../../atoms/atom";
+import { useSetRecoilState } from "recoil";
+
 import { COLOR } from "../../styles/theme";
 
 const Header = () => {
   const navigate = useNavigate();
   const isLogin = useRecoilValue(loginState);
+  const setModal = useSetRecoilState(ModalState);
 
   return (
     <Wrap>
@@ -21,9 +25,8 @@ const Header = () => {
           <Link to="/">DropIn</Link>
           <Link>커뮤니티</Link>
         </Tab>
-
         {isLogin ? (
-          <LoginUser>
+          <LoginUser onClick={(prev) => setModal(!prev)}>
             <BiSolidUser size={25} color={COLOR.main_yellow} />
           </LoginUser>
         ) : (
@@ -77,6 +80,8 @@ const User = styled.div`
 `;
 
 const LoginUser = styled.div`
+  z-index: 150;
+  cursor: pointer;
   width: 40px;
   height: 40px;
   border-radius: 50%;
@@ -85,5 +90,4 @@ const LoginUser = styled.div`
   justify-content: center;
   align-items: center;
   background-color: ${COLOR.btn_grey};
-  cursor: pointer;
 `;
