@@ -64,6 +64,18 @@ const Signup = () => {
     },
   };
 
+  const passwordCheckOptions = {
+    required: "비밀번호를 한번 더 입력해주세요",
+    validate: (value) => {
+      const password = getValues("password");
+      if (value === password) {
+        return true;
+      } else {
+        return "비밀번호와 일치하지 않습니다";
+      }
+    },
+  };
+
   const GENDER_OPTIONS = ["UNSELECTED", "MALE", "FEMALE"];
 
   const nameValidationOptions = {
@@ -278,6 +290,7 @@ const Signup = () => {
           <Controller
             name={"passwordcheck"}
             control={control}
+            rules={passwordCheckOptions}
             render={({ field, fieldState: { error } }) => (
               <Input
                 label="비밀번호 확인"
@@ -285,6 +298,8 @@ const Signup = () => {
                 width={"300px"}
                 placeholder="비밀번호를 한번 더 입력해주세요"
                 errorMessage={error?.message}
+                onChange={(e) => field.onChange(e.target.value)}
+                value={field.value || ""}
               />
             )}
           />

@@ -2,6 +2,8 @@ import { Suspense, lazy } from "react";
 import { Routes, Route } from "react-router-dom";
 import Header from "./components/common/Header";
 import Menu from "./components/common/Menu";
+import { ModalState } from "./atoms/atom";
+import { useRecoilValue } from "recoil";
 const Login = lazy(() => import("./pages/user/Login"));
 const Signup = lazy(() => import("./pages/user/Signup"));
 const FindPwd = lazy(() => import("./pages/user/FindPwd"));
@@ -13,11 +15,13 @@ const Profile = lazy(() => import("./pages/user/Profile"));
 const Mypage = lazy(() => import("./pages/user/Mypage"));
 
 const App = () => {
+  const isOpenModal = useRecoilValue(ModalState);
+  console.log(isOpenModal);
   return (
     <div>
       <Suspense fallback={<div>Loading</div>}>
         <Header />
-        <Menu />
+        {isOpenModal ? <Menu /> : null}
         <Routes>
           <Route path="/" element={<div>홈</div>} />
           <Route path="/login" element={<Login />} />

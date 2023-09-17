@@ -15,6 +15,10 @@ const Header = () => {
   const isLogin = useRecoilValue(loginState);
   const setModal = useSetRecoilState(ModalState);
 
+  const handleModal = () => {
+    setModal((prev) => !prev);
+  };
+
   return (
     <Wrap>
       <Contain>
@@ -26,7 +30,7 @@ const Header = () => {
           <Link>커뮤니티</Link>
         </Tab>
         {isLogin ? (
-          <LoginUser onClick={(prev) => setModal(!prev)}>
+          <LoginUser onClick={handleModal}>
             <BiSolidUser size={25} color={COLOR.main_yellow} />
           </LoginUser>
         ) : (
