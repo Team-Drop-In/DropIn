@@ -67,7 +67,6 @@ const ModifyForm = ({ setChangeInfo, data }) => {
 
     try {
       await duplicateNicknameApi({ nickname: nicknameValue });
-      console.log(nicknameValue);
       setIsNicknameAvailable(true);
     } catch (error) {
       console.error("로그인 실패:", error);
@@ -75,7 +74,6 @@ const ModifyForm = ({ setChangeInfo, data }) => {
   };
 
   const onFormSubmit = async () => {
-    console.log(nicknameValue);
     let myInfo = {
       nickname: nicknameValue,
     };
