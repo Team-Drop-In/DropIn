@@ -11,6 +11,10 @@ const Menu = () => {
   const setModal = useSetRecoilState(ModalState);
   const navigate = useNavigate();
 
+  const handleMyPageClick = () => {
+    setModal(false);
+  };
+
   const handleLogout = () => {
     localStorage.removeItem("accessToken");
     setLogin(false);
@@ -24,7 +28,9 @@ const Menu = () => {
         <Tabmenu>
           <Triangle />
           <Modal>
-            <Link to="/mypage">마이페이지</Link>
+            <Link to="/mypage" onClick={handleMyPageClick}>
+              마이페이지
+            </Link>
             <Button onClick={handleLogout}>로그아웃</Button>
           </Modal>
         </Tabmenu>

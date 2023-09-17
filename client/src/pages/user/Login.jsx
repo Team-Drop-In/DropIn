@@ -14,8 +14,10 @@ import { useSetRecoilState } from "recoil";
 
 const Login = () => {
   const [error, setError] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
   const setLogin = useSetRecoilState(loginState);
   const navigate = useNavigate();
+
   const {
     handleSubmit,
     control,
@@ -58,8 +60,13 @@ const Login = () => {
         setLogin(true);
       })
       .catch((error) => {
-        console.error("로그인 실패:", error);
-        setError(true);
+        if (error && error.status === 401) {
+          setErrorMsg("가입 정보가 없습니다");
+          setError(true);
+        } else {
+          setError(true);
+          setErrorMsg("로그인에 실패했습니다 다시 시도해주세요");
+        }
       });
   };
 
@@ -107,7 +114,7 @@ const Login = () => {
               />
             )}
           />
-          {error && <ErrorMsg>정보가 일치하지 않습니다</ErrorMsg>}
+          {error && <ErrorMsg>{errorMsg}</ErrorMsg>}
           <Button
             text={"로그인"}
             width={"100%"}

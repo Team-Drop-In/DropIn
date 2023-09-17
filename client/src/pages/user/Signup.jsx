@@ -174,7 +174,6 @@ const Signup = () => {
 
   const onFormSubmit = async ({ emailAuth, passwordcheck, ...data }) => {
     try {
-      console.log(data);
       await signupApi(data);
       navigate("/login");
     } catch (error) {

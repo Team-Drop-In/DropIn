@@ -13,8 +13,7 @@ export const getHelloApi = async () => {
     const response = await api.get("/hello");
     return response.data;
   } catch (error) {
-    console.error("API Error:", error);
-    throw error;
+    throw new Error(error.response);
   }
 };
 
@@ -25,7 +24,7 @@ export const loginApi = async (data) => {
     localStorage.setItem("accessToken", accessToken);
     axios.defaults.headers["Authorization"] = accessToken;
   } catch (error) {
-    throw new Error(error.response.data.message);
+    throw error.response;
   }
 };
 
@@ -34,7 +33,7 @@ export const googleloginApi = async () => {
     const res = await axios.get(process.env.REACT_APP_googleURL);
     return res.data;
   } catch (error) {
-    throw new Error(error.response.data.message);
+    throw error.response;
   }
 };
 
@@ -43,7 +42,7 @@ export const signupApi = async (data) => {
     const res = await api.post("/api/member", data);
     return res;
   } catch (error) {
-    throw new Error(error.response.data.message);
+    throw error.response;
   }
 };
 
@@ -52,8 +51,7 @@ export const duplicateEmailApi = async ({ data }) => {
     const response = await api.post("/api/check-duplicate/email", { data });
     return response.data;
   } catch (error) {
-    console.error("API Error:", error);
-    throw error;
+    throw error.response;
   }
 };
 
@@ -62,8 +60,7 @@ export const duplicateNicknameApi = async (data) => {
     const response = await api.post("/api/check-duplicate/nickname", data);
     return response.data;
   } catch (error) {
-    console.error("API Error:", error);
-    throw error;
+    throw error.response;
   }
 };
 
@@ -72,8 +69,7 @@ export const getAuthCodeApi = async (data) => {
     const response = await api.post("/api/email/send-verification", data);
     return response.data;
   } catch (error) {
-    console.error("API Error:", error);
-    throw error;
+    throw error.response;
   }
 };
 
@@ -82,8 +78,7 @@ export const checkAuthCodeApi = async (data) => {
     const response = await api.post("/api/email/verify-code", data);
     return response.data;
   } catch (error) {
-    console.error("API Error:", error);
-    throw error;
+    throw error.response;
   }
 };
 
@@ -96,8 +91,7 @@ export const leaveMemberApi = async () => {
     });
     return response.data;
   } catch (error) {
-    console.error("API Error:", error);
-    throw error;
+    throw error.response;
   }
 };
 
@@ -110,8 +104,7 @@ export const findPwdApi = async (data) => {
     });
     return response.data;
   } catch (error) {
-    console.error("API Error:", error);
-    throw error;
+    throw error.response;
   }
 };
 
@@ -124,8 +117,7 @@ export const getMyInfo = async () => {
     });
     return response.data;
   } catch (error) {
-    console.error("API Error:", error);
-    throw error;
+    throw error.response;
   }
 };
 
@@ -138,8 +130,7 @@ export const getNewPwdApi = async (data) => {
     });
     return response.data;
   } catch (error) {
-    console.error("API Error:", error);
-    throw error;
+    throw error.response;
   }
 };
 
@@ -152,8 +143,7 @@ export const changePwdApi = async (data) => {
     });
     return response.data;
   } catch (error) {
-    console.error("API Error:", error);
-    throw error;
+    throw error.response;
   }
 };
 
@@ -167,7 +157,6 @@ export const modifyInfo = async (data) => {
     });
     return response.data;
   } catch (error) {
-    console.error("API Error:", error);
-    throw error;
+    throw error.response;
   }
 };

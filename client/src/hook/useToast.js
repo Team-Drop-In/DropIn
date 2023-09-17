@@ -7,10 +7,8 @@ const sleep = (ms) => {
   });
 };
 
-export const useToastState = () => useRecoilState(toastState);
-
 export const useToast = () => {
-  const [toast, setToast] = useToastState();
+  const [toast, setToast] = useRecoilState(toastState);
 
   const close = async (duration) => {
     setToast({ type: "dismiss", message: toast.message });
