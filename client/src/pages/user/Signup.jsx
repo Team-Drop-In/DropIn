@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { Container, Content } from "../../styles/style";
 import { COLOR } from "../../styles/theme";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import Input from "../../components/common/Input";
 import Button from "../../components/common/Button";
@@ -28,6 +28,8 @@ const Signup = () => {
   const [authcodeValue, setAuthcodeValue] = useState("");
   const [isEmailAvailable, setIsEmailAvailable] = useState(false);
   const [isNicknameAvailable, setIsNicknameAvailable] = useState(false);
+  const [isEmailError, setIsEmailError] = useState(true);
+  const [isNicknameError, setIsNicknameError] = useState(true);
   const [getAuthCode, setIsGetAuthCode] = useState(false);
   const [checkAuthCode, setIsCheckAuthCode] = useState(false);
 
@@ -181,6 +183,23 @@ const Signup = () => {
     }
   };
 
+  useEffect(() => {
+    const isValidEmail =
+      emailOptions.pattern.value.test(emailValue) &&
+      emailValue.trim().length > 0;
+    setIsEmailError(!isValidEmail);
+  }, [emailValue]);
+
+  useEffect(() => {
+    const isNicknameValid =
+      nicknameValue.trim().length >= nickValidationOptions.minLength.value &&
+      nicknameValue.trim().length <= nickValidationOptions.maxLength.value &&
+      nickValidationOptions.pattern.value.test(nicknameValue) &&
+      !/\s/.test(nicknameValue);
+
+    setIsNicknameError(!isNicknameValid);
+  }, [nicknameValue]);
+
   return (
     <Wrap>
       <Contain>
@@ -197,6 +216,7 @@ const Signup = () => {
                   id="username"
                   label="이메일"
                   type="text"
+                  disabled={isEmailAvailable}
                   width={"300px"}
                   placeholder="이메일을 입력해주세요"
                   errorMessage={error?.message}
@@ -208,20 +228,34 @@ const Signup = () => {
                 />
               )}
             />
-            <Button
-              text={"중복확인"}
-              type="button"
-              width={"110px"}
-              height={"39px"}
-              style={{
-                marginTop: "20px",
-                marginLeft: "5px",
-                backgroundColor: isEmailAvailable
-                  ? ` ${COLOR.main_yellow}`
-                  : ` ${COLOR.btn_grey}`,
-              }}
-              onClick={handleEmailAvailability}
-            />
+            {isEmailAvailable ? (
+              <Button
+                text={"확인완료"}
+                type="button"
+                width={"110px"}
+                height={"39px"}
+                style={{
+                  marginTop: "20px",
+                  marginLeft: "5px",
+                  backgroundColor: `${COLOR.main_yellow}`,
+                }}
+              />
+            ) : (
+              <Button
+                text={"중복확인"}
+                type="button"
+                width={"110px"}
+                height={"39px"}
+                style={{
+                  marginTop: "20px",
+                  marginLeft: "5px",
+                  backgroundColor: !isEmailError
+                    ? ` ${COLOR.main_yellow}`
+                    : ` ${COLOR.btn_grey}`,
+                }}
+                onClick={handleEmailAvailability}
+              />
+            )}
           </div>
           <div>
             <Controller
@@ -246,7 +280,7 @@ const Signup = () => {
             />
             {getAuthCode ? (
               <Button
-                text={"인증 완료"}
+                text={checkAuthCode ? "확인완료" : "인증하기"}
                 type="button"
                 width={"110px"}
                 height={"39px"}
@@ -255,7 +289,7 @@ const Signup = () => {
                   marginLeft: "5px",
                   backgroundColor: checkAuthCode
                     ? ` ${COLOR.main_yellow}`
-                    : ` ${COLOR.btn_grey}`,
+                    : ` ${COLOR.gender_pink}`,
                 }}
                 onClick={handleSendAuthCode}
               />
@@ -265,7 +299,13 @@ const Signup = () => {
                 type="button"
                 width={"110px"}
                 height={"39px"}
-                style={{ marginTop: "20px", marginLeft: "5px" }}
+                style={{
+                  marginTop: "20px",
+                  marginLeft: "5px",
+                  backgroundColor: isEmailAvailable
+                    ? ` ${COLOR.main_yellow}`
+                    : ` ${COLOR.btn_grey}`,
+                }}
                 onClick={handleGetAuthCode}
               />
             )}
@@ -366,6 +406,7 @@ const Signup = () => {
                   id="nickname"
                   label="닉네임"
                   type="text"
+                  disabled={isNicknameAvailable}
                   width={"300px"}
                   placeholder="닉네임을 입력해 주세요"
                   errorMessage={error?.message}
@@ -377,21 +418,35 @@ const Signup = () => {
                 />
               )}
             />
-            <Button
-              text={"중복확인"}
-              type="button"
-              width={"110px"}
-              height={"39px"}
-              style={{
-                marginTop: "20px",
-                marginLeft: "5px",
-                backgroundColor: isNicknameAvailable
-                  ? ` ${COLOR.main_yellow}`
-                  : ` ${COLOR.btn_grey}`,
-              }}
-              disabled={!nicknameValue.trim()}
-              onClick={handleNicknameAvailability}
-            />
+            {isNicknameAvailable ? (
+              <Button
+                text={"확인완료"}
+                type="button"
+                width={"110px"}
+                height={"39px"}
+                style={{
+                  marginTop: "20px",
+                  marginLeft: "5px",
+                  backgroundColor: `${COLOR.main_yellow}`,
+                }}
+              />
+            ) : (
+              <Button
+                text={"중복확인"}
+                type="button"
+                width={"110px"}
+                height={"39px"}
+                style={{
+                  marginTop: "20px",
+                  marginLeft: "5px",
+                  backgroundColor: !isNicknameError
+                    ? ` ${COLOR.main_yellow}`
+                    : ` ${COLOR.btn_grey}`,
+                }}
+                disabled={!nicknameValue.trim()}
+                onClick={handleNicknameAvailability}
+              />
+            )}
           </div>
           <Button
             text={"회원가입"}
@@ -399,9 +454,10 @@ const Signup = () => {
             height={"40px"}
             style={{
               marginTop: "10px",
-              backgroundColor: isValid
-                ? `${COLOR.main_yellow}`
-                : `${COLOR.btn_grey}`,
+              backgroundColor:
+                isValid && isNicknameAvailable && isEmailAvailable
+                  ? `${COLOR.main_yellow}`
+                  : `${COLOR.btn_grey}`,
               cursor: isValid ? "pointer" : "default",
             }}
             type="submit"
@@ -427,6 +483,7 @@ const Contain = styled(Content)`
 `;
 
 const Logo = styled.img`
+  margin-top: 50px;
   width: 180px;
 `;
 

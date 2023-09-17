@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import styled from "styled-components";
 import { COLOR } from "../../styles/theme";
 import Input from "../common/Input";
@@ -13,6 +14,7 @@ import { duplicateNicknameApi, modifyInfo } from "../../apis/api";
 const ModifyForm = ({ setChangeInfo, data }) => {
   const [nicknameValue, setNicknameValue] = useState("");
   const [isNicknameAvailable, setIsNicknameAvailable] = useState(false);
+  const [isNicknameError, setIsNicknameError] = useState(true);
   const [imageUrl, setImageUrl] = useState(null);
   const [imageData, setImageData] = useState(new FormData());
 
@@ -98,6 +100,17 @@ const ModifyForm = ({ setChangeInfo, data }) => {
     }
   };
 
+  useEffect(() => {
+    const isNicknameValid =
+      nicknameValue.trim().length >= nickValidationOptions.minLength.value &&
+      nicknameValue.trim().length <= nickValidationOptions.maxLength.value &&
+      nickValidationOptions.pattern.value.test(nicknameValue) &&
+      !/\s/.test(nicknameValue);
+
+    setIsNicknameError(!isNicknameValid);
+    console.log(isNicknameError);
+  }, [nicknameValue]);
+
   return (
     <>
       <User>
@@ -131,6 +144,7 @@ const ModifyForm = ({ setChangeInfo, data }) => {
                 <Input
                   id="nickname"
                   label="닉네임"
+                  disabled={isNicknameAvailable}
                   type="text"
                   width={"300px"}
                   placeholder="닉네임을 입력해 주세요"
@@ -144,20 +158,34 @@ const ModifyForm = ({ setChangeInfo, data }) => {
                 />
               )}
             />
-            <Button
-              text={"중복확인"}
-              type="button"
-              width={"110px"}
-              height={"39px"}
-              style={{
-                marginTop: "22px",
-                marginLeft: "5px",
-                backgroundColor: isNicknameAvailable
-                  ? ` ${COLOR.main_yellow}`
-                  : ` ${COLOR.btn_grey}`,
-              }}
-              onClick={handleNicknameAvailability}
-            />
+            {isNicknameAvailable ? (
+              <Button
+                text={"확인완료"}
+                type="button"
+                width={"110px"}
+                height={"39px"}
+                style={{
+                  marginTop: "22px",
+                  marginLeft: "5px",
+                  backgroundColor: ` ${COLOR.main_yellow}`,
+                }}
+              />
+            ) : (
+              <Button
+                text={"중복확인"}
+                type="button"
+                width={"110px"}
+                height={"39px"}
+                style={{
+                  marginTop: "22px",
+                  marginLeft: "5px",
+                  backgroundColor: !isNicknameError
+                    ? ` ${COLOR.main_yellow}`
+                    : ` ${COLOR.btn_grey}`,
+                }}
+                onClick={handleNicknameAvailability}
+              />
+            )}
           </Form>
         </Info>
       </User>
