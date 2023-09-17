@@ -24,7 +24,7 @@ const Header = () => {
       <Contain>
         <Tab>
           <button onClick={() => navigate("/")}>
-            <Logo src={LogoImage} alt="로고" className="logo_img" />
+            <Logo src={LogoImage} alt="로고" />
           </button>
           <Link to="/">DropIn</Link>
           <Link>커뮤니티</Link>

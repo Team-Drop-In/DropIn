@@ -15,11 +15,10 @@ const Mypage = () => {
         setUserInfo(res.data);
       })
       .catch((error) => {
-        console.error("로그인 실패:", error);
+        console.error("마이페이지 불러오기 실패:", error);
       });
   }, []);
 
-  // console.log(userInfo);
   return (
     <Container>
       <Contain>

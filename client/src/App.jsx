@@ -16,7 +16,7 @@ const Mypage = lazy(() => import("./pages/user/Mypage"));
 
 const App = () => {
   const isOpenModal = useRecoilValue(ModalState);
-  console.log(isOpenModal);
+
   return (
     <div>
       <Suspense fallback={<div>Loading</div>}>

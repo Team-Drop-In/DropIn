@@ -12,6 +12,7 @@ const ChangePwd = () => {
   const {
     handleSubmit,
     control,
+    getValues,
     formState: { errors, isValid },
   } = useForm();
 
@@ -32,6 +33,18 @@ const ChangePwd = () => {
       }
 
       return true;
+    },
+  };
+
+  const passwordCheckOptions = {
+    required: "비밀번호를 한번 더 입력해주세요",
+    validate: (value) => {
+      const password = getValues("updatePassword");
+      if (value === password) {
+        return true;
+      } else {
+        return "비밀번호와 일치하지 않습니다";
+      }
     },
   };
 
@@ -88,6 +101,7 @@ const ChangePwd = () => {
           <Controller
             name={"updatePasswordCheck"}
             control={control}
+            rules={passwordCheckOptions}
             render={({ field, fieldState: { error } }) => (
               <Input
                 label="비밀번호 확인"
@@ -95,6 +109,7 @@ const ChangePwd = () => {
                 placeholder="비밀번호를 한번 더 입력해주세요"
                 errorMessage={error?.message}
                 onChange={field.onChange}
+                value={field.value || ""}
               />
             )}
           />

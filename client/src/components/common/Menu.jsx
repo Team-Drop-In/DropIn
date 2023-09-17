@@ -3,16 +3,19 @@ import { Container, Content } from "../../styles/style";
 import { COLOR } from "../../styles/theme";
 import { useNavigate, Link } from "react-router-dom";
 import { loginState } from "../../atoms/atom";
+import { ModalState } from "../../atoms/atom";
 import { useSetRecoilState } from "recoil";
 
 const Menu = () => {
   const setLogin = useSetRecoilState(loginState);
+  const setModal = useSetRecoilState(ModalState);
   const navigate = useNavigate();
 
   const handleLogout = () => {
     localStorage.removeItem("accessToken");
     setLogin(false);
-    navigate("/leaveconfirm");
+    setModal(false);
+    navigate("/");
   };
 
   return (

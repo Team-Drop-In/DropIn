@@ -5,23 +5,8 @@ const api = axios.create({
   headers: {
     "Content-Type": "application/json",
   },
-  withCredentials: true,
+  // withCredentials: true,
 });
-
-// const getAuthorizedApi = () => {
-//   const token = localStorage.getItem("accessToken");
-
-//   const authorizedApi = axios.create({
-//     baseURL:
-//       "http://ec2-43-202-64-101.ap-northeast-2.compute.amazonaws.com:8080",
-//     headers: {
-//       "Content-Type": "application/json",
-//       Authorization: `Bearer ${token}`,
-//     },
-//   });
-
-//   return authorizedApi;
-// };
 
 export const getHelloApi = async () => {
   try {
@@ -39,6 +24,15 @@ export const loginApi = async (data) => {
     const accessToken = res.headers["authorization"];
     localStorage.setItem("accessToken", accessToken);
     axios.defaults.headers["Authorization"] = accessToken;
+  } catch (error) {
+    throw new Error(error.response.data.message);
+  }
+};
+
+export const googleloginApi = async () => {
+  try {
+    const res = await axios.get(process.env.REACT_APP_googleURL);
+    return res.data;
   } catch (error) {
     throw new Error(error.response.data.message);
   }
@@ -154,6 +148,21 @@ export const changePwdApi = async (data) => {
     const response = await api.put("/api/member/password", data, {
       headers: {
         Authorization: `${localStorage.getItem("accessToken")}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("API Error:", error);
+    throw error;
+  }
+};
+
+export const modifyInfo = async (data) => {
+  try {
+    const response = await api.put("/api/member", data, {
+      headers: {
+        Authorization: `${localStorage.getItem("accessToken")}`,
+        "Content-Type": "multipart/form-data",
       },
     });
     return response.data;

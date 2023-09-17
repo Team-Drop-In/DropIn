@@ -7,14 +7,14 @@ import { COLOR } from "../../styles/theme";
 import Input from "../../components/common/Input";
 import Button from "../../components/common/Button";
 import LogoImage from "../../images/logo.svg";
-import { loginApi } from "../../apis/api";
+import google from "../../images/google.svg";
+import { loginApi, googleloginApi } from "../../apis/api";
 import { loginState } from "../../atoms/atom";
 import { useSetRecoilState } from "recoil";
 
 const Login = () => {
   const [error, setError] = useState(false);
   const setLogin = useSetRecoilState(loginState);
-
   const navigate = useNavigate();
   const {
     handleSubmit,
@@ -61,6 +61,14 @@ const Login = () => {
         console.error("로그인 실패:", error);
         setError(true);
       });
+  };
+
+  const handleGoogleLogin = () => {
+    googleloginApi()
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((error) => {});
   };
 
   return (
@@ -119,7 +127,12 @@ const Login = () => {
             {/* <Link to="/findemail">아이디</Link> /{" "} */}
             <Link to="/findpwd">비밀번호</Link> 찾기
           </Find>
-          <Google>구글</Google>
+          <Google>
+            <GoogleBtn onClick={handleGoogleLogin}>
+              <img src={google} alt="구글 로그인" />
+            </GoogleBtn>
+            <span>Google로 시작하기</span>
+          </Google>
         </More>
       </Contain>
     </Wrap>
@@ -169,4 +182,28 @@ const Google = styled.div`
   width: 350px;
   margin-top: 40px;
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  span {
+    color: white;
+    margin-top: 7px;
+    font-size: 14px;
+  }
+`;
+
+const GoogleBtn = styled.button`
+  width: 50px;
+  height: 50px;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+
+  img {
+    width: 50px;
+    height: 50px;
+    object-fit: contain;
+  }
 `;

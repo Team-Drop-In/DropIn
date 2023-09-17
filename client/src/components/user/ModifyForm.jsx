@@ -1,14 +1,14 @@
 import styled from "styled-components";
 import { COLOR } from "../../styles/theme";
-import { GiMale } from "react-icons/gi";
 import Input from "../common/Input";
 import Button from "../common/Button";
 import ImageUpload from "./ImageUpload";
-import { AiOutlineRight } from "react-icons/ai";
+import { GiFemale, GiMale } from "react-icons/gi";
+import { AiOutlineQuestion, AiOutlineRight } from "react-icons/ai";
 import { Controller, useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import { useState } from "react";
-import { duplicateNicknameApi } from "../../apis/api";
+import { duplicateNicknameApi, modifyInfo } from "../../apis/api";
 
 const ModifyForm = ({ setChangeInfo, data }) => {
   const [nicknameValue, setNicknameValue] = useState("");
@@ -19,8 +19,18 @@ const ModifyForm = ({ setChangeInfo, data }) => {
   const {
     handleSubmit,
     control,
+    getValues,
     formState: { isValid },
   } = useForm();
+
+  const genderIcon =
+    data.gender === "MALE" ? (
+      <GiMale size={20} color={COLOR.gender_blue} />
+    ) : data.gender === "FEMALE" ? (
+      <GiFemale size={20} color={COLOR.gender_pink} />
+    ) : (
+      <AiOutlineQuestion size={20} color={COLOR.main_grey} />
+    );
 
   const nickValidationOptions = {
     required: "닉네임을 입력해주세요.",
@@ -45,6 +55,7 @@ const ModifyForm = ({ setChangeInfo, data }) => {
   };
 
   const handleNicknameAvailability = async () => {
+    const nicknameValue = getValues("nickname");
     const validateResult = nickValidationOptions.validate(nicknameValue);
     if (!nicknameValue.trim()) return;
     if (nickValidationOptions.minLength.value > nicknameValue.length) return;
@@ -54,6 +65,7 @@ const ModifyForm = ({ setChangeInfo, data }) => {
 
     try {
       await duplicateNicknameApi({ nickname: nicknameValue });
+      console.log(nicknameValue);
       setIsNicknameAvailable(true);
     } catch (error) {
       console.error("로그인 실패:", error);
@@ -62,6 +74,28 @@ const ModifyForm = ({ setChangeInfo, data }) => {
 
   const onFormSubmit = async () => {
     console.log(nicknameValue);
+    let myInfo = {
+      nickname: nicknameValue,
+    };
+
+    try {
+      const formData = new FormData();
+      formData.append(
+        "memberUpdateProfileRequestDto",
+        new Blob([JSON.stringify(myInfo)], {
+          type: "application/json",
+        })
+      );
+      console.log(imageData);
+      if (imageData) {
+        formData.append("image", imageData);
+      }
+      await modifyInfo(formData);
+      console.log(formData);
+      setChangeInfo(false);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -76,7 +110,7 @@ const ModifyForm = ({ setChangeInfo, data }) => {
           />
           <Username>
             <span>닉네임</span>
-            <GiMale size={20} color={COLOR.gender_blue} />
+            {genderIcon}
           </Username>
         </Img>
         <Info>
@@ -104,25 +138,24 @@ const ModifyForm = ({ setChangeInfo, data }) => {
                   onChange={(e) => {
                     field.onChange(e.target.value);
                     setNicknameValue(e.target.value);
+                    setIsNicknameAvailable(false);
                   }}
                   value={field.value || ""}
                 />
               )}
             />
-
             <Button
               text={"중복확인"}
               type="button"
               width={"110px"}
               height={"39px"}
               style={{
-                marginTop: "20px",
+                marginTop: "22px",
                 marginLeft: "5px",
                 backgroundColor: isNicknameAvailable
                   ? ` ${COLOR.main_yellow}`
                   : ` ${COLOR.btn_grey}`,
               }}
-              disabled={!nicknameValue.trim()}
               onClick={handleNicknameAvailability}
             />
           </Form>
@@ -131,6 +164,7 @@ const ModifyForm = ({ setChangeInfo, data }) => {
       <ButtonWrapper>
         <Button
           text={"수정완료"}
+          onClick={handleSubmit(onFormSubmit)}
           type="submit"
           width={"100%"}
           height={"39px"}
@@ -200,11 +234,7 @@ const Label = styled.div`
 
 const Form = styled.form`
   display: flex;
-  align-items: flex-end;
-
-  button {
-    margin-bottom: 9px;
-  }
+  align-items: flex-start;
 `;
 
 const ButtonWrapper = styled.div`
