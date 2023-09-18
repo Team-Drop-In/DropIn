@@ -16,6 +16,7 @@ import teamdropin.server.domain.member.repository.MemberRepository;
 import teamdropin.server.domain.post.entity.Post;
 import teamdropin.server.global.exception.BusinessLogicException;
 import teamdropin.server.global.exception.ExceptionCode;
+import teamdropin.server.security.utils.CustomAuthorityUtils;
 
 import javax.annotation.PostConstruct;
 import javax.validation.Valid;
@@ -33,6 +34,7 @@ public class MemberService {
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
     private final S3Uploader s3Uploader;
+    private final CustomAuthorityUtils customAuthorityUtils;
 
     /**
      * 회원가입
@@ -161,20 +163,24 @@ public class MemberService {
         if(member.getProfileImageUrl() != null) {
             s3Uploader.deleteFile(member.getProfileImageUrl());
         }
-        String fileExtension = getFileExtension(image.getOriginalFilename());
-        String newFileName = UUID.randomUUID().toString() + "-profileImage" + fileExtension;
-        return s3Uploader.upload(image, newFileName, "member");
+        String dirName = "member";
+        return s3Uploader.upload(image,dirName);
     }
 
+    /**
+     * 테스트용
+     */
     @PostConstruct
     public void createReassignMember(){
 
         Member reassignMember =
                 Member.builder()
                         .username(REASSIGN_EMAIL)
+                        .password(passwordEncoder.encode("Test135!"))
                         .nickname("탈퇴한회원")
                         .name("탈퇴한회원")
                         .oauthProvider("dropin")
+                        .roles(customAuthorityUtils.createManagerRoles())
                         .gender(Gender.NOT_SELECT)
                         .build();
         memberRepository.save(reassignMember);

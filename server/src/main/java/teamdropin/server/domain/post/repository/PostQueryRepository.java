@@ -10,10 +10,11 @@ import teamdropin.server.domain.post.dto.PostSearchCondition;
 import teamdropin.server.domain.post.dto.PostSearchDto;
 import teamdropin.server.domain.post.dto.QPostSearchDto;
 
+
 import javax.persistence.EntityManager;
 import java.util.List;
 
-import static teamdropin.server.domain.comment.entity.QComment.*;
+import static teamdropin.server.domain.comment.entity.QComment.comment;
 import static teamdropin.server.domain.member.entity.QMember.member;
 import static teamdropin.server.domain.post.entity.QPost.post;
 

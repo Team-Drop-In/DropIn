@@ -1,6 +1,7 @@
 package teamdropin.server.domain.member.entity;
 
 import lombok.*;
+import teamdropin.server.domain.box.entity.Box;
 import teamdropin.server.domain.comment.entity.Comment;
 import teamdropin.server.domain.like.entity.Like;
 import teamdropin.server.domain.member.utils.MemberValidation;
@@ -59,6 +60,9 @@ public class Member extends BaseTimeEntity {
 
     @OneToMany(mappedBy = "member")
     private List<Comment> comments = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member")
+    private List<Box> boxes = new ArrayList<>();
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<Like> likes = new ArrayList<>();

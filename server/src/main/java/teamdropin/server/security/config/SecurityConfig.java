@@ -70,6 +70,9 @@ public class SecurityConfig {
                 .antMatchers("/api/post/{id}/comment/**").hasAnyRole("USER")
                 .antMatchers("/api/post/like").hasAnyRole("USER")
                 .antMatchers("/api/comment/like").hasAnyRole("USER")
+                .antMatchers(HttpMethod.POST,"/api/box").hasRole("MANAGER")
+                .antMatchers(HttpMethod.DELETE, "/api/box/{id}").hasRole("MANAGER")
+                .antMatchers(HttpMethod.PUT,"/api/box/{id}").hasRole("MANAGER")
                 .anyRequest()
                 .permitAll();
         return http.build();
