@@ -83,7 +83,7 @@ public class SecurityConfig {
         CorsConfiguration corsConfiguration = new CorsConfiguration();
         corsConfiguration.setAllowedOrigins(Arrays.asList("http://localhost:3000", "https://dropinproject.netlify.app"));
         corsConfiguration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "PATCH"));
-        corsConfiguration.setAllowedHeaders(Arrays.asList("Authorization","fresh"));
+        corsConfiguration.setAllowedHeaders(Arrays.asList("Authorization","refresh"));
         corsConfiguration.addExposedHeader("*");
         corsConfiguration.setAllowCredentials(true);
         UrlBasedCorsConfigurationSource urlBasedCorsConfigurationSource = new UrlBasedCorsConfigurationSource();
