@@ -7,6 +7,7 @@ import Button from "../../components/common/Button";
 import { Link } from "react-router-dom";
 
 const MyInfo = ({ setChangeInfo, data }) => {
+  console.log(data);
   const genderIcon =
     data.gender === "MALE" ? (
       <GiMale size={20} color={COLOR.gender_blue} />
@@ -22,9 +23,9 @@ const MyInfo = ({ setChangeInfo, data }) => {
         <Img>
           <div>
             {!data.profileImageUrl ? (
-              <img src={data.profileImageUrl} alt="프로필" />
-            ) : (
               <BiSolidUser size={90} color={COLOR.main_yellow} />
+            ) : (
+              <img src={data.profileImageUrl} alt="프로필" />
             )}
           </div>
           <Username>

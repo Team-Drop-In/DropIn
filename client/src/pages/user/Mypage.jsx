@@ -24,7 +24,11 @@ const Mypage = () => {
       <Contain>
         <h2>내 정보</h2>
         {!changeInfo ? (
-          <MyInfo setChangeInfo={setChangeInfo} data={userInfo} />
+          <MyInfo
+            setChangeInfo={setChangeInfo}
+            data={userInfo}
+            setUserInfo={setUserInfo}
+          />
         ) : (
           <ModifyForm setChangeInfo={setChangeInfo} data={userInfo} />
         )}

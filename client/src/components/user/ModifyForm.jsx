@@ -7,16 +7,17 @@ import ImageUpload from "./ImageUpload";
 import { GiFemale, GiMale } from "react-icons/gi";
 import { AiOutlineQuestion, AiOutlineRight } from "react-icons/ai";
 import { Controller, useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { duplicateNicknameApi, modifyInfo } from "../../apis/api";
 
-const ModifyForm = ({ setChangeInfo, data }) => {
+const ModifyForm = ({ setChangeInfo, data, setUserInfo }) => {
   const [nicknameValue, setNicknameValue] = useState("");
   const [isNicknameAvailable, setIsNicknameAvailable] = useState(false);
   const [isNicknameError, setIsNicknameError] = useState(true);
   const [imageUrl, setImageUrl] = useState(null);
   const [imageData, setImageData] = useState(new FormData());
+  const navigate = useNavigate();
 
   const {
     handleSubmit,
@@ -86,13 +87,14 @@ const ModifyForm = ({ setChangeInfo, data }) => {
           type: "application/json",
         })
       );
-      console.log(imageData);
       if (imageData) {
         formData.append("image", imageData);
       }
+      console.log(formData.get(imageData));
       await modifyInfo(formData);
       console.log(formData);
       setChangeInfo(false);
+      navigate("/mypage");
     } catch (error) {
       console.log(error);
     }
@@ -106,7 +108,6 @@ const ModifyForm = ({ setChangeInfo, data }) => {
       !/\s/.test(nicknameValue);
 
     setIsNicknameError(!isNicknameValid);
-    console.log(isNicknameError);
   }, [nicknameValue]);
 
   return (

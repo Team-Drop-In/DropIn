@@ -7,11 +7,11 @@ const ImageUpload = ({ imageUrl, setImageUrl, imageData, setImageData }) => {
   const onDrop = useCallback(
     (acceptedFiles) => {
       const file = acceptedFiles[0];
+      console.log(acceptedFiles);
+      console.log(file);
       const imageUrl = URL.createObjectURL(file);
       setImageUrl(imageUrl);
-      const formData = new FormData();
-      formData.append("image", acceptedFiles[0]);
-      setImageData(formData);
+      setImageData(acceptedFiles[0]);
     },
     // eslint-disable-next-line
     [imageData, imageUrl]
