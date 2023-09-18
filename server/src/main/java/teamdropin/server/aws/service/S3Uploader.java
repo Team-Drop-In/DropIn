@@ -16,10 +16,8 @@ import teamdropin.server.global.exception.ExceptionCode;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.nio.charset.StandardCharsets;
+import java.util.*;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -38,6 +36,7 @@ public class S3Uploader {
     public String upload(MultipartFile multipartFile, String dirName) throws IOException{
 
         String newFileName = createFileName(multipartFile.getOriginalFilename());
+        log.info("multipartFile byte = {}", new String(multipartFile.getOriginalFilename().getBytes(StandardCharsets.UTF_8)));
 
         File uploadFile = convert(multipartFile, newFileName)
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.FILE_CONVERT_FAILED));
@@ -91,12 +90,12 @@ public class S3Uploader {
         }
     }
 
-    public List<String> uploadImages(List<MultipartFile> multipartFileList, String dirName) throws IOException {
-        List<String> imageUrlList = new ArrayList<>();
+    public Map<String,String> uploadImages(List<MultipartFile> multipartFileList, String dirName) throws IOException {
+        Map<String,String> imageUrlList = new HashMap<>();
 
         for (MultipartFile file : multipartFileList) {
             String uploadImageUrl = upload(file, dirName);
-            imageUrlList.add(uploadImageUrl);
+            imageUrlList.put(uploadImageUrl, file.getOriginalFilename());
         }
         return imageUrlList;
     }

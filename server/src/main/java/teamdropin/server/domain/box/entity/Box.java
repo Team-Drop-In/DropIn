@@ -53,4 +53,15 @@ public class Box extends BaseTimeEntity {
     public void addMember(Member member){
         this.member = member;
     }
+
+    public void updateBox(String name, String location, String phoneNumber, int cost, int area, boolean barbellDrop, String url, String detail){
+        this.name= name;
+        this.location = location;
+        this.phoneNumber = phoneNumber;
+        this.cost = cost;
+        this.area = area;
+        this.barbellDrop = barbellDrop;
+        this.url = url;
+        this.detail = detail;
+    }
 }

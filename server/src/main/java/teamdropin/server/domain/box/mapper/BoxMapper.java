@@ -5,6 +5,7 @@ import teamdropin.server.domain.box.dto.BoxCreateRequestDto;
 //import teamdropin.server.domain.box.dto.GetBoxResponseDto;
 import teamdropin.server.domain.box.dto.GetAllBoxResponseDto;
 import teamdropin.server.domain.box.dto.GetBoxResponseDto;
+import teamdropin.server.domain.box.dto.UpdateBoxRequestDto;
 import teamdropin.server.domain.box.entity.Box;
 
 import java.util.List;
@@ -53,5 +54,19 @@ public class BoxMapper {
         List<GetAllBoxResponseDto> resultList =
                 boxes.stream().map(this::boxToGetAllPostResponseDto).collect(Collectors.toList());
         return resultList;
+    }
+
+    public Box toEntity(UpdateBoxRequestDto updateBoxRequestDto){
+        return Box.builder()
+                .id(updateBoxRequestDto.getId())
+                .name(updateBoxRequestDto.getName())
+                .location(updateBoxRequestDto.getLocation())
+                .phoneNumber(updateBoxRequestDto.getPhoneNumber())
+                .cost(updateBoxRequestDto.getCost())
+                .area(updateBoxRequestDto.getArea())
+                .barbellDrop(updateBoxRequestDto.isBarbellDrop())
+                .url(updateBoxRequestDto.getUrl())
+                .detail(updateBoxRequestDto.getDetail())
+                .build();
     }
 }

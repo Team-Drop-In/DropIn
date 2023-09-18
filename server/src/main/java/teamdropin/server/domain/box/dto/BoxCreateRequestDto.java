@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.HashMap;
+
 
 @Data
 @Builder
@@ -20,5 +22,6 @@ public class BoxCreateRequestDto {
     private boolean barbellDrop;
     private String url;
     private String detail;
+    private HashMap<String, Integer> imageInfo = new HashMap<>();
 
 }

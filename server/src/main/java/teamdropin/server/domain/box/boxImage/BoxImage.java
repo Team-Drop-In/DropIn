@@ -32,4 +32,9 @@ public class BoxImage {
         this.imageIdx = imageIdx;
         this.box = box;
     }
+
+    public void updateBoxImage(String boxImageUrl, int imageIdx){
+        this.boxImageUrl = boxImageUrl;
+        this.imageIdx = imageIdx;
+    }
 }

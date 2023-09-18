@@ -11,7 +11,7 @@ import java.util.HashMap;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class GetBoxResponseDto {
+public class UpdateBoxRequestDto {
 
     private Long id;
     private String name;
@@ -22,7 +22,6 @@ public class GetBoxResponseDto {
     private boolean barbellDrop;
     private String url;
     private String detail;
-    private int likeCount;
-    private HashMap<Integer,String> imageInfo = new HashMap<>();
+    private HashMap<Integer, String> imageInfo = new HashMap<>();
 
 }

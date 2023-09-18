@@ -15,6 +15,7 @@ import teamdropin.server.domain.box.boxImage.BoxImage;
 import teamdropin.server.domain.box.dto.BoxCreateRequestDto;
 import teamdropin.server.domain.box.dto.GetAllBoxResponseDto;
 import teamdropin.server.domain.box.dto.GetBoxResponseDto;
+import teamdropin.server.domain.box.dto.UpdateBoxRequestDto;
 import teamdropin.server.domain.box.entity.Box;
 import teamdropin.server.domain.box.mapper.BoxMapper;
 import teamdropin.server.domain.box.service.BoxService;
@@ -23,6 +24,8 @@ import teamdropin.server.global.dto.MultiResponseDto;
 import teamdropin.server.global.dto.SingleResponseDto;
 import teamdropin.server.global.util.UriCreator;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.net.URI;
 import java.util.HashMap;
@@ -45,10 +48,9 @@ public class BoxController {
      */
     @PostMapping("/box")
     public ResponseEntity<URI> createBox(@AuthenticationPrincipal Member member,
-                                          @RequestPart(value = "image", required = false) List<MultipartFile> multipartFileList,
-                                          @RequestPart("boxCreateRequest") BoxCreateRequestDto boxCreateRequestDto) throws IOException {
-        Box box = boxMapper.toEntity(boxCreateRequestDto);
-        Long boxId = boxService.createBox(member, box, multipartFileList);
+                                         @RequestPart(value = "image", required = false) List<MultipartFile> multipartFileList,
+                                         @RequestPart("boxCreateRequest") BoxCreateRequestDto boxCreateRequestDto) throws IOException {
+        Long boxId = boxService.createBox(member, boxCreateRequestDto, multipartFileList);
         URI location = UriCreator.createUri(BOX_DEFAULT_URI, boxId);
         return ResponseEntity.created(location).build();
     }
@@ -83,6 +85,16 @@ public class BoxController {
         List<Box> boxes = pageBoxes.getContent();
         List<GetAllBoxResponseDto> getAllPostResponseDtoList = boxMapper.boxToGetAllBoxResponseDtoList(boxes);
         return new ResponseEntity<>(new MultiResponseDto<>(getAllPostResponseDtoList,pageBoxes), HttpStatus.OK);
+    }
+
+    @PutMapping("box/{id}")
+    public ResponseEntity<Void> updateBox(@AuthenticationPrincipal Member member,
+                                          @PathVariable("id") Long boxId,
+                                          @RequestPart(value = "image", required = false) List<MultipartFile> multipartFileList,
+                                          @RequestPart(value = "UpdateBoxRequestDto") UpdateBoxRequestDto updateBoxRequestDto){
+        boxService.updateBox(boxId, multipartFileList, updateBoxRequestDto);
+
+        return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("box/{id}")
