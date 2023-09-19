@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import axios from "axios";
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { Controller, useForm } from "react-hook-form";
@@ -8,12 +7,17 @@ import { COLOR } from "../../styles/theme";
 import Input from "../../components/common/Input";
 import Button from "../../components/common/Button";
 import LogoImage from "../../images/logo.svg";
-import { loginApi } from "../../apis/api";
+import google from "../../images/google.svg";
+import { loginApi, googleloginApi } from "../../apis/api";
+import { loginState } from "../../atoms/atom";
+import { useSetRecoilState } from "recoil";
 
 const Login = () => {
   const [error, setError] = useState(false);
-
+  const [errorMsg, setErrorMsg] = useState("");
+  const setLogin = useSetRecoilState(loginState);
   const navigate = useNavigate();
+
   const {
     handleSubmit,
     control,
@@ -49,32 +53,27 @@ const Login = () => {
     },
   };
 
-  const onFormSubmit = async (data) => {
-    // try {
-    //   const response = await loginApi(data);
-    //   console.log(response);
-    //   const accessToken = response.headers.get["authorization"];
-    //   localStorage.setItem("accessToken", accessToken);
-    //   console.log(accessToken);
-    //   // localStorage.setItem("accessToken", response.data.access_token);
-    //   navigate("/");
-    // } catch (error) {
-    //   console.error("로그인 실패:", error);
-    //   setError(true);
-    // }
+  const onFormSubmit = (data) => {
     loginApi(data)
-      .then((response) => {
-        console.log(response);
-        const accessToken = response.headers["authorization"];
-        localStorage.setItem("accessToken", accessToken);
-
-        axios.defaults.headers["Authorization"] = accessToken;
+      .then(() => {
         navigate("/");
+        setLogin(true);
       })
       .catch((error) => {
-        console.error("로그인 실패:", error);
-        setError(true);
+        if (error && error.status === 401) {
+          setErrorMsg("가입 정보가 없습니다");
+          setError(true);
+        } else {
+          setError(true);
+          setErrorMsg("로그인에 실패했습니다 다시 시도해주세요");
+        }
       });
+  };
+
+  const handleGoogleLogin = () => {
+    googleloginApi();
+    const currentPath = window.location.pathname;
+    console.log(currentPath);
   };
 
   return (
@@ -113,7 +112,7 @@ const Login = () => {
               />
             )}
           />
-          {error && <ErrorMsg>정보가 일치하지 않습니다</ErrorMsg>}
+          {error && <ErrorMsg>{errorMsg}</ErrorMsg>}
           <Button
             text={"로그인"}
             width={"100%"}
@@ -130,10 +129,15 @@ const Login = () => {
         </Form>
         <More>
           <Find>
-            <Link to="/findemail">아이디</Link> /{" "}
+            {/* <Link to="/findemail">아이디</Link> /{" "} */}
             <Link to="/findpwd">비밀번호</Link> 찾기
           </Find>
-          <Google>구글</Google>
+          <Google>
+            <GoogleBtn onClick={handleGoogleLogin}>
+              <img src={google} alt="구글 로그인" />
+            </GoogleBtn>
+            <span>Google로 시작하기</span>
+          </Google>
         </More>
       </Contain>
     </Wrap>
@@ -183,4 +187,28 @@ const Google = styled.div`
   width: 350px;
   margin-top: 40px;
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  span {
+    color: white;
+    margin-top: 7px;
+    font-size: 14px;
+  }
+`;
+
+const GoogleBtn = styled.button`
+  width: 50px;
+  height: 50px;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+
+  img {
+    width: 50px;
+    height: 50px;
+    object-fit: contain;
+  }
 `;

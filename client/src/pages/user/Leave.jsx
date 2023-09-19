@@ -6,9 +6,13 @@ import Button from "../../components/common/Button";
 import { useForm, Controller } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { leaveMemberApi } from "../../apis/api";
+import { loginState } from "../../atoms/atom";
+import { useSetRecoilState } from "recoil";
 
 const Leave = () => {
   const navigate = useNavigate();
+  const setLogin = useSetRecoilState(loginState);
+
   const {
     handleSubmit,
     control,
@@ -38,6 +42,8 @@ const Leave = () => {
   const onFormSubmit = async () => {
     try {
       await leaveMemberApi();
+      localStorage.removeItem("accessToken");
+      setLogin(false);
       navigate("/leaveconfirm");
     } catch (error) {
       console.log(error);

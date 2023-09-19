@@ -1,22 +1,39 @@
+import { useEffect } from "react";
 import styled from "styled-components";
 import { COLOR } from "../../styles/theme";
-import { GiMale } from "react-icons/gi";
 import Input from "../common/Input";
 import Button from "../common/Button";
-import { AiOutlineRight } from "react-icons/ai";
+import ImageUpload from "./ImageUpload";
+import { GiFemale, GiMale } from "react-icons/gi";
+import { AiOutlineQuestion, AiOutlineRight } from "react-icons/ai";
 import { Controller, useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { duplicateNicknameApi } from "../../apis/api";
+import { duplicateNicknameApi, modifyInfo } from "../../apis/api";
 
-const ModifyForm = () => {
+const ModifyForm = ({ setChangeInfo, data, setUserInfo }) => {
   const [nicknameValue, setNicknameValue] = useState("");
   const [isNicknameAvailable, setIsNicknameAvailable] = useState(false);
+  const [isNicknameError, setIsNicknameError] = useState(true);
+  const [imageUrl, setImageUrl] = useState(null);
+  const [imageData, setImageData] = useState(new FormData());
+  const navigate = useNavigate();
+
   const {
     handleSubmit,
     control,
+    getValues,
     formState: { isValid },
   } = useForm();
+
+  const genderIcon =
+    data.gender === "MALE" ? (
+      <GiMale size={20} color={COLOR.gender_blue} />
+    ) : data.gender === "FEMALE" ? (
+      <GiFemale size={20} color={COLOR.gender_pink} />
+    ) : (
+      <AiOutlineQuestion size={20} color={COLOR.main_grey} />
+    );
 
   const nickValidationOptions = {
     required: "닉네임을 입력해주세요.",
@@ -41,6 +58,7 @@ const ModifyForm = () => {
   };
 
   const handleNicknameAvailability = async () => {
+    const nicknameValue = getValues("nickname");
     const validateResult = nickValidationOptions.validate(nicknameValue);
     if (!nicknameValue.trim()) return;
     if (nickValidationOptions.minLength.value > nicknameValue.length) return;
@@ -56,28 +74,67 @@ const ModifyForm = () => {
     }
   };
 
+  const onFormSubmit = async () => {
+    let myInfo = {
+      nickname: nicknameValue,
+    };
+
+    try {
+      const formData = new FormData();
+      formData.append(
+        "memberUpdateProfileRequestDto",
+        new Blob([JSON.stringify(myInfo)], {
+          type: "application/json",
+        })
+      );
+      if (imageData) {
+        formData.append("image", imageData);
+      }
+      console.log(formData.get(imageData));
+      await modifyInfo(formData);
+      console.log(formData);
+      setChangeInfo(false);
+      navigate("/mypage");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    const isNicknameValid =
+      nicknameValue.trim().length >= nickValidationOptions.minLength.value &&
+      nicknameValue.trim().length <= nickValidationOptions.maxLength.value &&
+      nickValidationOptions.pattern.value.test(nicknameValue) &&
+      !/\s/.test(nicknameValue);
+
+    setIsNicknameError(!isNicknameValid);
+  }, [nicknameValue]);
+
   return (
     <>
       <User>
         <Img>
-          <div>
-            <img src="http://placehold.it/200" alt="프로필" />
-          </div>
+          <ImageUpload
+            imageUrl={imageUrl}
+            setImageUrl={setImageUrl}
+            imageData={imageData}
+            setImageData={setImageData}
+          />
           <Username>
             <span>닉네임</span>
-            <GiMale size={20} color={COLOR.gender_blue} />
+            {genderIcon}
           </Username>
         </Img>
         <Info>
           <div>
             <Label>이메일</Label>
-            <span>Test@gmail.com</span>
+            <span>{data.username}</span>
           </div>
           <div>
             <Label>이름</Label>
-            <span>테스트</span>
+            <span>{data.name}</span>
           </div>
-          <Form>
+          <Form onSubmit={handleSubmit(onFormSubmit)}>
             <Controller
               name={"nickname"}
               control={control}
@@ -86,6 +143,7 @@ const ModifyForm = () => {
                 <Input
                   id="nickname"
                   label="닉네임"
+                  disabled={isNicknameAvailable}
                   type="text"
                   width={"300px"}
                   placeholder="닉네임을 입력해 주세요"
@@ -93,43 +151,61 @@ const ModifyForm = () => {
                   onChange={(e) => {
                     field.onChange(e.target.value);
                     setNicknameValue(e.target.value);
+                    setIsNicknameAvailable(false);
                   }}
                   value={field.value || ""}
                 />
               )}
             />
-            <Button
-              text={"중복확인"}
-              type="button"
-              width={"110px"}
-              height={"39px"}
-              style={{
-                marginTop: "20px",
-                marginLeft: "5px",
-                backgroundColor: isNicknameAvailable
-                  ? ` ${COLOR.main_yellow}`
-                  : ` ${COLOR.btn_grey}`,
-              }}
-              disabled={!nicknameValue.trim()}
-              onClick={handleNicknameAvailability}
-            />
+            {isNicknameAvailable ? (
+              <Button
+                text={"확인완료"}
+                type="button"
+                width={"110px"}
+                height={"39px"}
+                style={{
+                  marginTop: "22px",
+                  marginLeft: "5px",
+                  backgroundColor: ` ${COLOR.main_yellow}`,
+                }}
+              />
+            ) : (
+              <Button
+                text={"중복확인"}
+                type="button"
+                width={"110px"}
+                height={"39px"}
+                style={{
+                  marginTop: "22px",
+                  marginLeft: "5px",
+                  backgroundColor: !isNicknameError
+                    ? ` ${COLOR.main_yellow}`
+                    : ` ${COLOR.btn_grey}`,
+                }}
+                onClick={handleNicknameAvailability}
+              />
+            )}
           </Form>
         </Info>
       </User>
       <ButtonWrapper>
         <Button
           text={"수정완료"}
-          type="button"
+          onClick={handleSubmit(onFormSubmit)}
+          type="submit"
           width={"100%"}
           height={"39px"}
           style={{
             backgroundColor: ` ${COLOR.main_yellow}`,
+            cursor: isValid ? "pointer" : "default",
           }}
         />
-        <StyledLink to="/changepwd">
-          <span>비밀번호 변경</span>
-          <AiOutlineRight />
-        </StyledLink>
+        {data.oauthProvider === "dropin" && (
+          <StyledLink to="/changepwd">
+            <span>비밀번호 변경</span>
+            <AiOutlineRight />
+          </StyledLink>
+        )}
       </ButtonWrapper>
     </>
   );
@@ -142,6 +218,7 @@ const User = styled.section`
   justify-content: center;
   align-items: flex-start;
   flex-wrap: wrap;
+  margin-bottom: 30px;
 `;
 
 const Img = styled.div`
@@ -152,19 +229,6 @@ const Img = styled.div`
   align-items: center;
   object-fit: contain;
   padding: 20px;
-
-  & > div:first-of-type {
-    width: 150px;
-    height: 150px;
-    border-radius: 50%;
-    overflow: hidden;
-  }
-
-  & > div:first-of-type > img {
-    width: 150px;
-    height: 150px;
-    object-fit: cover;
-  }
 `;
 
 const Username = styled.div`
@@ -197,11 +261,7 @@ const Label = styled.div`
 
 const Form = styled.form`
   display: flex;
-  align-items: flex-end;
-
-  button {
-    margin-bottom: 9px;
-  }
+  align-items: flex-start;
 `;
 
 const ButtonWrapper = styled.div`

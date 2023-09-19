@@ -1,31 +1,46 @@
 import styled from "styled-components";
 import { COLOR } from "../../styles/theme";
-import { GiMale } from "react-icons/gi";
-import { AiOutlineRight } from "react-icons/ai";
+import { GiFemale, GiMale } from "react-icons/gi";
+import { AiOutlineQuestion, AiOutlineRight } from "react-icons/ai";
+import { BiSolidUser } from "react-icons/bi";
 import Button from "../../components/common/Button";
 import { Link } from "react-router-dom";
 
-const MyInfo = () => {
+const MyInfo = ({ setChangeInfo, data }) => {
+  console.log(data);
+  const genderIcon =
+    data.gender === "MALE" ? (
+      <GiMale size={20} color={COLOR.gender_blue} />
+    ) : data.gender === "FEMALE" ? (
+      <GiFemale size={20} color={COLOR.gender_pink} />
+    ) : (
+      <AiOutlineQuestion size={20} color={COLOR.main_grey} />
+    );
+
   return (
     <>
       <User>
         <Img>
           <div>
-            <img src="http://placehold.it/200" alt="프로필" />
+            {!data.profileImageUrl ? (
+              <BiSolidUser size={90} color={COLOR.main_yellow} />
+            ) : (
+              <img src={data.profileImageUrl} alt="프로필" />
+            )}
           </div>
           <Username>
             <span>닉네임</span>
-            <GiMale size={20} color={COLOR.gender_blue} />
+            {genderIcon}
           </Username>
         </Img>
         <Info>
           <div>
             <Label>이메일</Label>
-            <span>Test@gmail.com</span>
+            <span>{data.username}</span>
           </div>
           <div>
             <Label>이름</Label>
-            <span>테스트</span>
+            <span>{data.name}</span>
           </div>
           <div>
             <Label>작성한 게시글수</Label>
@@ -54,6 +69,7 @@ const MyInfo = () => {
           style={{
             backgroundColor: ` ${COLOR.main_yellow}`,
           }}
+          onClick={() => setChangeInfo(true)}
         />
         <StyledLink to="/leave">
           <span>회원탈퇴</span>
@@ -87,6 +103,10 @@ const Img = styled.div`
     height: 150px;
     border-radius: 50%;
     overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: ${COLOR.btn_grey};
   }
 
   & > div:first-of-type > img {

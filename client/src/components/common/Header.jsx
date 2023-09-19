@@ -1,25 +1,44 @@
 import styled from "styled-components";
 import { Container, Content } from "../../styles/style";
 import LogoImage from "../../images/logo.svg";
+import { BiSolidUser } from "react-icons/bi";
 import { useNavigate, Link } from "react-router-dom";
+import { useRecoilValue } from "recoil";
+import { loginState } from "../../atoms/atom";
+import { ModalState } from "../../atoms/atom";
+import { useSetRecoilState } from "recoil";
+
+import { COLOR } from "../../styles/theme";
 
 const Header = () => {
   const navigate = useNavigate();
+  const isLogin = useRecoilValue(loginState);
+  const setModal = useSetRecoilState(ModalState);
+
+  const handleModal = () => {
+    setModal((prev) => !prev);
+  };
 
   return (
     <Wrap>
       <Contain>
         <Tab>
           <button onClick={() => navigate("/")}>
-            <Logo src={LogoImage} alt="로고" className="logo_img" />
+            <Logo src={LogoImage} alt="로고" />
           </button>
           <Link to="/">DropIn</Link>
           <Link>커뮤니티</Link>
         </Tab>
-        <User>
-          <Link to="/login">로그인</Link>
-          <Link to="/signup">회원가입</Link>
-        </User>
+        {isLogin ? (
+          <LoginUser onClick={handleModal}>
+            <BiSolidUser size={25} color={COLOR.main_yellow} />
+          </LoginUser>
+        ) : (
+          <User>
+            <Link to="/login">로그인</Link>
+            <Link to="/signup">회원가입</Link>
+          </User>
+        )}
       </Contain>
     </Wrap>
   );
@@ -29,7 +48,7 @@ export default Header;
 
 const Wrap = styled(Container)`
   position: fixed;
-  z-index: 9999;
+  z-index: 10;
   border-bottom: 1px solid #2c2c2c;
 
   button {
@@ -62,4 +81,17 @@ const User = styled.div`
   display: flex;
   align-items: center;
   width: fit-content;
+`;
+
+const LoginUser = styled.div`
+  z-index: 150;
+  cursor: pointer;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: ${COLOR.btn_grey};
 `;

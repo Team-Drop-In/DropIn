@@ -1,16 +1,37 @@
-import { Link } from "react-router-dom";
 import styled from "styled-components";
+import { useEffect, useState } from "react";
 import { Container, Content } from "../../styles/style";
 import MyInfo from "../../components/user/MyInfo";
 import ModifyForm from "../../components/user/ModifyForm";
+import { getMyInfo } from "../../apis/api";
 
 const Mypage = () => {
+  const [changeInfo, setChangeInfo] = useState(false);
+  const [userInfo, setUserInfo] = useState({});
+
+  useEffect(() => {
+    getMyInfo()
+      .then((res) => {
+        setUserInfo(res.data);
+      })
+      .catch((error) => {
+        console.error("마이페이지 불러오기 실패:", error);
+      });
+  }, []);
+
   return (
     <Container>
       <Contain>
         <h2>내 정보</h2>
-        {/* <MyInfo /> */}
-        <ModifyForm />
+        {!changeInfo ? (
+          <MyInfo
+            setChangeInfo={setChangeInfo}
+            data={userInfo}
+            setUserInfo={setUserInfo}
+          />
+        ) : (
+          <ModifyForm setChangeInfo={setChangeInfo} data={userInfo} />
+        )}
       </Contain>
     </Container>
   );
