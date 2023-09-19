@@ -8,14 +8,18 @@ import teamdropin.server.global.util.enumValid.ValidEnum;
 
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Data
 public class CreatePostRequest {
 
+    @NotBlank
     @Size(min = 3 , max = 50)
     private String title;
 
+    @NotBlank
     @Size(max = 500)
     private String body;
 

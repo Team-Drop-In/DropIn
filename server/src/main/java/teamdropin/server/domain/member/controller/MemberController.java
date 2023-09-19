@@ -60,7 +60,6 @@ public class MemberController {
      */
     @GetMapping("member/my-page")
     public ResponseEntity<SingleResponseDto> toMyPage(@AuthenticationPrincipal Member member){
-        memberService.findVerifyMember(member.getUsername());
         Member findMember = memberService.getMember(member.getId());
         MyInfoResponseDto myInfoResponseDto = memberMapper.memberToGetMyInfoResponseDto(findMember);
         return new ResponseEntity<>(new SingleResponseDto(myInfoResponseDto), HttpStatus.OK);
@@ -71,7 +70,6 @@ public class MemberController {
      */
     @GetMapping("/member/{id}")
     public ResponseEntity<SingleResponseDto> getMember(@AuthenticationPrincipal Member member, @PathVariable("id") Long memberId ){
-        memberService.findVerifyMember(member.getUsername());
         Member findMember = memberService.getMember(memberId);
         GetMemberResponseDto getMemberResponseDto = memberMapper.memberToGetMemberResponseDto(findMember);
         return new ResponseEntity<>(new SingleResponseDto(getMemberResponseDto), HttpStatus.OK);
@@ -82,7 +80,6 @@ public class MemberController {
      */
     @DeleteMapping("/member")
     public ResponseEntity<Void> deleteMember(@AuthenticationPrincipal Member member){
-        memberService.findVerifyMember(member.getUsername());
         memberService.deleteMember(member.getUsername());
         return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
     }

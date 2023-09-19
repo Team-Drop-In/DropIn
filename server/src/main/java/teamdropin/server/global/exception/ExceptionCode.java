@@ -40,7 +40,11 @@ public enum ExceptionCode {
 
     //유효하지 않는 토큰
     TOKEN_INVALID(401, "Token is invalid"),
-    LIKE_NOT_FOUND(404, "Like not found" );
+    LIKE_NOT_FOUND(404, "Like not found" ),
+    BOX_NOT_FOUND(404, "BOX not found" ),
+    WRONG_INPUT_IMAGE(400, "Image is invalid" ),
+    WRONG_IMAGE_FORMAT(400, "Image format is wrong" ),
+    UPLOAD_IMAGE_LIMIT_EXCEEDED(400, "Maximum number of images exceeded");
     @Getter
     private final int status;
     @Getter

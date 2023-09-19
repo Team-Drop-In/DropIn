@@ -1,8 +1,9 @@
 package teamdropin.server.domain.member.entity;
 
 import lombok.*;
+import teamdropin.server.domain.box.entity.Box;
 import teamdropin.server.domain.comment.entity.Comment;
-import teamdropin.server.domain.like.postLike.entity.PostLike;
+import teamdropin.server.domain.like.entity.Like;
 import teamdropin.server.domain.member.utils.MemberValidation;
 import teamdropin.server.domain.post.entity.Post;
 import teamdropin.server.global.audit.BaseTimeEntity;
@@ -23,7 +24,7 @@ import java.util.List;
 @AllArgsConstructor
 public class Member extends BaseTimeEntity {
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "member_id")
     private Long id;
 
@@ -56,10 +57,15 @@ public class Member extends BaseTimeEntity {
 
     @OneToMany(mappedBy = "member")
     private List<Post> posts = new ArrayList<>();
+
     @OneToMany(mappedBy = "member")
     private List<Comment> comments = new ArrayList<>();
+
     @OneToMany(mappedBy = "member")
-    private List<PostLike> postLikes = new ArrayList<>();
+    private List<Box> boxes = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<Like> likes = new ArrayList<>();
 
     public Member updatePassword(String encodedPassword){
         this.password = encodedPassword;
