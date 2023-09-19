@@ -1,11 +1,13 @@
 import axios from "axios";
 
+const baseURL = process.env.REACT_APP_BaseURL;
+
 const api = axios.create({
-  baseURL: process.env.REACT_APP_BaseURL,
+  baseURL: baseURL,
   headers: {
     "Content-Type": "application/json",
   },
-  // withCredentials: true,
+  withCredentials: true,
 });
 
 export const getHelloApi = async () => {
@@ -28,13 +30,17 @@ export const loginApi = async (data) => {
   }
 };
 
-export const googleloginApi = async () => {
-  try {
-    const res = await axios.get(process.env.REACT_APP_googleURL);
-    return res.data;
-  } catch (error) {
-    throw error.response;
-  }
+// export const googleloginApi = async () => {
+//   try {
+//     const res = await api.get("/oauth2/authorization/google");
+//     return res.data;
+//   } catch (error) {
+//     throw error.response;
+//   }
+// };
+
+export const googleloginApi = () => {
+  window.location.assign(`${baseURL}/oauth2/authorization/google`);
 };
 
 export const signupApi = async (data) => {

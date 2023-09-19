@@ -71,11 +71,9 @@ const Login = () => {
   };
 
   const handleGoogleLogin = () => {
-    googleloginApi()
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((error) => {});
+    googleloginApi();
+    const currentPath = window.location.pathname;
+    console.log(currentPath);
   };
 
   return (
