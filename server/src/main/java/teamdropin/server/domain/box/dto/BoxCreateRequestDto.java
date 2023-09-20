@@ -22,6 +22,6 @@ public class BoxCreateRequestDto {
     private boolean barbellDrop;
     private String url;
     private String detail;
-    private HashMap<String, Integer> imageInfo = new HashMap<>();
+    private HashMap<Integer, String> imageInfo = new HashMap<>();
 
 }

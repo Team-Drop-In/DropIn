@@ -24,8 +24,6 @@ import teamdropin.server.global.dto.MultiResponseDto;
 import teamdropin.server.global.dto.SingleResponseDto;
 import teamdropin.server.global.util.UriCreator;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.net.URI;
 import java.util.HashMap;
@@ -69,7 +67,7 @@ public class BoxController {
             List<BoxImage> boxImageList = box.getBoxImageList();
             HashMap<Integer, String> imageInfo = getBoxResponseDto.getImageInfo();
             for (BoxImage boxImage : boxImageList) {
-                imageInfo.put(boxImage.getImageIdx(),boxImage.getBoxImageUrl());
+                imageInfo.put(boxImage.getImageIndex(),boxImage.getBoxImageUrl());
             }
         }
         return new ResponseEntity<>(new SingleResponseDto<>(getBoxResponseDto), HttpStatus.OK);

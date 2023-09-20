@@ -5,7 +5,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import teamdropin.server.domain.box.entity.Box;
-import teamdropin.server.domain.member.entity.Member;
 
 import javax.persistence.*;
 
@@ -20,21 +19,21 @@ public class BoxImage {
     @Column(name = "boxImage_id")
     private Long id;
 
-    private int imageIdx;
+    private int imageIndex;
     private String boxImageUrl;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "box_id")
     private Box box;
 
-    public BoxImage(String boxImageUrl, int imageIdx, Box box){
+    public BoxImage(String boxImageUrl, int imageIndex, Box box){
         this.boxImageUrl = boxImageUrl;
-        this.imageIdx = imageIdx;
+        this.imageIndex = imageIndex;
         this.box = box;
     }
 
-    public void updateBoxImage(String boxImageUrl, int imageIdx){
+    public void updateBoxImage(String boxImageUrl, int imageIndex){
         this.boxImageUrl = boxImageUrl;
-        this.imageIdx = imageIdx;
+        this.imageIndex = imageIndex;
     }
 }
