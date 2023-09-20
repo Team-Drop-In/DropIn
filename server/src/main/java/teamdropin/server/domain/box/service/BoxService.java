@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import teamdropin.server.aws.service.S3Uploader;
-import teamdropin.server.domain.box.boxImage.BoxImage;
+import teamdropin.server.domain.box.entity.BoxImage;
 import teamdropin.server.domain.box.repository.BoxImageRepository;
 import teamdropin.server.domain.box.dto.BoxCreateRequestDto;
 import teamdropin.server.domain.box.dto.UpdateBoxRequestDto;
@@ -21,7 +21,6 @@ import teamdropin.server.global.exception.BusinessLogicException;
 import teamdropin.server.global.exception.ExceptionCode;
 
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.text.Normalizer;
 import java.util.*;
 
