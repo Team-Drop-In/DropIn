@@ -64,6 +64,16 @@ public class LikeService {
         return false;
     }
 
+    public boolean checkBoxLike(Member member, Long boxId){
+        Box box = boxRepository.findById(boxId)
+                .orElseThrow(() -> new BusinessLogicException(ExceptionCode.BOX_NOT_FOUND));
+        if(member != null && box != null) {
+            Optional<Like> optionalBoxLike = likeRepository.findByMemberIdAndBoxId(member.getId(), box.getId());
+            return optionalBoxLike.isPresent();
+        }
+        return false;
+    }
+
 
 
 

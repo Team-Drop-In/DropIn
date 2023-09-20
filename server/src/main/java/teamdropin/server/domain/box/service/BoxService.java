@@ -43,6 +43,13 @@ public class BoxService {
         Box box = boxMapper.toEntity(boxCreateRequestDto);
         box.addMember(member);
         boxRepository.save(box);
+        if(multipartFileList == null){
+            int maxImageCount = 5;
+            for(int i = 1; i<=maxImageCount; i++) {
+                BoxImage boxImage = new BoxImage("no_image", i, box);
+                boxImageRepository.save(boxImage);
+            }
+        }
 
         if (multipartFileList != null) {
             int maxImageCount = 5;
@@ -114,16 +121,17 @@ public class BoxService {
 
         List<BoxImage> boxImageList = box.getBoxImageList();
         Map<Integer, String> imageInfoDto = updateBoxRequestDto.getImageInfo();
-
-
-        for (int i = 1; i <= imageInfoDto.size(); i++) {
-            ArrayList<Integer> updateIndex = new ArrayList();
-            BoxImage boxImage = boxImageRepository.findById((long) i).orElseThrow();
+        ArrayList<Integer> updateIndex = new ArrayList();
+        for (BoxImage boxImage : boxImageList) {
             for (Map.Entry<Integer, String> imageInfoDtoEntrySet : imageInfoDto.entrySet()) {
                 if (boxImage.getBoxImageUrl().equals(imageInfoDtoEntrySet.getValue())) {
                     updateIndex.add(imageInfoDtoEntrySet.getKey());
                 }
             }
+        }
+
+        for (int i = 1; i <= imageInfoDto.size(); i++) {
+            BoxImage boxImage = boxImageRepository.findById((long) i).orElseThrow();
             if (updateIndex.contains(i)) {
                 String boxImageUrl = imageInfoDto.get(i);
                 boxImage.updateBoxImage(boxImageUrl, i);

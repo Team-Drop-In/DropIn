@@ -23,6 +23,7 @@ public class GetBoxResponseDto {
     private String url;
     private String detail;
     private int likeCount;
+    private boolean checkBoxLike;
     private HashMap<Integer,String> imageInfo = new HashMap<>();
 
 }

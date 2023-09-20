@@ -19,6 +19,7 @@ import teamdropin.server.domain.box.dto.UpdateBoxRequestDto;
 import teamdropin.server.domain.box.entity.Box;
 import teamdropin.server.domain.box.mapper.BoxMapper;
 import teamdropin.server.domain.box.service.BoxService;
+import teamdropin.server.domain.like.service.LikeService;
 import teamdropin.server.domain.member.entity.Member;
 import teamdropin.server.global.dto.MultiResponseDto;
 import teamdropin.server.global.dto.SingleResponseDto;
@@ -39,6 +40,7 @@ public class BoxController {
 
     private final BoxService boxService;
     private final BoxMapper boxMapper;
+    private final LikeService likeService;
 
 
     /**
@@ -57,13 +59,16 @@ public class BoxController {
      * 박스 단건 조회
      */
     @GetMapping("/box/{id}")
-    public ResponseEntity<SingleResponseDto> getBox(@PathVariable("id") Long boxId){
+    public ResponseEntity<SingleResponseDto> getBox(@PathVariable("id") Long boxId,
+                                                    @AuthenticationPrincipal Member member){
         Box box = boxService.getBox(boxId);
         GetBoxResponseDto getBoxResponseDto = boxMapper.boxToGetBoxResponseDto(box);
         getBoxResponseDto.setLikeCount(box.getBoxLikes().size());
         getBoxResponseDto.setImageInfo(new HashMap<>());
+        boolean checkBoxLike = likeService.checkBoxLike(member, box.getId());
+        getBoxResponseDto.setCheckBoxLike(checkBoxLike);
 
-        if(box.getBoxImageList() != null || !box.getBoxImageList().isEmpty()) {
+        if(box.getBoxImageList() != null) {
             List<BoxImage> boxImageList = box.getBoxImageList();
             HashMap<Integer, String> imageInfo = getBoxResponseDto.getImageInfo();
             for (BoxImage boxImage : boxImageList) {
