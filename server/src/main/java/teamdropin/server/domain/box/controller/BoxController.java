@@ -11,7 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import teamdropin.server.domain.box.boxImage.BoxImage;
+import teamdropin.server.domain.box.entity.BoxImage;
 import teamdropin.server.domain.box.dto.BoxCreateRequestDto;
 import teamdropin.server.domain.box.dto.GetAllBoxResponseDto;
 import teamdropin.server.domain.box.dto.GetBoxResponseDto;

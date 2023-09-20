@@ -1,10 +1,9 @@
-package teamdropin.server.domain.box.boxImage;
+package teamdropin.server.domain.box.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import teamdropin.server.domain.box.entity.Box;
 
 import javax.persistence.*;
 
