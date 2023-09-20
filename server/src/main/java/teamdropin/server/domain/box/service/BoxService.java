@@ -1,6 +1,5 @@
 package teamdropin.server.domain.box.service;
 
-import lombok.EqualsAndHashCode;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -11,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import teamdropin.server.aws.service.S3Uploader;
 import teamdropin.server.domain.box.boxImage.BoxImage;
-import teamdropin.server.domain.box.boxImage.BoxImageRepository;
+import teamdropin.server.domain.box.repository.BoxImageRepository;
 import teamdropin.server.domain.box.dto.BoxCreateRequestDto;
 import teamdropin.server.domain.box.dto.UpdateBoxRequestDto;
 import teamdropin.server.domain.box.entity.Box;
@@ -24,9 +23,7 @@ import teamdropin.server.global.exception.ExceptionCode;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.text.Normalizer;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 @Transactional(readOnly = true)
@@ -48,26 +45,24 @@ public class BoxService {
         box.addMember(member);
         boxRepository.save(box);
 
-        if(multipartFileList != null) {
+        if (multipartFileList != null) {
             int maxImageCount = 5;
-            if(multipartFileList.size() > 5){
+            if (multipartFileList.size() > 5) {
                 throw new BusinessLogicException(ExceptionCode.UPLOAD_IMAGE_LIMIT_EXCEEDED);
             }
-            Map<String, Integer> imageInfoDto = boxCreateRequestDto.getImageInfo();
+            HashMap<Integer, String> imageInfoDto = boxCreateRequestDto.getImageInfo();
             Map<String, String> imageUrlList = s3Uploader.uploadImages(multipartFileList, "box");
-            for (String key :imageInfoDto.keySet()) {
-                log.info("imageInfoDto key getByte = {}", key.getBytes());
-            }
             for (Map.Entry<String, String> imageUrlInfo : imageUrlList.entrySet()) {
                 String newImageUrl = imageUrlInfo.getKey();
                 String originalImageName = imageUrlInfo.getValue();
-                log.info("originalImageName getByte = {}", new String(originalImageName.getBytes(StandardCharsets.UTF_8)));
-                log.info("Normalizer originalImageName getByte = {}", Normalizer.normalize(originalImageName, Normalizer.Form.NFC).getBytes());
-                log.info("Not Normalizer originalImageName getByte = {}", originalImageName.getBytes());
-
                 originalImageName = Normalizer.normalize(originalImageName, Normalizer.Form.NFC);
-                int imageIdx = imageInfoDto.get(originalImageName);
-                BoxImage boxImage = new BoxImage(newImageUrl, imageIdx, box);
+                for (Map.Entry<Integer, String> imageInfoDtoEntrySet : imageInfoDto.entrySet()) {
+                    if (imageInfoDtoEntrySet.getValue().equals(originalImageName)) {
+                        int imageIdx = imageInfoDtoEntrySet.getKey();
+                        BoxImage boxImage = new BoxImage(newImageUrl, imageIdx, box);
+                        boxImageRepository.save(boxImage);
+                    }
+                }
             }
         }
         return box.getId();
@@ -92,12 +87,22 @@ public class BoxService {
         boxRepository.delete(box);
     }
 
-    public Box findVerifyBox(Long boxId){
+    public Box findVerifyBox(Long boxId) {
         return boxRepository.findById(boxId)
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.BOX_NOT_FOUND));
     }
 
+    @SneakyThrows
+    @Transactional(readOnly = false)
     public void updateBox(Long boxId, List<MultipartFile> multipartFileList, UpdateBoxRequestDto updateBoxRequestDto) {
+
+        if (multipartFileList != null) {
+            int maxImageCount = 5;
+            if (multipartFileList.size() > maxImageCount) {
+                throw new BusinessLogicException(ExceptionCode.UPLOAD_IMAGE_LIMIT_EXCEEDED);
+            }
+        }
+
         Box box = findVerifyBox(boxId);
         box.updateBox(updateBoxRequestDto.getName(),
                 updateBoxRequestDto.getLocation(),
@@ -108,12 +113,35 @@ public class BoxService {
                 updateBoxRequestDto.getUrl(),
                 updateBoxRequestDto.getDetail());
 
-        HashMap<Integer, String> imageInfo = updateBoxRequestDto.getImageInfo();
         List<BoxImage> boxImageList = box.getBoxImageList();
-        for (BoxImage boxImage : boxImageList) {
-            if (imageInfo.containsValue(boxImage.getBoxImageUrl())) {
+        Map<Integer, String> imageInfoDto = updateBoxRequestDto.getImageInfo();
 
+
+        for (int i = 1; i <= imageInfoDto.size(); i++) {
+            ArrayList<Integer> updateIndex = new ArrayList();
+            BoxImage boxImage = boxImageRepository.findById((long) i).orElseThrow();
+            for (Map.Entry<Integer, String> imageInfoDtoEntrySet : imageInfoDto.entrySet()) {
+                if (boxImage.getBoxImageUrl().equals(imageInfoDtoEntrySet.getValue())) {
+                    updateIndex.add(imageInfoDtoEntrySet.getKey());
+                }
+            }
+            if (updateIndex.contains(i)) {
+                String boxImageUrl = imageInfoDto.get(i);
+                boxImage.updateBoxImage(boxImageUrl, i);
+            } else if (imageInfoDto.get(i).equals("no_image")) {
+                String imageInfoDtoUrl = imageInfoDto.get(i);
+                boxImage.updateBoxImage(imageInfoDtoUrl, i);
+            } else if (!multipartFileList.isEmpty()) {
+                for (MultipartFile image : multipartFileList) {
+                    String originalImageName = image.getOriginalFilename();
+                    originalImageName = Normalizer.normalize(originalImageName, Normalizer.Form.NFC);
+                    if (imageInfoDto.get(i).equals(originalImageName)) {
+                        String newFileName = s3Uploader.upload(image, "box");
+                        boxImage.updateBoxImage(newFileName, i);
+                    }
+                }
             }
         }
     }
 }
+
