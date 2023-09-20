@@ -85,9 +85,9 @@ public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
 
         return UriComponentsBuilder
                 .newInstance()
-                .scheme("http")
-                .host("localhost")
-                .port(3000)
+                .scheme("https")
+                .host("dropinproject.netlify.app")
+                .port(443)
                 .path("/token")
                 .queryParams(queryParams)
                 .build()
