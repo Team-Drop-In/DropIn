@@ -17,8 +17,8 @@ const TokenPage = () => {
     const refreshToken = searchParams.get("refresh_token");
 
     if (accessToken && refreshToken) {
-      localStorage.setItem("accessToken", accessToken);
-      localStorage.setItem("refreshToken", refreshToken);
+      localStorage.setItem("accessToken", `Bearer ${accessToken}`);
+      localStorage.setItem("refreshToken", `Bearer ${refreshToken}`);
       setLogin(true);
       navigate("/");
     } else {

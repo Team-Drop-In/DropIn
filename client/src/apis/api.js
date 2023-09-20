@@ -1,6 +1,7 @@
 import axios from "axios";
 
 const baseURL = process.env.REACT_APP_BaseURL;
+const googleURL = process.env.REACT_APP_googleURL;
 
 const api = axios.create({
   baseURL: baseURL,
@@ -39,8 +40,12 @@ export const loginApi = async (data) => {
 //   }
 // };
 
+// export const googleloginApi = () => {
+//   window.location.assign(`${baseURL}/oauth2/authorization/google`);
+// };
+
 export const googleloginApi = () => {
-  window.location.assign(`${baseURL}/oauth2/authorization/google`);
+  window.location.assign(`${googleURL}`);
 };
 
 export const signupApi = async (data) => {
