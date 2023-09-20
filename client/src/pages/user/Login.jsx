@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { Controller, useForm } from "react-hook-form";
 import { Container, Content } from "../../styles/style";
@@ -72,9 +72,12 @@ const Login = () => {
 
   const handleGoogleLogin = () => {
     googleloginApi();
-    const currentPath = window.location.pathname;
-    console.log(currentPath);
   };
+
+  useEffect(() => {
+    const currentUrl = window.location.href;
+    console.log("Current URL:", currentUrl);
+  }, []);
 
   return (
     <Wrap>
