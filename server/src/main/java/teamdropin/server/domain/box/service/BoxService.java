@@ -16,6 +16,9 @@ import teamdropin.server.domain.box.dto.UpdateBoxRequestDto;
 import teamdropin.server.domain.box.entity.Box;
 import teamdropin.server.domain.box.mapper.BoxMapper;
 import teamdropin.server.domain.box.repository.BoxRepository;
+import teamdropin.server.domain.like.entity.Like;
+import teamdropin.server.domain.like.repository.LikeRepository;
+import teamdropin.server.domain.like.service.LikeService;
 import teamdropin.server.domain.member.entity.Member;
 import teamdropin.server.global.exception.BusinessLogicException;
 import teamdropin.server.global.exception.ExceptionCode;
@@ -33,8 +36,11 @@ public class BoxService {
 
     private final BoxRepository boxRepository;
     private final BoxImageRepository boxImageRepository;
+
+    private final LikeRepository likeRepository;
     private final BoxMapper boxMapper;
     private final S3Uploader s3Uploader;
+    private final LikeService likeService;
 
 
     @Transactional(readOnly = false)
@@ -108,7 +114,6 @@ public class BoxService {
                 throw new BusinessLogicException(ExceptionCode.UPLOAD_IMAGE_LIMIT_EXCEEDED);
             }
         }
-
         Box box = findVerifyBox(boxId);
         box.updateBox(updateBoxRequestDto.getName(),
                 updateBoxRequestDto.getLocation(),
@@ -118,7 +123,6 @@ public class BoxService {
                 updateBoxRequestDto.isBarbellDrop(),
                 updateBoxRequestDto.getUrl(),
                 updateBoxRequestDto.getDetail());
-
         List<BoxImage> boxImageList = box.getBoxImageList();
         Map<Integer, String> imageInfoDto = updateBoxRequestDto.getImageInfo();
         ArrayList<Integer> updateIndex = new ArrayList();
@@ -129,7 +133,6 @@ public class BoxService {
                 }
             }
         }
-
         for (int i = 1; i <= imageInfoDto.size(); i++) {
             BoxImage boxImage = boxImageRepository.findById((long) i).orElseThrow();
             if (updateIndex.contains(i)) {
@@ -149,6 +152,15 @@ public class BoxService {
                 }
             }
         }
+    }
+
+    public List<Box> findLikeBoxList(Long memberId){
+        List<Like> likeBoxList = likeService.findLikeBoxList(memberId);
+        List<Box> boxList = new ArrayList<>();
+        for (Like like : likeBoxList) {
+            boxList.add(like.getBox());
+        }
+        return boxList;
     }
 }
 

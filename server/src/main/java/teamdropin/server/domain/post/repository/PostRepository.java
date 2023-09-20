@@ -9,4 +9,6 @@ import teamdropin.server.domain.post.entity.Post;
 @Repository
 public interface PostRepository extends JpaRepository<Post, Long> {
 
+    long countByMemberId(Long memberId);
+
 }
