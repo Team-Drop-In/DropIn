@@ -53,4 +53,8 @@ public class CommentService {
         }
         commentRepository.delete(comment);
     }
+
+    public long countWriteComment(Long memberId){
+        return commentRepository.countByMemberId(memberId);
+    }
 }

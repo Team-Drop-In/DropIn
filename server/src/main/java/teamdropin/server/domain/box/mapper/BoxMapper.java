@@ -1,11 +1,8 @@
 package teamdropin.server.domain.box.mapper;
 
 import org.springframework.stereotype.Component;
-import teamdropin.server.domain.box.dto.BoxCreateRequestDto;
+import teamdropin.server.domain.box.dto.*;
 //import teamdropin.server.domain.box.dto.GetBoxResponseDto;
-import teamdropin.server.domain.box.dto.GetAllBoxResponseDto;
-import teamdropin.server.domain.box.dto.GetBoxResponseDto;
-import teamdropin.server.domain.box.dto.UpdateBoxRequestDto;
 import teamdropin.server.domain.box.entity.Box;
 
 import java.util.List;
@@ -69,4 +66,17 @@ public class BoxMapper {
                 .detail(updateBoxRequestDto.getDetail())
                 .build();
     }
+
+    public LikeBoxResponseDto boxToLikeBoxResponseDto(Box box){
+        return LikeBoxResponseDto.builder()
+                .id(box.getId())
+                .name(box.getName())
+                .build();
+    }
+
+    public List<LikeBoxResponseDto> boxToLikeBoxResponseDtoList(List<Box> likeBoxes){
+        List<LikeBoxResponseDto> resultList = likeBoxes.stream().map(this::boxToLikeBoxResponseDto).collect(Collectors.toList());
+        return resultList;
+    }
+
 }

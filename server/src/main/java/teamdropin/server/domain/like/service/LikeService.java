@@ -18,6 +18,7 @@ import teamdropin.server.domain.post.repository.PostRepository;
 import teamdropin.server.global.exception.BusinessLogicException;
 import teamdropin.server.global.exception.ExceptionCode;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -112,5 +113,10 @@ public class LikeService {
             likeRepository.delete(optionalPostLike.orElseThrow(
                     () -> new BusinessLogicException(ExceptionCode.LIKE_NOT_FOUND)));
         }
+    }
+
+    public List<Like> findLikeBoxList(Long memberId){
+        List<Like> likeBoxList = likeRepository.findByMemberIdAndLikeCategory(memberId,LikeCategory.BOX);
+        return likeBoxList;
     }
 }

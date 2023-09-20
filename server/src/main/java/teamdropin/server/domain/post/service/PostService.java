@@ -86,4 +86,7 @@ public class PostService {
         return postQueryRepository.search(condition,pageable);
     }
 
+    public long countWritePost(Long memberId){
+        return postRepository.countByMemberId(memberId);
+    }
 }
