@@ -24,6 +24,8 @@ public class GetBoxResponseDto {
     private String detail;
     private int likeCount;
     private boolean checkBoxLike;
+
+    @Builder.Default
     private HashMap<Integer,String> imageInfo = new HashMap<>();
 
 }

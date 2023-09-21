@@ -123,6 +123,7 @@ public class BoxService {
                 updateBoxRequestDto.isBarbellDrop(),
                 updateBoxRequestDto.getUrl(),
                 updateBoxRequestDto.getDetail());
+
         List<BoxImage> boxImageList = box.getBoxImageList();
         Map<Integer, String> imageInfoDto = updateBoxRequestDto.getImageInfo();
         ArrayList<Integer> updateIndex = new ArrayList();
@@ -142,11 +143,11 @@ public class BoxService {
                 String imageInfoDtoUrl = imageInfoDto.get(i);
                 boxImage.updateBoxImage(imageInfoDtoUrl, i);
             } else if (!multipartFileList.isEmpty()) {
-                for (MultipartFile image : multipartFileList) {
-                    String originalImageName = image.getOriginalFilename();
+                for (MultipartFile imageFile : multipartFileList) {
+                    String originalImageName = imageFile.getOriginalFilename();
                     originalImageName = Normalizer.normalize(originalImageName, Normalizer.Form.NFC);
                     if (imageInfoDto.get(i).equals(originalImageName)) {
-                        String newFileName = s3Uploader.upload(image, "box");
+                        String newFileName = s3Uploader.upload(imageFile, "box");
                         boxImage.updateBoxImage(newFileName, i);
                     }
                 }
