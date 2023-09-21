@@ -13,6 +13,7 @@ const Leave = lazy(() => import("./pages/user/Leave"));
 const LeaveConfirm = lazy(() => import("./pages/user/LeaveConfirm"));
 const Profile = lazy(() => import("./pages/user/Profile"));
 const Mypage = lazy(() => import("./pages/user/Mypage"));
+const Board = lazy(() => import("./pages/board/Board"));
 
 const App = () => {
   const isOpenModal = useRecoilValue(ModalState);
@@ -33,6 +34,7 @@ const App = () => {
           <Route path="/changePwd" element={<ChangePwd />} />
           <Route path="/leave" element={<Leave />} />
           <Route path="/leaveconfirm" element={<LeaveConfirm />} />
+          <Route path="/board" element={<Board />} />
         </Routes>
       </Suspense>
     </div>
