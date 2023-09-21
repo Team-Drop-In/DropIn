@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.HashMap;
 
 
@@ -14,14 +16,25 @@ import java.util.HashMap;
 @AllArgsConstructor
 public class BoxCreateRequestDto {
 
+    @NotBlank
     private String name;
+
+    @NotBlank
     private String location;
+
     private String phoneNumber;
-    private int cost;
-    private int area;
+
+    @NotNull
+    private Integer cost;
+
+    @NotNull
+    private Integer area;
+
     private boolean barbellDrop;
     private String url;
     private String detail;
+
+    @Builder.Default
     private HashMap<Integer, String> imageInfo = new HashMap<>();
 
 }

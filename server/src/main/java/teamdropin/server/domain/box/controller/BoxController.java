@@ -25,6 +25,7 @@ import teamdropin.server.global.dto.MultiResponseDto;
 import teamdropin.server.global.dto.SingleResponseDto;
 import teamdropin.server.global.util.UriCreator;
 
+import javax.validation.Valid;
 import java.io.IOException;
 import java.net.URI;
 import java.util.HashMap;
@@ -49,7 +50,7 @@ public class BoxController {
     @PostMapping("/box")
     public ResponseEntity<URI> createBox(@AuthenticationPrincipal Member member,
                                          @RequestPart(value = "image", required = false) List<MultipartFile> multipartFileList,
-                                         @RequestPart("boxCreateRequest") BoxCreateRequestDto boxCreateRequestDto) throws IOException {
+                                         @RequestPart("boxCreateRequest") @Valid BoxCreateRequestDto boxCreateRequestDto) throws IOException {
         Long boxId = boxService.createBox(member, boxCreateRequestDto, multipartFileList);
         URI location = UriCreator.createUri(BOX_DEFAULT_URI, boxId);
         return ResponseEntity.created(location).build();
@@ -94,7 +95,7 @@ public class BoxController {
     public ResponseEntity<Void> updateBox(@AuthenticationPrincipal Member member,
                                           @PathVariable("id") Long boxId,
                                           @RequestPart(value = "image", required = false) List<MultipartFile> multipartFileList,
-                                          @RequestPart(value = "UpdateBoxRequestDto") UpdateBoxRequestDto updateBoxRequestDto){
+                                          @RequestPart(value = "UpdateBoxRequestDto") @Valid UpdateBoxRequestDto updateBoxRequestDto){
         boxService.updateBox(boxId, multipartFileList, updateBoxRequestDto);
 
         return ResponseEntity.ok().build();

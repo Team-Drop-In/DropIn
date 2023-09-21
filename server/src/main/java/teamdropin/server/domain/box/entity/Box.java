@@ -9,6 +9,8 @@ import teamdropin.server.domain.member.entity.Member;
 import teamdropin.server.global.audit.BaseTimeEntity;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,15 +25,19 @@ public class Box extends BaseTimeEntity {
     @Column(name = "box_id")
     private Long id;
 
+    @NotBlank
     private String name;
 
+    @NotBlank
     private String location;
 
     private String phoneNumber;
 
-    private int cost;
+    @NotNull
+    private Integer cost;
 
-    private int area;
+    @NotNull
+    private Integer area;
 
     private boolean barbellDrop;
 
@@ -46,6 +52,7 @@ public class Box extends BaseTimeEntity {
     @JoinColumn(name = "member_id")
     private Member member;
 
+    @Builder.Default
     @OneToMany(mappedBy = "box")
     private List<Like> boxLikes = new ArrayList<>();
 
