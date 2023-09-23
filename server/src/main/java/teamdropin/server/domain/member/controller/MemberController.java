@@ -7,7 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import teamdropin.server.domain.box.dto.LikeBoxResponseDto;
+import teamdropin.server.domain.box.dto.box.LikeBoxResponseDto;
 import teamdropin.server.domain.box.entity.Box;
 import teamdropin.server.domain.box.mapper.BoxMapper;
 import teamdropin.server.domain.box.service.BoxService;

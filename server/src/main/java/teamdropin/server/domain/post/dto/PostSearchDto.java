@@ -10,7 +10,6 @@ import java.time.LocalDateTime;
 
 @Data
 @Builder
-
 public class PostSearchDto {
 
     private Long id;

@@ -1,4 +1,4 @@
-package teamdropin.server.domain.box.dto;
+package teamdropin.server.domain.box.dto.box;
 
 import lombok.*;
 

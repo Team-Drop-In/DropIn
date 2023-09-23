@@ -21,6 +21,7 @@ import java.util.List;
 
 import static org.springframework.util.StringUtils.hasText;
 import static teamdropin.server.domain.comment.entity.QComment.comment;
+import static teamdropin.server.domain.like.entity.QLike.like;
 import static teamdropin.server.domain.member.entity.QMember.member;
 import static teamdropin.server.domain.post.entity.QPost.post;
 
@@ -54,6 +55,7 @@ public class PostQueryRepository {
                 ).from(post)
                 .leftJoin(post.member, member)
                 .leftJoin(post.comments, comment)
+                .leftJoin(like)
                 .where(searchEq(condition))
                 .orderBy(postSort(condition), post.createdDate.desc())
                 .groupBy(post)
@@ -66,6 +68,7 @@ public class PostQueryRepository {
                 .from(post)
                 .leftJoin(post.member, member)
                 .leftJoin(post.comments, comment)
+                .leftJoin(like)
                 .where(searchEq(condition))
                 .groupBy(post);
 
@@ -78,10 +81,6 @@ public class PostQueryRepository {
                 .or(post.title.contains(search))
                 .or(post.body.contains(search))
                 .or(comment.body.contains(search)) : null;
-    }
-
-    private BooleanExpression nicknameEq(String nickname) {
-        return hasText(nickname) ? post.member.nickname.eq(nickname) : null;
     }
 
     private OrderSpecifier<?> postSort(PostSearchCondition condition) {

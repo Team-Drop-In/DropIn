@@ -1,9 +1,11 @@
 package teamdropin.server.domain.box.mapper;
 
 import org.springframework.stereotype.Component;
-import teamdropin.server.domain.box.dto.*;
 //import teamdropin.server.domain.box.dto.GetBoxResponseDto;
+import teamdropin.server.domain.box.dto.box.*;
+import teamdropin.server.domain.box.dto.boxImage.BoxImageResponseDto;
 import teamdropin.server.domain.box.entity.Box;
+import teamdropin.server.domain.box.entity.BoxImage;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -24,26 +26,39 @@ public class BoxMapper {
                 .build();
     }
 
-    public GetBoxResponseDto boxToGetBoxResponseDto(Box box) {
+    public GetBoxResponseDto boxToGetBoxResponseDto(Box box, List<BoxImageResponseDto> boxImageResponseDtoList) {
         return GetBoxResponseDto.builder()
                 .id(box.getId())
                 .name(box.getName())
                 .location(box.getLocation())
+                .boxImageResponseDtoList(boxImageResponseDtoList)
                 .phoneNumber(box.getPhoneNumber())
                 .cost(box.getCost())
                 .area(box.getArea())
                 .barbellDrop(box.isBarbellDrop())
+                .likeCount(box.getBoxLikes().size())
+                .viewCount(box.getViewCount())
                 .url(box.getUrl())
                 .detail(box.getDetail())
                 .build();
     }
 
     public GetAllBoxResponseDto boxToGetAllPostResponseDto(Box box){
+
+        List<BoxImage> boxImageList = box.getBoxImageList();
+        String boxMainImage = "no_image";
+        for (BoxImage boxImage : boxImageList) {
+            if(boxImage.getImageIndex() == 1){
+                boxMainImage = boxImage.getBoxImageUrl();
+            }
+        }
+
         return GetAllBoxResponseDto.builder()
                 .id(box.getId())
                 .name(box.getName())
-                .mainImageUrl(box.getBoxImageList().get(0).getBoxImageUrl())
+                .mainImageUrl(boxMainImage)
                 .likeCount(box.getBoxLikes().size())
+                .viewCount(box.getViewCount())
                 .location(box.getLocation())
                 .build();
     }
@@ -78,5 +93,4 @@ public class BoxMapper {
         List<LikeBoxResponseDto> resultList = likeBoxes.stream().map(this::boxToLikeBoxResponseDto).collect(Collectors.toList());
         return resultList;
     }
-
 }

@@ -11,12 +11,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import teamdropin.server.domain.box.dto.box.*;
+import teamdropin.server.domain.box.dto.boxImage.BoxImageResponseDto;
 import teamdropin.server.domain.box.entity.BoxImage;
-import teamdropin.server.domain.box.dto.BoxCreateRequestDto;
-import teamdropin.server.domain.box.dto.GetAllBoxResponseDto;
-import teamdropin.server.domain.box.dto.GetBoxResponseDto;
-import teamdropin.server.domain.box.dto.UpdateBoxRequestDto;
 import teamdropin.server.domain.box.entity.Box;
+import teamdropin.server.domain.box.mapper.BoxImageMapper;
 import teamdropin.server.domain.box.mapper.BoxMapper;
 import teamdropin.server.domain.box.service.BoxService;
 import teamdropin.server.domain.like.service.LikeService;
@@ -28,7 +27,6 @@ import teamdropin.server.global.util.UriCreator;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.net.URI;
-import java.util.HashMap;
 import java.util.List;
 
 @RestController
@@ -41,6 +39,7 @@ public class BoxController {
 
     private final BoxService boxService;
     private final BoxMapper boxMapper;
+    private final BoxImageMapper boxImageMapper;
     private final LikeService likeService;
 
 
@@ -63,19 +62,12 @@ public class BoxController {
     public ResponseEntity<SingleResponseDto> getBox(@PathVariable("id") Long boxId,
                                                     @AuthenticationPrincipal Member member){
         Box box = boxService.getBox(boxId);
-        GetBoxResponseDto getBoxResponseDto = boxMapper.boxToGetBoxResponseDto(box);
-        getBoxResponseDto.setLikeCount(box.getBoxLikes().size());
-        getBoxResponseDto.setImageInfo(new HashMap<>());
+        List<BoxImage> boxImageList = box.getBoxImageList();
+        List<BoxImageResponseDto> boxImageResponseDtoList = boxImageMapper.boxImageListToBoxImageResponseDtoList(boxImageList);
+        GetBoxResponseDto getBoxResponseDto = boxMapper.boxToGetBoxResponseDto(box,boxImageResponseDtoList);
         boolean checkBoxLike = likeService.checkBoxLike(member, box.getId());
         getBoxResponseDto.setCheckBoxLike(checkBoxLike);
 
-        if(box.getBoxImageList() != null) {
-            List<BoxImage> boxImageList = box.getBoxImageList();
-            HashMap<Integer, String> imageInfo = getBoxResponseDto.getImageInfo();
-            for (BoxImage boxImage : boxImageList) {
-                imageInfo.put(boxImage.getImageIndex(),boxImage.getBoxImageUrl());
-            }
-        }
         return new ResponseEntity<>(new SingleResponseDto<>(getBoxResponseDto), HttpStatus.OK);
     }
 
@@ -89,6 +81,13 @@ public class BoxController {
         List<Box> boxes = pageBoxes.getContent();
         List<GetAllBoxResponseDto> getAllPostResponseDtoList = boxMapper.boxToGetAllBoxResponseDtoList(boxes);
         return new ResponseEntity<>(new MultiResponseDto<>(getAllPostResponseDtoList,pageBoxes), HttpStatus.OK);
+    }
+
+    @GetMapping("/box/search")
+    public ResponseEntity<MultiResponseDto> searchBoxesPage(BoxSearchCondition condition, Pageable pageable){
+        Page<BoxSearchDto> searchBoxes = boxService.getSearchBoxes(condition,pageable);
+        List<BoxSearchDto> boxes = searchBoxes.getContent();
+        return new ResponseEntity<>(new MultiResponseDto(boxes,searchBoxes), HttpStatus.OK);
     }
 
     @PutMapping("box/{id}")

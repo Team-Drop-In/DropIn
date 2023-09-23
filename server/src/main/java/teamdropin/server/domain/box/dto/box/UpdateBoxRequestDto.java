@@ -1,4 +1,4 @@
-package teamdropin.server.domain.box.dto;
+package teamdropin.server.domain.box.dto.box;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,12 +9,13 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.HashMap;
 
-
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class BoxCreateRequestDto {
+public class UpdateBoxRequestDto {
+
+    private Long id;
 
     @NotBlank
     private String name;
@@ -34,7 +35,6 @@ public class BoxCreateRequestDto {
     private String url;
     private String detail;
 
-    @Builder.Default
-    private HashMap<Integer, String> imageInfo = new HashMap<>();
+    private HashMap<Integer,String> imageInfo;
 
 }
