@@ -29,6 +29,7 @@ public class PostMapper {
                 .likeCount(post.getPostLikes().size())
                 .checkPostLike(false)
                 .createdDate(post.getCreatedDate())
+                .profileImageUrl(post.getMember().getProfileImageUrl())
                 .build();
     }
 
@@ -43,6 +44,7 @@ public class PostMapper {
                 .nickname(post.getMember().getNickname())
                 .commentCount(post.getComments().size())
                 .createdDate(post.getCreatedDate())
+                .profileImageUrl(post.getMember().getProfileImageUrl())
                 .build();
     }
 

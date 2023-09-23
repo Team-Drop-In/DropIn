@@ -22,10 +22,11 @@ public class PostSearchDto {
     private String nickname;
     private int commentCount;
     private LocalDateTime createdDate;
+    private String profileImageUrl;
 
 
     @QueryProjection
-    public PostSearchDto(Long id, String title, String body, int viewCount, Category category, int likeCount, String nickname, int commentCount, LocalDateTime createdDate) {
+    public PostSearchDto(Long id, String title, String body, int viewCount, Category category, int likeCount, String nickname, int commentCount, LocalDateTime createdDate,String profileImageUrl) {
         this.id = id;
         this.title = title;
         this.body = body;
@@ -35,5 +36,6 @@ public class PostSearchDto {
         this.nickname = nickname;
         this.commentCount = commentCount;
         this.createdDate = createdDate;
+        this.profileImageUrl = profileImageUrl;
     }
 }

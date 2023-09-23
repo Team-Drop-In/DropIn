@@ -128,6 +128,7 @@ public class MemberService {
     @Transactional(readOnly = false)
     public void updateProfile(String username, MemberUpdateProfileRequestDto memberUpdateProfileRequestDto, MultipartFile image) throws IOException {
         Member member = findVerifyMember(username);
+        validateDuplicateNickname(memberUpdateProfileRequestDto.getNickname());
         String profileImageUrl = null;
         if(image == null && member.getProfileImageUrl() != null){
             s3Uploader.deleteFile(member.getProfileImageUrl());

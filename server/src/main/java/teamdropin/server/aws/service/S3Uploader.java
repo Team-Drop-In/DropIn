@@ -25,7 +25,7 @@ import java.util.*;
 public class S3Uploader {
     private final AmazonS3Client amazonS3Client;
 
-    private final List<String> IMAGE_FILE_FORMAT = List.of("jpg",".jpeg",".png","JPG","JPEG","PNG");
+    private final List<String> IMAGE_FILE_FORMAT = List.of(".jpg",".jpeg",".png","JPG","JPEG","PNG");
 
     @Value("${cloud.aws.imageS3.bucket}")
     private String bucket;

@@ -4,6 +4,6 @@ import lombok.Data;
 
 @Data
 public class PostSearchCondition {
-    private String sortBy;
+    private String orderBy;
     private String search;
 }
