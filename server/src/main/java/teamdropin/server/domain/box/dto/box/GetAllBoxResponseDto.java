@@ -1,4 +1,4 @@
-package teamdropin.server.domain.box.dto;
+package teamdropin.server.domain.box.dto.box;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,5 +14,6 @@ public class GetAllBoxResponseDto {
     private String name;
     private String mainImageUrl;
     private int likeCount;
+    private int viewCount;
     private String location;
 }

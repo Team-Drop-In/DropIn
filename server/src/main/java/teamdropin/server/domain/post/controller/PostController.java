@@ -109,10 +109,6 @@ public class PostController {
 
     @GetMapping("post/search")
     public ResponseEntity<MultiResponseDto> searchPostsPage(PostSearchCondition condition, Pageable pageable){
-
-//        pageable = PageRequest.of(pageable.getPageNumber(), 20);
-        //추후 협의 후 사이즈 크기 고정 예정
-
         Page<PostSearchDto> searchPosts = postService.getSearchPosts(condition,pageable);
         List<PostSearchDto> posts = searchPosts.getContent();
         return new ResponseEntity<>(new MultiResponseDto<>(posts,searchPosts),HttpStatus.OK);

@@ -19,5 +19,6 @@ public class GetAllPostResponseDto {
     private String nickname;
     private int commentCount;
     private LocalDateTime createdDate;
+    private String profileImageUrl;
 
 }

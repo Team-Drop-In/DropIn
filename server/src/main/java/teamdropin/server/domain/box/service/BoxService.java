@@ -9,15 +9,18 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import teamdropin.server.aws.service.S3Uploader;
+import teamdropin.server.domain.box.dto.box.BoxSearchCondition;
+import teamdropin.server.domain.box.dto.box.BoxSearchDto;
+import teamdropin.server.domain.box.dto.boxImage.CreateBoxImageRequestDto;
 import teamdropin.server.domain.box.entity.BoxImage;
 import teamdropin.server.domain.box.repository.BoxImageRepository;
-import teamdropin.server.domain.box.dto.BoxCreateRequestDto;
-import teamdropin.server.domain.box.dto.UpdateBoxRequestDto;
+import teamdropin.server.domain.box.dto.box.BoxCreateRequestDto;
+import teamdropin.server.domain.box.dto.box.UpdateBoxRequestDto;
 import teamdropin.server.domain.box.entity.Box;
 import teamdropin.server.domain.box.mapper.BoxMapper;
+import teamdropin.server.domain.box.repository.BoxQueryRepository;
 import teamdropin.server.domain.box.repository.BoxRepository;
 import teamdropin.server.domain.like.entity.Like;
-import teamdropin.server.domain.like.repository.LikeRepository;
 import teamdropin.server.domain.like.service.LikeService;
 import teamdropin.server.domain.member.entity.Member;
 import teamdropin.server.global.exception.BusinessLogicException;
@@ -35,9 +38,8 @@ public class BoxService {
 
 
     private final BoxRepository boxRepository;
+    private final BoxQueryRepository boxQueryRepository;
     private final BoxImageRepository boxImageRepository;
-
-    private final LikeRepository likeRepository;
     private final BoxMapper boxMapper;
     private final S3Uploader s3Uploader;
     private final LikeService likeService;
@@ -46,42 +48,43 @@ public class BoxService {
     @Transactional(readOnly = false)
     public Long createBox(Member member, BoxCreateRequestDto boxCreateRequestDto, List<MultipartFile> multipartFileList) throws IOException {
 
-        Box box = boxMapper.toEntity(boxCreateRequestDto);
-        box.addMember(member);
-        boxRepository.save(box);
-        if(multipartFileList == null){
-            int maxImageCount = 5;
-            for(int i = 1; i<=maxImageCount; i++) {
-                BoxImage boxImage = new BoxImage("no_image", i, box);
-                boxImageRepository.save(boxImage);
-            }
-        }
-
         if (multipartFileList != null) {
             int maxImageCount = 5;
             if (multipartFileList.size() > 5) {
                 throw new BusinessLogicException(ExceptionCode.UPLOAD_IMAGE_LIMIT_EXCEEDED);
             }
-            HashMap<Integer, String> imageInfoDto = boxCreateRequestDto.getImageInfo();
-            Map<String, String> imageUrlList = s3Uploader.uploadImages(multipartFileList, "box");
-            for (Map.Entry<String, String> imageUrlInfo : imageUrlList.entrySet()) {
-                String newImageUrl = imageUrlInfo.getKey();
-                String originalImageName = imageUrlInfo.getValue();
-                originalImageName = Normalizer.normalize(originalImageName, Normalizer.Form.NFC);
-                for (Map.Entry<Integer, String> imageInfoDtoEntrySet : imageInfoDto.entrySet()) {
-                    if (imageInfoDtoEntrySet.getValue().equals(originalImageName)) {
-                        int imageIdx = imageInfoDtoEntrySet.getKey();
-                        BoxImage boxImage = new BoxImage(newImageUrl, imageIdx, box);
+        }
+
+        Box box = boxMapper.toEntity(boxCreateRequestDto);
+        box.addMember(member);
+        boxRepository.save(box);
+
+        List<CreateBoxImageRequestDto> boxImageDtoList = boxCreateRequestDto.getImageInfo();
+        for (CreateBoxImageRequestDto boxImageDto : boxImageDtoList) {
+            if(multipartFileList != null){
+                for(MultipartFile image : multipartFileList){
+                    String originalImageName = image.getOriginalFilename();
+                    originalImageName = Normalizer.normalize(originalImageName, Normalizer.Form.NFC);
+                    if(boxImageDto.getImageName().equals(originalImageName)){
+                        String newImageUrl = s3Uploader.upload(image, "box");
+                        BoxImage boxImage = new BoxImage(newImageUrl, boxImageDto.getImageIndex(),box);
                         boxImageRepository.save(boxImage);
                     }
                 }
+            }
+            if(boxImageDto.getImageName().equals("no_image")){
+                BoxImage boxImage = new BoxImage("no_image", boxImageDto.getImageIndex(), box);
+                boxImageRepository.save(boxImage);
             }
         }
         return box.getId();
     }
 
     public Box getBox(Long boxId) {
-        return findVerifyBox(boxId);
+        Box box =  findVerifyBox(boxId);
+        box.viewCountUp();
+
+        return box;
     }
 
     public Page<Box> getAllBoxes(Pageable pageable) {
@@ -133,22 +136,19 @@ public class BoxService {
                     updateIndex.add(imageInfoDtoEntrySet.getKey());
                 }
             }
-        }
-        for (int i = 1; i <= imageInfoDto.size(); i++) {
-            BoxImage boxImage = boxImageRepository.findById((long) i).orElseThrow();
-            if (updateIndex.contains(i)) {
-                String boxImageUrl = imageInfoDto.get(i);
-                boxImage.updateBoxImage(boxImageUrl, i);
-            } else if (imageInfoDto.get(i).equals("no_image")) {
-                String imageInfoDtoUrl = imageInfoDto.get(i);
-                boxImage.updateBoxImage(imageInfoDtoUrl, i);
+            if (updateIndex.contains(boxImage.getImageIndex())) {
+                String boxImageUrl = imageInfoDto.get(boxImage.getImageIndex());
+                boxImage.updateBoxImage(boxImageUrl, boxImage.getImageIndex());
+            } else if (imageInfoDto.get(boxImage.getImageIndex()).equals("no_image")) {
+                String imageInfoDtoUrl = imageInfoDto.get(boxImage.getImageIndex());
+                boxImage.updateBoxImage(imageInfoDtoUrl, boxImage.getImageIndex());
             } else if (!multipartFileList.isEmpty()) {
                 for (MultipartFile imageFile : multipartFileList) {
                     String originalImageName = imageFile.getOriginalFilename();
                     originalImageName = Normalizer.normalize(originalImageName, Normalizer.Form.NFC);
-                    if (imageInfoDto.get(i).equals(originalImageName)) {
+                    if (imageInfoDto.get(boxImage.getImageIndex()).equals(originalImageName)) {
                         String newFileName = s3Uploader.upload(imageFile, "box");
-                        boxImage.updateBoxImage(newFileName, i);
+                        boxImage.updateBoxImage(newFileName, boxImage.getImageIndex());
                     }
                 }
             }
@@ -162,6 +162,10 @@ public class BoxService {
             boxList.add(like.getBox());
         }
         return boxList;
+    }
+
+    public Page<BoxSearchDto> getSearchBoxes(BoxSearchCondition condition, Pageable pageable){
+        return boxQueryRepository.search(condition,pageable);
     }
 }
 

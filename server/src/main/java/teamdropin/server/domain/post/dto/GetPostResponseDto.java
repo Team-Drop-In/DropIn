@@ -22,5 +22,6 @@ public class GetPostResponseDto {
     private int likeCount;
     private boolean checkPostLike;
     private LocalDateTime createdDate;
+    private String profileImageUrl;
 
 }

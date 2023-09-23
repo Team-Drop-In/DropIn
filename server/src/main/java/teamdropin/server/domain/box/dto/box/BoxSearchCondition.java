@@ -1,9 +1,9 @@
-package teamdropin.server.domain.post.dto;
+package teamdropin.server.domain.box.dto.box;
 
 import lombok.Data;
 
 @Data
-public class PostSearchCondition {
+public class BoxSearchCondition {
     private String orderBy;
     private String search;
 }
