@@ -27,7 +27,7 @@ const Header = () => {
             <Logo src={LogoImage} alt="로고" />
           </button>
           <Link to="/">DropIn</Link>
-          <Link>커뮤니티</Link>
+          <Link to="/board">커뮤니티</Link>
         </Tab>
         {isLogin ? (
           <LoginUser onClick={handleModal}>
