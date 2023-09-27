@@ -26,6 +26,7 @@ public class GetBoxResponseDto {
     private int likeCount;
     private int viewCount;
     private boolean checkBoxLike;
+    private List<String> tagList;
     private List<BoxImageResponseDto> boxImageResponseDtoList;
 
 }

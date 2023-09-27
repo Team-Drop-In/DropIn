@@ -35,6 +35,8 @@ public class BoxCreateRequestDto {
     private String url;
     private String detail;
 
+    private List<String> tagList;
+
     private List<CreateBoxImageRequestDto> imageInfo;
 
 }

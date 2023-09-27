@@ -20,6 +20,7 @@ import teamdropin.server.domain.box.entity.Box;
 import teamdropin.server.domain.box.mapper.BoxMapper;
 import teamdropin.server.domain.box.repository.BoxQueryRepository;
 import teamdropin.server.domain.box.repository.BoxRepository;
+import teamdropin.server.domain.boxTag.service.BoxTagService;
 import teamdropin.server.domain.like.entity.Like;
 import teamdropin.server.domain.like.service.LikeService;
 import teamdropin.server.domain.member.entity.Member;
@@ -40,6 +41,7 @@ public class BoxService {
     private final BoxRepository boxRepository;
     private final BoxQueryRepository boxQueryRepository;
     private final BoxImageRepository boxImageRepository;
+    private final BoxTagService boxTagService;
     private final BoxMapper boxMapper;
     private final S3Uploader s3Uploader;
     private final LikeService likeService;
@@ -55,9 +57,11 @@ public class BoxService {
             }
         }
 
+
         Box box = boxMapper.toEntity(boxCreateRequestDto);
         box.addMember(member);
         boxRepository.save(box);
+        boxTagService.createBoxTag(boxCreateRequestDto.getTagList(),box.getId());
 
         List<CreateBoxImageRequestDto> boxImageDtoList = boxCreateRequestDto.getImageInfo();
         for (CreateBoxImageRequestDto boxImageDto : boxImageDtoList) {
@@ -127,6 +131,8 @@ public class BoxService {
                 updateBoxRequestDto.getUrl(),
                 updateBoxRequestDto.getDetail());
 
+        boxTagService.updateAndDeleteBoxTag(updateBoxRequestDto.getTagList(), boxId);
+
         List<BoxImage> boxImageList = box.getBoxImageList();
         Map<Integer, String> imageInfoDto = updateBoxRequestDto.getImageInfo();
         ArrayList<Integer> updateIndex = new ArrayList();
@@ -142,7 +148,7 @@ public class BoxService {
             } else if (imageInfoDto.get(boxImage.getImageIndex()).equals("no_image")) {
                 String imageInfoDtoUrl = imageInfoDto.get(boxImage.getImageIndex());
                 boxImage.updateBoxImage(imageInfoDtoUrl, boxImage.getImageIndex());
-            } else if (!multipartFileList.isEmpty()) {
+            } else if (multipartFileList != null) {
                 for (MultipartFile imageFile : multipartFileList) {
                     String originalImageName = imageFile.getOriginalFilename();
                     originalImageName = Normalizer.normalize(originalImageName, Normalizer.Form.NFC);

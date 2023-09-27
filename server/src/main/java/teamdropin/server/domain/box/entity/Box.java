@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import teamdropin.server.domain.boxTag.entity.BoxTag;
 import teamdropin.server.domain.like.entity.Like;
 import teamdropin.server.domain.member.entity.Member;
 import teamdropin.server.global.audit.BaseTimeEntity;
@@ -60,8 +61,13 @@ public class Box extends BaseTimeEntity {
     @OneToMany(mappedBy = "box")
     private List<Like> boxLikes = new ArrayList<>();
 
+    @Builder.Default
+    @OneToMany(mappedBy = "box")
+    private List<BoxTag> boxTagList = new ArrayList<>();
+
     public void addMember(Member member){
         this.member = member;
+        member.getBoxes().add(this);
     }
 
     public void viewCountUp(){this.viewCount = this.viewCount +1 ;}
