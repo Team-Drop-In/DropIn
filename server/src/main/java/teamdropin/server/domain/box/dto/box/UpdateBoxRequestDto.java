@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.HashMap;
+import java.util.List;
 
 @Data
 @Builder
@@ -34,6 +35,8 @@ public class UpdateBoxRequestDto {
     private boolean barbellDrop;
     private String url;
     private String detail;
+
+    private List<String> tagList;
 
     private HashMap<Integer,String> imageInfo;
 

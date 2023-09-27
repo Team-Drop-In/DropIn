@@ -6,6 +6,7 @@ import teamdropin.server.domain.box.dto.box.*;
 import teamdropin.server.domain.box.dto.boxImage.BoxImageResponseDto;
 import teamdropin.server.domain.box.entity.Box;
 import teamdropin.server.domain.box.entity.BoxImage;
+import teamdropin.server.domain.boxTag.entity.BoxTag;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -27,6 +28,9 @@ public class BoxMapper {
     }
 
     public GetBoxResponseDto boxToGetBoxResponseDto(Box box, List<BoxImageResponseDto> boxImageResponseDtoList) {
+
+        List<String> tagList = box.getBoxTagList().stream().map(BoxTag::getTagName).collect(Collectors.toList());
+
         return GetBoxResponseDto.builder()
                 .id(box.getId())
                 .name(box.getName())
@@ -40,10 +44,13 @@ public class BoxMapper {
                 .viewCount(box.getViewCount())
                 .url(box.getUrl())
                 .detail(box.getDetail())
+                .tagList(tagList)
                 .build();
     }
 
     public GetAllBoxResponseDto boxToGetAllPostResponseDto(Box box){
+
+        List<String> tagList = box.getBoxTagList().stream().map(BoxTag::getTagName).collect(Collectors.toList());
 
         List<BoxImage> boxImageList = box.getBoxImageList();
         String boxMainImage = "no_image";
@@ -60,6 +67,7 @@ public class BoxMapper {
                 .likeCount(box.getBoxLikes().size())
                 .viewCount(box.getViewCount())
                 .location(box.getLocation())
+                .tagList(tagList)
                 .build();
     }
     public List<GetAllBoxResponseDto> boxToGetAllBoxResponseDtoList(List<Box> boxes){
