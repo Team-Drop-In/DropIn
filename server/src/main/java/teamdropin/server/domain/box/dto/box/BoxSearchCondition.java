@@ -6,4 +6,5 @@ import lombok.Data;
 public class BoxSearchCondition {
     private String orderBy;
     private String search;
+    private String barbellDrop;
 }
