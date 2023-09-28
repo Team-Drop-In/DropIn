@@ -55,7 +55,7 @@ public class PostQueryRepository {
                 ).from(post)
                 .leftJoin(post.member, member)
                 .leftJoin(post.comments, comment)
-                .leftJoin(like)
+                .leftJoin(post.postLikes)
                 .where(searchEq(condition))
                 .orderBy(postSort(condition), post.createdDate.desc())
                 .groupBy(post)
