@@ -19,6 +19,10 @@ const Mypage = () => {
       });
   }, []);
 
+  console.log(userInfo);
+  console.log(userInfo.username);
+  console.log(userInfo.nickname);
+
   return (
     <Container>
       <Contain>
@@ -40,7 +44,7 @@ const Mypage = () => {
 export default Mypage;
 
 const Contain = styled(Content)`
-  height: 100vh;
+  height: calc(100vh - 60px);
   display: flex;
   flex-direction: column;
 

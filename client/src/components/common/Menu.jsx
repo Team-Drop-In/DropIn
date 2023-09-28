@@ -17,6 +17,7 @@ const Menu = () => {
 
   const handleLogout = () => {
     localStorage.removeItem("accessToken");
+    localStorage.removeItem("refreshToken");
     setLogin(false);
     setModal(false);
     navigate("/");
@@ -47,7 +48,6 @@ const Contain = styled(Container)`
 
 const Wrap = styled(Content)`
   position: relative;
-  margin-top: 60px;
   justify-content: end;
 `;
 

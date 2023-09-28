@@ -111,7 +111,7 @@ const Leave = () => {
 export default Leave;
 
 const Contain = styled(Content)`
-  height: 100vh;
+  height: calc(100vh - 60px);
   display: flex;
   flex-direction: column;
 `;

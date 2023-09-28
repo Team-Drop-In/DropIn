@@ -7,7 +7,6 @@ import Button from "../../components/common/Button";
 import { Link } from "react-router-dom";
 
 const MyInfo = ({ setChangeInfo, data }) => {
-  console.log(data);
   const genderIcon =
     data.gender === "MALE" ? (
       <GiMale size={20} color={COLOR.gender_blue} />
@@ -29,7 +28,7 @@ const MyInfo = ({ setChangeInfo, data }) => {
             )}
           </div>
           <Username>
-            <span>닉네임</span>
+            <span>{data.nickname}</span>
             {genderIcon}
           </Username>
         </Img>

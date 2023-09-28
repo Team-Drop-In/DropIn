@@ -100,7 +100,8 @@ const LoginUser = styled.div`
 `;
 
 const Position = styled.div`
+  position: relative;
   width: 100%;
-  background-color: white;
+  background-color: black;
   height: 60px;
 `;

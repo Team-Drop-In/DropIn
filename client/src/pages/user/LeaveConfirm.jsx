@@ -34,7 +34,7 @@ const LeaveConfirm = () => {
 export default LeaveConfirm;
 
 const Contain = styled(Content)`
-  height: 100vh;
+  height: calc(100vh - 60px);
   display: flex;
   flex-direction: column;
 
