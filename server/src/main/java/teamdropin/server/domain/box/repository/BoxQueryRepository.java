@@ -59,7 +59,7 @@ public class BoxQueryRepository {
                 .leftJoin(box.boxImageList)
                 .leftJoin(box.boxLikes)
                 .leftJoin(box.boxTagList)
-                .where(searchEq(condition))
+                .where(searchEq(condition), searchBarbellDrop(condition))
                 .orderBy(boxSort(condition), box.createdDate.desc())
                 .groupBy(box)
                 .offset(pageable.getOffset())
@@ -96,6 +96,11 @@ public class BoxQueryRepository {
         return hasText(search) ? box.name.contains(search)
                 .or(box.location.contains(search))
                 .or(boxTag.tagName.contains(search)) : null;
+    }
+
+    private BooleanExpression searchBarbellDrop(BoxSearchCondition condition){
+        String barbellDrop = condition.getBarbellDrop();
+        return hasText(barbellDrop) ? box.barbellDrop.eq(true) : null;
     }
 
     private OrderSpecifier<?> boxSort(BoxSearchCondition condition){
