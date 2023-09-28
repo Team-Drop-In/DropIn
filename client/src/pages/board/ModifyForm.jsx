@@ -11,5 +11,5 @@ const Modify = () => {
 export default Modify;
 
 const Contain = styled(Content)`
-  height: 100vh;
+  height: calc(100vh - 60px);
 `;

@@ -11,5 +11,5 @@ const WriteForm = () => {
 export default WriteForm;
 
 const Contain = styled(Content)`
-  height: 100vh;
+  height: calc(100vh - 60px);
 `;

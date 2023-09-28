@@ -1,23 +1,39 @@
 import styled from "styled-components";
+import { useState } from "react";
 import { Container, Content } from "../../styles/style";
+import { COLOR } from "../../styles/theme";
 import { FiSearch } from "react-icons/fi";
+import { BsChevronDown } from "react-icons/bs";
 const Board = () => {
+  const [orderBy, setOrderBy] = useState("latest");
+
   return (
     <Container>
       <Contain>
         <Option>
           <Sort>
-            <ul>
-              <li>최신순</li>
-              <li>추천순</li>
-              <li>좋아요순</li>
-            </ul>
+            <span>
+              <p>최신순</p>
+              <BsChevronDown color={COLOR.main_grey} />
+            </span>
+            {/* <SortBtn>
+              <div>
+                <button>최신순</button>
+              </div>
+              <div>
+                <button>추천순</button>
+              </div>
+              <div>
+                <button>좋아요순</button>
+              </div>
+            </SortBtn> */}
           </Sort>
           <Search>
             <input placeholder="키워드 검색" />
             <FiSearch color="white" size={24} />
           </Search>
         </Option>
+        <List></List>
       </Contain>
     </Container>
   );
@@ -36,29 +52,43 @@ const Option = styled.section`
   margin: 20px 0px;
   display: flex;
   justify-content: space-between;
+`;
 
-  ul {
-    width: 130px;
-    padding: 10px;
-    border: 1.5px solid white;
-    border-radius: 10px;
-  }
+const Sort = styled.div`
+  width: 110px;
+  height: fit-content;
+  padding: 10px;
+  border: 2px solid white;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
 
-  li {
-    padding: 5px 0px;
-    border: 1px solid salmon;
+  span {
     display: flex;
     align-items: center;
     justify-content: space-between;
   }
+
+  p {
+    color: ${COLOR.main_grey};
+  }
 `;
 
-const Sort = styled.div``;
+const SortBtn = styled.div`
+  margin-top: 6px;
+
+  button {
+    padding: 5px 0px;
+    background-color: transparent;
+    border: none;
+    color: ${COLOR.main_grey};
+  }
+`;
 
 const Search = styled.div`
   width: 280px;
   height: 100%;
-  border: 1.5px solid white;
+  border: 2px solid white;
   border-radius: 10px;
   display: flex;
   justify-content: space-between;
@@ -72,4 +102,15 @@ const Search = styled.div`
     outline: none;
     color: white;
   }
+
+  input::placeholder {
+    color: ${COLOR.main_grey};
+    font-weight: 500;
+  }
+`;
+
+const List = styled.section`
+  width: 100%;
+  height: 30px;
+  background-color: aliceblue;
 `;
