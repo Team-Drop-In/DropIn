@@ -1,5 +1,6 @@
 package teamdropin.server.domain.box.repository;
 
+import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Repository;
 import teamdropin.server.domain.box.dto.box.BoxSearchCondition;
 import teamdropin.server.domain.box.dto.box.BoxSearchDto;
 import teamdropin.server.domain.box.dto.box.QBoxSearchDto;
+import teamdropin.server.domain.boxTag.entity.QBoxTag;
 
 import javax.persistence.EntityManager;
 import java.util.List;
@@ -23,6 +25,7 @@ import java.util.List;
 import static org.springframework.util.StringUtils.hasText;
 import static teamdropin.server.domain.box.entity.QBox.box;
 import static teamdropin.server.domain.box.entity.QBoxImage.boxImage;
+import static teamdropin.server.domain.boxTag.entity.QBoxTag.*;
 import static teamdropin.server.domain.like.entity.QLike.like;
 
 @Repository
@@ -38,7 +41,7 @@ public class BoxQueryRepository {
 
     public Page<BoxSearchDto> search(BoxSearchCondition condition, Pageable pageable){
 
-        JPQLQuery<String> subQuery =
+        JPQLQuery<String> searchBoxMainImageSubQuery =
                 queryFactory.select(boxImage.boxImageUrl)
                         .from(boxImage)
                         .where(boxImage.box.eq(box), boxImage.imageIndex.eq(1));
@@ -50,17 +53,31 @@ public class BoxQueryRepository {
                         box.location,
                         box.boxLikes.size(),
                         box.viewCount,
-                        subQuery
+                        searchBoxMainImageSubQuery
                         )
                 ).from(box)
                 .leftJoin(box.boxImageList)
                 .leftJoin(box.boxLikes)
+                .leftJoin(box.boxTagList)
                 .where(searchEq(condition))
                 .orderBy(boxSort(condition), box.createdDate.desc())
                 .groupBy(box)
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
+
+        for (BoxSearchDto boxSearchDto : content) {
+
+            List<String> getTagListSubQuery =
+                    queryFactory
+                            .select(boxTag.tagName)
+                            .from(boxTag)
+                            .where(boxTag.box.id.eq(boxSearchDto.getId()))
+                            .fetch();
+
+            boxSearchDto.setTagList(getTagListSubQuery);
+        }
+
 
         JPAQuery<Long> count = queryFactory
                 .select(box.count())
@@ -70,13 +87,15 @@ public class BoxQueryRepository {
                 .where(searchEq(condition))
                 .groupBy(box);
 
+
         return PageableExecutionUtils.getPage(content, pageable, count::fetchOne);
     }
 
     private BooleanExpression searchEq(BoxSearchCondition condition){
         String search = condition.getSearch();
         return hasText(search) ? box.name.contains(search)
-                .or(box.location.contains(search)) : null;
+                .or(box.location.contains(search))
+                .or(boxTag.tagName.contains(search)) : null;
     }
 
     private OrderSpecifier<?> boxSort(BoxSearchCondition condition){
