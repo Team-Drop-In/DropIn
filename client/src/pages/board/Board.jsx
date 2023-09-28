@@ -26,7 +26,6 @@ const Board = () => {
 export default Board;
 
 const Contain = styled(Content)`
-  margin-top: 60px;
   flex-direction: column;
 `;
 

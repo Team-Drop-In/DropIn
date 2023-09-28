@@ -61,8 +61,8 @@ const Login = () => {
       })
       .catch((error) => {
         if (error && error.status === 401) {
-          setErrorMsg("가입 정보가 없습니다");
           setError(true);
+          setErrorMsg("가입 정보가 없습니다");
         } else {
           setError(true);
           setErrorMsg("로그인에 실패했습니다 다시 시도해주세요");

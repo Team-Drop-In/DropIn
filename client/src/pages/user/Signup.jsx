@@ -28,10 +28,13 @@ const Signup = () => {
   const [authcodeValue, setAuthcodeValue] = useState("");
   const [isEmailAvailable, setIsEmailAvailable] = useState(false);
   const [isNicknameAvailable, setIsNicknameAvailable] = useState(false);
+  const [isExistEmail, setIsExistEmail] = useState(false);
+  const [isExistNickname, setIsExistNickname] = useState(false);
   const [isEmailError, setIsEmailError] = useState(true);
   const [isNicknameError, setIsNicknameError] = useState(true);
   const [getAuthCode, setIsGetAuthCode] = useState(false);
   const [checkAuthCode, setIsCheckAuthCode] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
 
   const emailOptions = {
     required: "이메일을 입력해주세요.",
@@ -119,19 +122,18 @@ const Signup = () => {
   };
 
   const handleEmailAvailability = async () => {
-    const data = {
-      username: emailValue,
-    };
-
     if (!emailValue.trim()) return;
     if (!emailOptions.pattern.value.test(emailValue)) return;
 
     try {
-      console.log(data);
-      await duplicateEmailApi(data);
+      await duplicateEmailApi({ username: emailValue });
+      setIsExistEmail(false);
       setIsEmailAvailable(true);
     } catch (error) {
-      console.error("로그인 실패:", error);
+      if (error.data.status === 400) {
+        setIsExistEmail(true);
+        setErrorMsg("중복된 이메일 입니다");
+      }
     }
   };
 
@@ -145,9 +147,13 @@ const Signup = () => {
 
     try {
       await duplicateNicknameApi({ nickname: nicknameValue });
+      setIsExistNickname(false);
       setIsNicknameAvailable(true);
     } catch (error) {
-      console.error("로그인 실패:", error);
+      if (error.data.status === 400) {
+        setIsExistNickname(true);
+        setErrorMsg("중복된 닉네임 입니다");
+      }
     }
   };
 
@@ -228,6 +234,7 @@ const Signup = () => {
                 />
               )}
             />
+
             {isEmailAvailable ? (
               <Button
                 text={"확인완료"}
@@ -235,7 +242,7 @@ const Signup = () => {
                 width={"110px"}
                 height={"39px"}
                 style={{
-                  marginTop: "20px",
+                  marginTop: "21px",
                   marginLeft: "5px",
                   backgroundColor: `${COLOR.main_yellow}`,
                 }}
@@ -247,7 +254,7 @@ const Signup = () => {
                 width={"110px"}
                 height={"39px"}
                 style={{
-                  marginTop: "20px",
+                  marginTop: "21px",
                   marginLeft: "5px",
                   backgroundColor: !isEmailError
                     ? ` ${COLOR.main_yellow}`
@@ -257,6 +264,7 @@ const Signup = () => {
               />
             )}
           </div>
+          {isExistEmail && <ErrorMsg>{errorMsg}</ErrorMsg>}
           <div>
             <Controller
               name={"emailAuth"}
@@ -437,7 +445,7 @@ const Signup = () => {
                 width={"110px"}
                 height={"39px"}
                 style={{
-                  marginTop: "20px",
+                  marginTop: "21px",
                   marginLeft: "5px",
                   backgroundColor: !isNicknameError
                     ? ` ${COLOR.main_yellow}`
@@ -448,6 +456,7 @@ const Signup = () => {
               />
             )}
           </div>
+          {isExistNickname && <ErrorMsg>{errorMsg}</ErrorMsg>}
           <Button
             text={"회원가입"}
             width={"100%"}
@@ -538,7 +547,7 @@ const StyledRadioInput = styled.input`
     cursor: pointer;
     text-align: center;
     padding: 11px;
-    margin-top: 5px;
+    margin-top: 6px;
     background-color: #818181;
   }
 
@@ -546,4 +555,9 @@ const StyledRadioInput = styled.input`
     background-color: ${COLOR.main_yellow};
     color: black;
   }
+`;
+
+const ErrorMsg = styled.div`
+  margin-bottom: 7px;
+  color: ${COLOR.gender_pink};
 `;

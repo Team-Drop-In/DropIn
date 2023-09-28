@@ -52,9 +52,9 @@ export const signupApi = async (data) => {
   }
 };
 
-export const duplicateEmailApi = async ({ data }) => {
+export const duplicateEmailApi = async (data) => {
   try {
-    const response = await api.post("/api/check-duplicate/email", { data });
+    const response = await api.post("/api/check-duplicate/email", data);
     return response.data;
   } catch (error) {
     throw error.response;

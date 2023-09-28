@@ -20,27 +20,30 @@ const Header = () => {
   };
 
   return (
-    <Wrap>
-      <Contain>
-        <Tab>
-          <button onClick={() => navigate("/")}>
-            <Logo src={LogoImage} alt="로고" />
-          </button>
-          <Link to="/">DropIn</Link>
-          <Link to="/board">커뮤니티</Link>
-        </Tab>
-        {isLogin ? (
-          <LoginUser onClick={handleModal}>
-            <BiSolidUser size={25} color={COLOR.main_yellow} />
-          </LoginUser>
-        ) : (
-          <User>
-            <Link to="/login">로그인</Link>
-            <Link to="/signup">회원가입</Link>
-          </User>
-        )}
-      </Contain>
-    </Wrap>
+    <>
+      <Wrap>
+        <Contain>
+          <Tab>
+            <button onClick={() => navigate("/")}>
+              <Logo src={LogoImage} alt="로고" />
+            </button>
+            <Link to="/">DropIn</Link>
+            <Link to="/board">커뮤니티</Link>
+          </Tab>
+          {isLogin ? (
+            <LoginUser onClick={handleModal}>
+              <BiSolidUser size={25} color={COLOR.main_yellow} />
+            </LoginUser>
+          ) : (
+            <User>
+              <Link to="/login">로그인</Link>
+              <Link to="/signup">회원가입</Link>
+            </User>
+          )}
+        </Contain>
+      </Wrap>
+      <Position />
+    </>
   );
 };
 
@@ -94,4 +97,10 @@ const LoginUser = styled.div`
   justify-content: center;
   align-items: center;
   background-color: ${COLOR.btn_grey};
+`;
+
+const Position = styled.div`
+  width: 100%;
+  background-color: white;
+  height: 60px;
 `;
