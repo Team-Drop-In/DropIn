@@ -1,11 +1,28 @@
 import styled from "styled-components";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Container, Content } from "../../styles/style";
 import { COLOR } from "../../styles/theme";
 import { FiSearch } from "react-icons/fi";
 import { BsChevronDown } from "react-icons/bs";
+import Pagination from "../../components/board/Pagination";
 const Board = () => {
   const [orderBy, setOrderBy] = useState("latest");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(10);
+
+  const previousPage = useRef(1);
+
+  const handlePaginationClick = (pageNumber) => {
+    if (pageNumber === previousPage.current) {
+      return;
+    }
+
+    setCurrentPage(pageNumber);
+  };
+
+  useEffect(() => {
+    previousPage.current = currentPage;
+  }, [currentPage]);
 
   return (
     <Container>
@@ -33,7 +50,31 @@ const Board = () => {
             <FiSearch color="white" size={24} />
           </Search>
         </Option>
-        <List></List>
+        <List>
+          <ListItem>
+            <div>
+              <span>
+                아이콘 닉네임<p>시간</p>
+              </span>
+              <span>
+                <p>조회수</p>
+                <p>추천</p>
+              </span>
+            </div>
+            <div>
+              <span>제목</span>
+              <span>
+                <p>태그</p>
+                <p>추천</p>
+              </span>
+            </div>
+          </ListItem>
+        </List>
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPaginationClick={handlePaginationClick}
+        />
       </Contain>
     </Container>
   );
@@ -109,8 +150,32 @@ const Search = styled.div`
   }
 `;
 
-const List = styled.section`
+const List = styled.ul`
   width: 100%;
-  height: 30px;
-  background-color: aliceblue;
+  height: fit-content;
+  background-color: gray;
+`;
+
+const ListItem = styled.li`
+  height: 70px;
+  display: flex;
+  flex-direction: column;
+  padding: 10px 7px;
+  justify-content: space-between;
+  background-color: navy;
+  border-bottom: 1px solid ${COLOR.border_grey};
+
+  & > div {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  span {
+    display: flex;
+    color: ${COLOR.main_grey};
+  }
+
+  p {
+    color: ${COLOR.main_grey};
+  }
 `;

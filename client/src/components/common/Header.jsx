@@ -52,7 +52,7 @@ export default Header;
 const Wrap = styled(Container)`
   position: fixed;
   z-index: 10;
-  border-bottom: 1px solid #2c2c2c;
+  border-bottom: 1px solid ${COLOR.border_grey};
 
   button {
     cursor: pointer;
