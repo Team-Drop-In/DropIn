@@ -23,17 +23,7 @@ public class BoxSearchDto {
     private int likeCount;
     private int viewCount;
     private String mainImageUrl;
-
     private List<String> tagList;
 
-    @QueryProjection
-    public BoxSearchDto(Long id, String name, String location, int likeCount,int viewCount, String mainImageUrl) {
-        this.id = id;
-        this.name = name;
-        this.location = location;
-        this.likeCount = likeCount;
-        this.viewCount = viewCount;
-        this.mainImageUrl = mainImageUrl;
-    }
 
 }
