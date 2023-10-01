@@ -48,8 +48,6 @@ public class Box extends BaseTimeEntity {
 
     private String detail;
 
-    private String mainImageUrl;
-
     @OneToMany(mappedBy = "box", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<BoxImage> boxImageList;
 
@@ -62,7 +60,7 @@ public class Box extends BaseTimeEntity {
     private List<Like> boxLikes = new ArrayList<>();
 
     @Builder.Default
-    @OneToMany(mappedBy = "box")
+    @OneToMany(mappedBy = "box", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<BoxTag> boxTagList = new ArrayList<>();
 
     public void addMember(Member member){
@@ -71,10 +69,6 @@ public class Box extends BaseTimeEntity {
     }
 
     public void viewCountUp(){this.viewCount = this.viewCount +1 ;}
-
-//    public void updateMainImageUrl(String mainImageUrl){
-//        this.mainImageUrl = mainImageUrl;
-//    }
 
     public void updateBox(String name, String location, String phoneNumber, int cost, int area, boolean barbellDrop, String url, String detail){
         this.name= name;

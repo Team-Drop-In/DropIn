@@ -15,4 +15,5 @@ public interface LikeRepository extends JpaRepository<Like, Long> {
 
     List<Like> findByMemberIdAndLikeCategory(Long memberId, LikeCategory likeCategory);
 
+    void deleteAllByBoxId(Long boxId);
 }

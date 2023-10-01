@@ -1,13 +1,9 @@
 package teamdropin.server.domain.box.repository;
 
-import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
+import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
-import com.querydsl.core.types.dsl.Expressions;
-import com.querydsl.core.types.dsl.StringPath;
-import com.querydsl.jpa.JPAExpressions;
-import com.querydsl.jpa.JPQLQuery;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.data.domain.Page;
@@ -16,12 +12,21 @@ import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.stereotype.Repository;
 import teamdropin.server.domain.box.dto.box.BoxSearchCondition;
 import teamdropin.server.domain.box.dto.box.BoxSearchDto;
-import teamdropin.server.domain.box.dto.box.QBoxSearchDto;
+import teamdropin.server.domain.box.entity.Box;
+import teamdropin.server.domain.box.entity.BoxImage;
+import teamdropin.server.domain.box.entity.QBoxImage;
+import teamdropin.server.domain.boxTag.entity.BoxTag;
 import teamdropin.server.domain.boxTag.entity.QBoxTag;
+import teamdropin.server.domain.like.entity.Like;
+import teamdropin.server.domain.like.entity.LikeCategory;
 
 import javax.persistence.EntityManager;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
+import static com.querydsl.core.group.GroupBy.groupBy;
+import static com.querydsl.core.types.dsl.Expressions.list;
 import static org.springframework.util.StringUtils.hasText;
 import static teamdropin.server.domain.box.entity.QBox.box;
 import static teamdropin.server.domain.box.entity.QBoxImage.boxImage;
@@ -41,42 +46,53 @@ public class BoxQueryRepository {
 
     public Page<BoxSearchDto> search(BoxSearchCondition condition, Pageable pageable){
 
-        JPQLQuery<String> searchBoxMainImageSubQuery =
-                queryFactory.select(boxImage.boxImageUrl)
-                        .from(boxImage)
-                        .where(boxImage.box.eq(box), boxImage.imageIndex.eq(1));
-
-        List<BoxSearchDto> content = queryFactory
-                .select(new QBoxSearchDto(
-                        box.id.as("boxId"),
-                        box.name,
-                        box.location,
-                        box.boxLikes.size(),
-                        box.viewCount,
-                        searchBoxMainImageSubQuery
-                        )
-                ).from(box)
-                .leftJoin(box.boxImageList)
-                .leftJoin(box.boxLikes)
-                .leftJoin(box.boxTagList)
+        List<Box> boxes = queryFactory
+                .selectFrom(box)
                 .where(searchEq(condition), searchBarbellDrop(condition))
                 .orderBy(boxSort(condition), box.createdDate.desc())
-                .groupBy(box)
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
 
-        for (BoxSearchDto boxSearchDto : content) {
 
-            List<String> getTagListSubQuery =
-                    queryFactory
-                            .select(boxTag.tagName)
-                            .from(boxTag)
-                            .where(boxTag.box.id.eq(boxSearchDto.getId()))
-                            .fetch();
+        List<Long> boxIds = boxes.stream().map(Box::getId).collect(Collectors.toList());
+        Map<Long, List<Like>> boxLikeMap = queryFactory
+                .selectFrom(like)
+                .where(like.likeCategory.eq(LikeCategory.BOX), like.box.id.in(boxIds))
+                .fetch()
+                .stream()
+                .collect(Collectors.groupingBy(like -> like.getBox().getId()));
 
-            boxSearchDto.setTagList(getTagListSubQuery);
-        }
+        Map<Long, List<BoxImage>> boxImageMap = queryFactory
+                .selectFrom(boxImage)
+                .where(boxImage.box.id.in(boxIds))
+                .fetch()
+                .stream()
+                .collect(Collectors.groupingBy(boxImage -> boxImage.getBox().getId()));
+
+        Map<Long, List<BoxTag>> boxTagMap = queryFactory
+                .selectFrom(boxTag)
+                .where(boxTag.box.id.in(boxIds))
+                .fetch()
+                .stream()
+                .collect(Collectors.groupingBy(boxTag -> boxTag.getBox().getId()));
+
+
+        List<BoxSearchDto> content = boxes.stream().map(box -> {
+            List<Like> boxLikes = boxLikeMap.get(box.getId());
+            List<BoxImage> boxImages = boxImageMap.get(box.getId());
+            List<BoxTag> boxTags = boxTagMap.get(box.getId());
+
+            return new BoxSearchDto(
+                    box.getId(),
+                    box.getName(),
+                    box.getLocation(),
+                    boxLikes != null ? boxLikes.size() : 0,
+                    box.getViewCount(),
+                    getMainImageUrl(boxImages),
+                    getTagList(boxTags)
+            );
+        }).collect(Collectors.toList());
 
 
         JPAQuery<Long> count = queryFactory
@@ -85,10 +101,30 @@ public class BoxQueryRepository {
                 .leftJoin(box.boxImageList)
                 .leftJoin(box.boxImageList)
                 .where(searchEq(condition))
-                .groupBy(box);
+                .groupBy(box.id, boxTag.id);
 
 
         return PageableExecutionUtils.getPage(content, pageable, count::fetchOne);
+    }
+
+    private String getMainImageUrl(List<BoxImage> boxImages) {
+        if(boxImages != null && !boxImages.isEmpty()){
+            return boxImages.stream()
+                    .filter(boxImage -> boxImage.getImageIndex() == 1)
+                    .map(BoxImage::getBoxImageUrl)
+                    .findFirst()
+                    .orElse(null);
+        }
+        return null;
+    }
+
+    private List<String> getTagList(List<BoxTag> boxTags){
+        if(boxTags != null && !boxTags.isEmpty()){
+            return boxTags.stream()
+                    .map(BoxTag::getTagName)
+                    .collect(Collectors.toList());
+        }
+        return null;
     }
 
     private BooleanExpression searchEq(BoxSearchCondition condition){
