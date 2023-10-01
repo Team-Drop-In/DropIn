@@ -10,6 +10,7 @@ import Pagination from "../../components/board/Pagination";
 import { Link } from "react-router-dom";
 
 const List = () => {
+  const [openOrderBy, setOpenOrderBy] = useState(false);
   const [orderBy, setOrderBy] = useState("latest");
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(10);
@@ -33,21 +34,23 @@ const List = () => {
       <Contain>
         <Option>
           <Sort>
-            <span>
+            <span onClick={() => setOpenOrderBy((prev) => !prev)}>
               <p>최신순</p>
               <BsChevronDown color={COLOR.main_grey} />
             </span>
-            {/* <SortBtn>
-              <div>
-                <button>최신순</button>
-              </div>
-              <div>
-                <button>추천순</button>
-              </div>
-              <div>
-                <button>좋아요순</button>
-              </div>
-            </SortBtn> */}
+            {openOrderBy ? (
+              <SortBtn>
+                <div>
+                  <button>최신순</button>
+                </div>
+                <div>
+                  <button>추천순</button>
+                </div>
+                <div>
+                  <button>좋아요순</button>
+                </div>
+              </SortBtn>
+            ) : null}
           </Sort>
           <Search>
             <input placeholder="키워드 검색" />
@@ -105,7 +108,8 @@ const List = () => {
 export default List;
 
 const Contain = styled(Content)`
-  height: calc(100vh - 60px);
+  min-height: calc(100vh - 60px);
+  height: fit-content;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -128,6 +132,8 @@ const Sort = styled.div`
   border-radius: 10px;
   display: flex;
   flex-direction: column;
+  background-color: black;
+  z-index: 20;
 
   span {
     display: flex;
@@ -220,6 +226,7 @@ const Imgbox = styled.div`
   img {
     width: 20px;
     height: 20px;
+    object-fit: contain;
   }
 `;
 
