@@ -12,4 +12,7 @@ export default Modify;
 
 const Contain = styled(Content)`
   height: calc(100vh - 60px);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
 `;
