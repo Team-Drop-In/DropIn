@@ -22,6 +22,7 @@ import teamdropin.server.domain.box.repository.BoxQueryRepository;
 import teamdropin.server.domain.box.repository.BoxRepository;
 import teamdropin.server.domain.boxTag.service.BoxTagService;
 import teamdropin.server.domain.like.entity.Like;
+import teamdropin.server.domain.like.repository.LikeRepository;
 import teamdropin.server.domain.like.service.LikeService;
 import teamdropin.server.domain.member.entity.Member;
 import teamdropin.server.global.exception.BusinessLogicException;
@@ -41,6 +42,7 @@ public class BoxService {
     private final BoxRepository boxRepository;
     private final BoxQueryRepository boxQueryRepository;
     private final BoxImageRepository boxImageRepository;
+    private final LikeRepository likeRepository;
     private final BoxTagService boxTagService;
     private final BoxMapper boxMapper;
     private final S3Uploader s3Uploader;
@@ -103,6 +105,8 @@ public class BoxService {
         for (BoxImage boxImage : boxImageList) {
             s3Uploader.deleteFile(boxImage.getBoxImageUrl());
         }
+
+        likeRepository.deleteAllByBoxId(boxId);
         boxRepository.delete(box);
     }
 

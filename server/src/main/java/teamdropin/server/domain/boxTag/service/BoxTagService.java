@@ -12,6 +12,7 @@ import teamdropin.server.global.exception.BusinessLogicException;
 import teamdropin.server.global.exception.ExceptionCode;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -56,9 +57,4 @@ public class BoxTagService {
             }
         }
     }
-
-//    @Transactional(readOnly = false)
-//    public void deleteBoxTag(){
-//
-//    }
 }

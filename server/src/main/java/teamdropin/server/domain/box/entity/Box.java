@@ -60,7 +60,7 @@ public class Box extends BaseTimeEntity {
     private List<Like> boxLikes = new ArrayList<>();
 
     @Builder.Default
-    @OneToMany(mappedBy = "box")
+    @OneToMany(mappedBy = "box", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<BoxTag> boxTagList = new ArrayList<>();
 
     public void addMember(Member member){
