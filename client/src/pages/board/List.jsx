@@ -3,7 +3,7 @@ import { useState, useEffect, useRef } from "react";
 import { Container, Content } from "../../styles/style";
 import { COLOR } from "../../styles/theme";
 import { FiSearch } from "react-icons/fi";
-import { BsEye, BsChevronDown } from "react-icons/bs";
+import { BsEye, BsChevronDown, BsChevronUp } from "react-icons/bs";
 import { FiThumbsUp } from "react-icons/fi";
 import { GoComment } from "react-icons/go";
 import Pagination from "../../components/board/Pagination";
@@ -11,6 +11,7 @@ import { Link } from "react-router-dom";
 
 const List = () => {
   const [openOrderBy, setOpenOrderBy] = useState(false);
+  const [openSearch, setOpenSearch] = useState(false);
   const [orderBy, setOrderBy] = useState("latest");
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(10);
@@ -36,7 +37,11 @@ const List = () => {
           <Sort>
             <span onClick={() => setOpenOrderBy((prev) => !prev)}>
               <p>최신순</p>
-              <BsChevronDown color={COLOR.main_grey} />
+              {openOrderBy ? (
+                <BsChevronUp color={COLOR.main_grey} />
+              ) : (
+                <BsChevronDown color={COLOR.main_grey} />
+              )}
             </span>
             {openOrderBy ? (
               <SortBtn>
@@ -53,8 +58,29 @@ const List = () => {
             ) : null}
           </Sort>
           <Search>
-            <input placeholder="키워드 검색" />
-            <FiSearch color="white" size={24} />
+            <Searchfield openSearch={openSearch}>
+              <span onClick={() => setOpenSearch((prev) => !prev)}>
+                <p>전체</p>
+                {openSearch ? <BsChevronUp /> : <BsChevronDown />}
+              </span>
+              {openSearch ? (
+                <SearchWordBtn>
+                  <div>
+                    <button>제목</button>
+                  </div>
+                  <div>
+                    <button>내용</button>
+                  </div>
+                  <div>
+                    <button>작성자</button>
+                  </div>
+                </SearchWordBtn>
+              ) : null}
+            </Searchfield>
+            <SearchWord>
+              <input placeholder="키워드 검색" />
+              <FiSearch color="white" size={24} />
+            </SearchWord>
           </Search>
         </Option>
         <BoardList>
@@ -70,7 +96,8 @@ const List = () => {
                 </NameAndTime>
                 <span>
                   <p>
-                    <BsEye /> 조회수
+                    <BsEye />
+                    조회수
                   </p>
                   <p>
                     <GoComment />
@@ -118,7 +145,6 @@ const Contain = styled(Content)`
 const Option = styled.section`
   width: 100%;
   height: 38px;
-  /* background-color: aliceblue; */
   margin: 20px 0px;
   display: flex;
   justify-content: space-between;
@@ -158,14 +184,43 @@ const SortBtn = styled.div`
 `;
 
 const Search = styled.div`
-  width: 280px;
-  height: 100%;
-  border: 2px solid white;
+  width: 360px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  z-index: 20;
+`;
+
+const Searchfield = styled.div`
+  width: 90px;
   border-radius: 10px;
+  border: 2px solid white;
+  border-right: ${(props) =>
+    props.openSearch ? "2px solid white" : "transparent"};
+
+  border-radius: 10px 0px 0px 10px;
+
+  p {
+    color: white;
+  }
+
+  span {
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 9.5px 9px;
+  }
+`;
+
+const SearchWord = styled.div`
+  border: 2px solid white;
+  border-radius: 0px 10px 10px 0px;
+  height: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0px 14px;
+  padding: 0px 10px;
 
   input {
     width: 220px;
@@ -181,6 +236,22 @@ const Search = styled.div`
   }
 `;
 
+const SearchWordBtn = styled.div`
+  width: 100%;
+
+  & > div {
+    margin-bottom: 4px;
+    padding: 0px 9px;
+  }
+
+  button {
+    padding: 5px 0px;
+    background-color: transparent;
+    border: none;
+    color: ${COLOR.main_grey};
+  }
+`;
+
 const BoardList = styled.ul`
   width: 100%;
   height: fit-content;
@@ -190,7 +261,7 @@ const ListItem = styled.li`
   height: 70px;
   display: flex;
   flex-direction: column;
-  padding: 12px 8px;
+  padding: 11px 8px;
   justify-content: space-between;
   border-bottom: 1px solid ${COLOR.border_grey};
 
@@ -254,15 +325,20 @@ const NameAndTime = styled.span`
 
 const Tag = styled.div`
   display: flex;
+
+  & > p {
+    background-color: ${COLOR.btn_grey};
+    padding: 2px 5px;
+    color: black;
+    border-radius: 3px;
+    margin-left: 4px;
+    font-size: 12px;
+  }
 `;
 
 const TitleAndTag = styled.div`
   span > p {
     margin-left: 5px;
-  }
-
-  p {
-    margin-left: 2px;
   }
 
   svg {
