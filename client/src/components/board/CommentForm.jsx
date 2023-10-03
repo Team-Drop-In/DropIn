@@ -86,7 +86,7 @@ const Comment = styled.textarea`
   min-height: 95px;
   height: fit-content;
   resize: none;
-  background-color: ${COLOR.main_grey};
+  background-color: white;
   outline: none;
   padding: 8px 8px;
   font-size: 0.9rem;

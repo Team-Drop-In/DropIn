@@ -6,7 +6,7 @@ import { SectionsContainer, Section } from "react-fullpage";
 const Main = () => {
   const options = {
     activeClass: "active", // the class that is appended to the sections links
-    anchors: ["Intro", "About", "Project"], // the anchors for each sections
+    anchors: ["Intro", "About", "DropIn"], // the anchors for each sections
     arrowNavigation: false, // use arrow keys
     delay: 1200, // the scroll animation speed
     navigation: true, // use dots navigatio

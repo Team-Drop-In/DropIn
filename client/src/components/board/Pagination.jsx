@@ -2,37 +2,6 @@ import styled from "styled-components";
 
 import { COLOR } from "../../styles/theme";
 
-const Container = styled.div`
-  width: 100%;
-  height: fit-content;
-  margin: 30px 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  ul {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-`;
-
-const List = styled.li`
-  button {
-    font-weight: 500;
-    font-size: 16px;
-    border: none;
-    border-radius: 5px;
-    background-color: transparent;
-    color: ${COLOR.main_grey};
-    margin: 0 2px;
-    &.active {
-      background-color: ${COLOR.main_yellow};
-      color: black;
-    }
-  }
-`;
-
 const Pagination = ({ currentPage, totalPages, onPaginationClick }) => {
   const pageSize = 10;
   const maxVisiblePages = 10;
@@ -120,3 +89,34 @@ const Pagination = ({ currentPage, totalPages, onPaginationClick }) => {
 };
 
 export default Pagination;
+
+const Container = styled.div`
+  width: 100%;
+  height: fit-content;
+  margin: 30px 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  ul {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+`;
+
+const List = styled.li`
+  button {
+    font-weight: 500;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    background-color: transparent;
+    color: ${COLOR.main_grey};
+    margin: 0 2px;
+    &.active {
+      background-color: ${COLOR.main_yellow};
+      color: black;
+    }
+  }
+`;
