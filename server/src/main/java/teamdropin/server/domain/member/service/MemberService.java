@@ -167,23 +167,4 @@ public class MemberService {
         String dirName = "member";
         return s3Uploader.upload(image,dirName);
     }
-
-    /**
-     * 테스트용
-     */
-    @PostConstruct
-    public void createReassignMember(){
-
-        Member reassignMember =
-                Member.builder()
-                        .username(REASSIGN_EMAIL)
-                        .password(passwordEncoder.encode("Test135!"))
-                        .nickname("탈퇴한회원")
-                        .name("탈퇴한회원")
-                        .oauthProvider("dropin")
-                        .roles(customAuthorityUtils.createManagerRoles())
-                        .gender(Gender.NOT_SELECT)
-                        .build();
-        memberRepository.save(reassignMember);
-    }
 }

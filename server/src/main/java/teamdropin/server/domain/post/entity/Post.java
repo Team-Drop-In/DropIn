@@ -53,6 +53,7 @@ public class Post extends BaseTimeEntity {
 
     public void addMember(Member member){
         this.member = member;
+        member.getPosts().add(this);
     }
 
     public void viewCountUp(){
