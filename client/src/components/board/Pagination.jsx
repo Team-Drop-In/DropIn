@@ -114,6 +114,8 @@ const List = styled.li`
     background-color: transparent;
     color: ${COLOR.main_grey};
     margin: 0 2px;
+    padding: 1px 2px;
+
     &.active {
       background-color: ${COLOR.main_yellow};
       color: black;

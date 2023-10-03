@@ -1,9 +1,14 @@
+import ReactQuill from "react-quill";
+import { useState } from "react";
 import styled from "styled-components";
 import { Container, Content } from "../../styles/style";
+
 const WriteForm = () => {
   return (
     <Container>
-      <Contain>하이</Contain>
+      <Contain>
+        <ReactQuill />
+      </Contain>
     </Container>
   );
 };

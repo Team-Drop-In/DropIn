@@ -66,6 +66,9 @@ const List = () => {
               {openSearch ? (
                 <SearchWordBtn>
                   <div>
+                    <button>전체</button>
+                  </div>
+                  <div>
                     <button>제목</button>
                   </div>
                   <div>
@@ -148,12 +151,13 @@ const Option = styled.section`
   margin: 20px 0px;
   display: flex;
   justify-content: space-between;
+  align-items: flex-start;
 `;
 
 const Sort = styled.div`
   width: 110px;
   height: fit-content;
-  padding: 10px;
+  padding: 9px 10px;
   border: 2px solid white;
   border-radius: 10px;
   display: flex;
@@ -195,8 +199,7 @@ const Searchfield = styled.div`
   width: 90px;
   border-radius: 10px;
   border: 2px solid white;
-  border-right: ${(props) =>
-    props.openSearch ? "2px solid white" : "transparent"};
+  background-color: black;
 
   border-radius: 10px 0px 0px 10px;
 
@@ -220,7 +223,9 @@ const SearchWord = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0px 10px;
+  padding: 5px 10px;
+  border-left: ${(props) =>
+    props.openSearch ? "2px solid white" : "transparent"};
 
   input {
     width: 220px;
@@ -255,6 +260,7 @@ const SearchWordBtn = styled.div`
 const BoardList = styled.ul`
   width: 100%;
   height: fit-content;
+  min-height: 75vh;
 `;
 
 const ListItem = styled.li`
