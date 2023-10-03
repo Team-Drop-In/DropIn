@@ -4,6 +4,7 @@ import Header from "./components/common/Header";
 import Menu from "./components/common/Menu";
 import { ModalState } from "./atoms/atom";
 import { useRecoilValue } from "recoil";
+const Main = lazy(() => import("./pages/Main"));
 const Login = lazy(() => import("./pages/user/Login"));
 const Signup = lazy(() => import("./pages/user/Signup"));
 const FindPwd = lazy(() => import("./pages/user/FindPwd"));
@@ -25,7 +26,7 @@ const App = () => {
         <Header />
         {isOpenModal ? <Menu /> : null}
         <Routes>
-          <Route path="/" element={<div>홈</div>} />
+          <Route path="/" element={<Main />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/profile" element={<Profile />} />

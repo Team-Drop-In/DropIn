@@ -15,7 +15,7 @@ const CommentForm = () => {
           </User>
           <button>작성하기</button>
         </UserAndWrite>
-        <Comment></Comment>
+        <Comment />
       </CmForm>
     </Wrap>
   );
@@ -34,7 +34,7 @@ const CmCount = styled.div`
   padding: 8px 8px;
 `;
 const CmForm = styled.form`
-  padding: 8px 8px;
+  padding: 12px 12px;
   min-height: 150px;
   height: fit-content;
   border-radius: 10px;
@@ -51,6 +51,15 @@ const UserAndWrite = styled.div`
   span,
   p {
     color: ${COLOR.main_grey};
+  }
+
+  button {
+    background-color: ${COLOR.main_grey};
+    padding: 8px 12px;
+    border-radius: 5px;
+    color: black;
+    font-weight: bold;
+    font-size: 0.9rem;
   }
 `;
 const User = styled.div`
@@ -72,4 +81,15 @@ const Imgbox = styled.div`
     object-fit: contain;
   }
 `;
-const Comment = styled.div``;
+const Comment = styled.textarea`
+  margin-top: 10px;
+  min-height: 95px;
+  height: fit-content;
+  resize: none;
+  background-color: ${COLOR.main_grey};
+  outline: none;
+  padding: 8px 8px;
+  font-size: 0.9rem;
+  border-radius: 5px;
+  /* white-space: pre; */
+`;

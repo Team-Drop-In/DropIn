@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { Container, Content } from "../../styles/style";
 import MainText from "../../components/board/MainText";
 import CommentForm from "../../components/board/CommentForm";
+import CommentList from "../../components/board/CommentList";
 
 const View = () => {
   return (
@@ -9,6 +10,7 @@ const View = () => {
       <Contain>
         <MainText />
         <CommentForm />
+        <CommentList />
       </Contain>
     </Container>
   );

@@ -1,5 +1,7 @@
 import styled from "styled-components";
 import { COLOR } from "../../styles/theme";
+import { FiThumbsUp } from "react-icons/fi";
+import { BsEye } from "react-icons/bs";
 
 const MainText = () => {
   return (
@@ -13,8 +15,16 @@ const MainText = () => {
             닉네임
           </User>
           <ViewAndLike>
-            <span>조회</span>
-            <button>좋아요</button>
+            <span>
+              <BsEye />
+              조회
+            </span>
+            <button>
+              <span>
+                <FiThumbsUp />
+                좋아요
+              </span>
+            </button>
           </ViewAndLike>
         </NameAndInfo>
         <TitleAndTime>
@@ -81,11 +91,22 @@ const Imgbox = styled.div`
 
 const ViewAndLike = styled.div`
   font-size: 0.9rem;
+  display: flex;
+
   button {
     background-color: transparent;
     color: ${COLOR.main_grey};
     cursor: pointer;
-    padding: 0px 0px 0px 4px;
+    padding: 0px 0px 0px 6px;
+  }
+  svg {
+    margin-right: 3px;
+  }
+
+  span {
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 `;
 

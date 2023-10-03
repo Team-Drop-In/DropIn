@@ -209,7 +209,7 @@ const Searchfield = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 9.5px 9px;
+    padding: 9px 9px;
   }
 `;
 
@@ -309,6 +309,7 @@ const Info = styled.div`
 
   p {
     margin-left: 5px;
+    font-size: 0.9rem;
   }
 
   svg {
@@ -339,6 +340,7 @@ const Tag = styled.div`
 const TitleAndTag = styled.div`
   span > p {
     margin-left: 5px;
+    font-size: 0.9rem;
   }
 
   svg {
