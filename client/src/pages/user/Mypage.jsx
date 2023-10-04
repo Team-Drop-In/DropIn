@@ -8,20 +8,20 @@ import { getMyInfo } from "../../apis/api";
 const Mypage = () => {
   const [changeInfo, setChangeInfo] = useState(false);
   const [userInfo, setUserInfo] = useState({});
+  const [username, setUsername] = useState("");
+  const [userimgUrl, setUserimgUrl] = useState("");
 
   useEffect(() => {
     getMyInfo()
       .then((res) => {
         setUserInfo(res.data);
+        setUsername(res.data.nickname);
+        setUserimgUrl(res.data.profileImageUrl);
       })
       .catch((error) => {
         console.error("마이페이지 불러오기 실패:", error);
       });
   }, []);
-
-  console.log(userInfo);
-  console.log(userInfo.username);
-  console.log(userInfo.nickname);
 
   return (
     <Container>
@@ -29,12 +29,19 @@ const Mypage = () => {
         <h2>내 정보</h2>
         {!changeInfo ? (
           <MyInfo
+            username={username}
+            userimgUrl={userimgUrl}
             setChangeInfo={setChangeInfo}
             data={userInfo}
             setUserInfo={setUserInfo}
           />
         ) : (
-          <ModifyForm setChangeInfo={setChangeInfo} data={userInfo} />
+          <ModifyForm
+            setUsername={setUsername}
+            setUserimgUrl={setUserimgUrl}
+            setChangeInfo={setChangeInfo}
+            data={userInfo}
+          />
         )}
       </Contain>
     </Container>

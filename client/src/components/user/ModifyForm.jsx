@@ -11,7 +11,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { duplicateNicknameApi, modifyInfo } from "../../apis/api";
 
-const ModifyForm = ({ setChangeInfo, data, setUserInfo }) => {
+const ModifyForm = ({ setUsername, setUserimgUrl, setChangeInfo, data }) => {
   const [nicknameValue, setNicknameValue] = useState("");
   const [isNicknameAvailable, setIsNicknameAvailable] = useState(false);
   const [isNicknameError, setIsNicknameError] = useState(true);
@@ -87,12 +87,14 @@ const ModifyForm = ({ setChangeInfo, data, setUserInfo }) => {
           type: "application/json",
         })
       );
+
       if (imageData) {
         formData.append("image", imageData);
       }
-      console.log(formData.get(imageData));
-      await modifyInfo(formData);
-      console.log(formData);
+
+      const res = await modifyInfo(formData);
+      setUserimgUrl(nicknameValue);
+      console.log(res);
       setChangeInfo(false);
       navigate("/mypage");
     } catch (error) {

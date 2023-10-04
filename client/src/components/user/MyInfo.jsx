@@ -6,7 +6,7 @@ import { BiSolidUser } from "react-icons/bi";
 import Button from "../../components/common/Button";
 import { Link } from "react-router-dom";
 
-const MyInfo = ({ setChangeInfo, data }) => {
+const MyInfo = ({ username, userimgUrl, setChangeInfo, data }) => {
   const genderIcon =
     data.gender === "MALE" ? (
       <GiMale size={20} color={COLOR.gender_blue} />
@@ -21,14 +21,14 @@ const MyInfo = ({ setChangeInfo, data }) => {
       <User>
         <Img>
           <div>
-            {!data.profileImageUrl ? (
+            {!userimgUrl ? (
               <BiSolidUser size={90} color={COLOR.main_yellow} />
             ) : (
-              <img src={data.profileImageUrl} alt="프로필" />
+              <img src={userimgUrl} alt="프로필" />
             )}
           </div>
           <Username>
-            <span>{data.nickname}</span>
+            <span>{username}</span>
             {genderIcon}
           </Username>
         </Img>
