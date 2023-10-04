@@ -4,6 +4,8 @@ package teamdropin.server.mockDataService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import teamdropin.server.domain.comment.entity.Comment;
+import teamdropin.server.domain.comment.repository.CommentRepository;
 import teamdropin.server.domain.member.entity.Gender;
 import teamdropin.server.domain.member.entity.Member;
 import teamdropin.server.domain.member.repository.MemberRepository;
@@ -29,6 +31,8 @@ public class MockDataService {
     private final MemberService memberService;
 
     private final PostService postService;
+
+    private final CommentRepository commentRepository;
 
     private final PostRepository postRepository;
 
@@ -60,6 +64,17 @@ public class MockDataService {
 
             mockPost.addMember(reassignMember);
             postRepository.save(mockPost);
+
+            for(int j = 0; j < 10; j++){
+                Comment mockComment =
+                        Comment.builder()
+                                .body("댓글 입니다." + i)
+                                .build();
+
+                mockComment.addMember(reassignMember);
+                mockComment.addPost(mockPost);
+                commentRepository.save(mockComment);
+            }
         }
     }
 
