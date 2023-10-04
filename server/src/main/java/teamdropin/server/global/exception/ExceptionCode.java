@@ -36,7 +36,7 @@ public enum ExceptionCode {
     TOKEN_EXPIRED(401, "Token is expired"),
 
     //토큰 없을 때
-    TOKEN_NOT_FOUND(401, "Token is exists"),
+    TOKEN_NOT_FOUND(401, "Token is not exists"),
 
     //유효하지 않는 토큰
     TOKEN_INVALID(401, "Token is invalid"),
@@ -45,7 +45,8 @@ public enum ExceptionCode {
     WRONG_INPUT_IMAGE(400, "Image is invalid" ),
     WRONG_IMAGE_FORMAT(400, "Image format is wrong" ),
     UPLOAD_IMAGE_LIMIT_EXCEEDED(400, "Maximum number of images exceeded"),
-    BOX_IMAGE_NOT_FOUND(404, "BoxImage not found" );
+    BOX_IMAGE_NOT_FOUND(404, "BoxImage not found" ),
+    REVIEW_NOT_FOUND(404, "Review not found"  );
     @Getter
     private final int status;
     @Getter

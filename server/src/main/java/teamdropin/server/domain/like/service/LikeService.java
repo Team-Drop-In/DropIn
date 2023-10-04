@@ -15,6 +15,8 @@ import teamdropin.server.domain.member.entity.Member;
 import teamdropin.server.domain.member.repository.MemberRepository;
 import teamdropin.server.domain.post.entity.Post;
 import teamdropin.server.domain.post.repository.PostRepository;
+import teamdropin.server.domain.review.entity.Review;
+import teamdropin.server.domain.review.repository.ReviewRepository;
 import teamdropin.server.global.exception.BusinessLogicException;
 import teamdropin.server.global.exception.ExceptionCode;
 
@@ -30,6 +32,7 @@ public class LikeService {
     private final PostRepository postRepository;
     private final CommentRepository commentRepository;
     private final BoxRepository boxRepository;
+    private final ReviewRepository reviewRepository;
 
     public void like(Member member, LikeRequestDto likeRequestDto){
         if(likeRequestDto.getLikeCategory().equals(LikeCategory.POST)) {
@@ -40,6 +43,9 @@ public class LikeService {
         }
         if(likeRequestDto.getLikeCategory() == LikeCategory.BOX) {
             saveBoxLike(member, likeRequestDto);
+        }
+        if(likeRequestDto.getLikeCategory() == LikeCategory.REVIEW){
+            saveReviewLike(member, likeRequestDto);
         }
     }
 
@@ -71,6 +77,16 @@ public class LikeService {
         if(member != null && box != null) {
             Optional<Like> optionalBoxLike = likeRepository.findByMemberIdAndBoxId(member.getId(), box.getId());
             return optionalBoxLike.isPresent();
+        }
+        return false;
+    }
+
+    public boolean checkReviewLike(Member member, Long reviewId){
+        Review review = reviewRepository.findById(reviewId).orElseThrow(
+                () -> new BusinessLogicException(ExceptionCode.REVIEW_NOT_FOUND));
+        if(member != null && review != null){
+            Optional<Like> optionalReviewLike = likeRepository.findByMemberIdAndReviewId(member.getId(), review.getId());
+            return optionalReviewLike.isPresent();
         }
         return false;
     }
@@ -114,6 +130,19 @@ public class LikeService {
                     () -> new BusinessLogicException(ExceptionCode.LIKE_NOT_FOUND)));
         }
     }
+
+    private void saveReviewLike(Member member, LikeRequestDto likeRequestDto) {
+        Review review = reviewRepository.findById(likeRequestDto.getLikeCategoryId())
+                .orElseThrow(() -> new BusinessLogicException(ExceptionCode.REVIEW_NOT_FOUND));
+        Optional<Like> optionalReviewLike = likeRepository.findByMemberIdAndReviewId(member.getId(), review.getId());
+        if(optionalReviewLike.isEmpty()){
+            likeRepository.save(new Like(member, review, likeRequestDto.getLikeCategory()));
+        } else {
+            likeRepository.delete(optionalReviewLike.orElseThrow(
+                    () -> new BusinessLogicException(ExceptionCode.REVIEW_NOT_FOUND)));
+        }
+    }
+
 
     public List<Like> findLikeBoxList(Long memberId){
         List<Like> likeBoxList = likeRepository.findByMemberIdAndLikeCategory(memberId,LikeCategory.BOX);

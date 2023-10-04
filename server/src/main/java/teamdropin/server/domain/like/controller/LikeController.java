@@ -42,4 +42,11 @@ public class LikeController {
         likeService.like(member, likeRequestDto);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+    @PostMapping("/review/like")
+    public ResponseEntity<Void> reviewLike(@AuthenticationPrincipal Member member,
+                                        @RequestBody LikeRequestDto likeRequestDto){
+        likeService.like(member, likeRequestDto);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }

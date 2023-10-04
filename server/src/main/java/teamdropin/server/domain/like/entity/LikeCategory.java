@@ -1,5 +1,5 @@
 package teamdropin.server.domain.like.entity;
 
 public enum LikeCategory {
-    POST, COMMENT, BOX
+    POST, COMMENT, BOX, REVIEW
 }

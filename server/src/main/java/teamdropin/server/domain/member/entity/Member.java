@@ -6,6 +6,7 @@ import teamdropin.server.domain.comment.entity.Comment;
 import teamdropin.server.domain.like.entity.Like;
 import teamdropin.server.domain.member.utils.MemberValidation;
 import teamdropin.server.domain.post.entity.Post;
+import teamdropin.server.domain.review.entity.Review;
 import teamdropin.server.global.audit.BaseTimeEntity;
 import teamdropin.server.global.util.enumValid.ValidEnum;
 
@@ -71,6 +72,10 @@ public class Member extends BaseTimeEntity {
     @Builder.Default
     @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<Like> likes = new ArrayList<>();
+
+    @Builder.Default
+    @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<Review> reviews = new ArrayList<>();
 
     public Member updatePassword(String encodedPassword){
         this.password = encodedPassword;

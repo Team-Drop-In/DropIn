@@ -32,7 +32,7 @@ public class CommentMapper {
 
     public List<CommentResponseDto> commentsToCommentResponseDtoList(List<Comment> comments){
         List<CommentResponseDto> resultList =
-                comments.stream().map(comment -> commentToCommentResponseDto(comment)).collect(Collectors.toList());
+                comments.stream().map(this::commentToCommentResponseDto).collect(Collectors.toList());
         return resultList;
     }
 }

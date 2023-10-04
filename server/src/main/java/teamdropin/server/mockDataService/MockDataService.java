@@ -4,6 +4,8 @@ package teamdropin.server.mockDataService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import teamdropin.server.domain.box.entity.Box;
+import teamdropin.server.domain.box.repository.BoxRepository;
 import teamdropin.server.domain.comment.entity.Comment;
 import teamdropin.server.domain.comment.repository.CommentRepository;
 import teamdropin.server.domain.member.entity.Gender;
@@ -24,23 +26,17 @@ public class MockDataService {
 
     private static final String REASSIGN_EMAIL = "reassign@dropin.com";
     private final PasswordEncoder passwordEncoder;
-
     private final CustomAuthorityUtils customAuthorityUtils;
     private final MemberRepository memberRepository;
-
-    private final MemberService memberService;
-
-    private final PostService postService;
-
     private final CommentRepository commentRepository;
-
     private final PostRepository postRepository;
+    private final BoxRepository boxRepository;
 
     /**
      * 테스트용
      */
     @PostConstruct
-    public void createReassignMember(){
+    public void createMockData(){
 
         Member reassignMember =
                 Member.builder()
@@ -76,6 +72,21 @@ public class MockDataService {
                 commentRepository.save(mockComment);
             }
         }
-    }
+        for(int i = 0; i < 5; i++){
+            Box mockBox =
+                    Box.builder()
+                            .name("박스 "+ i)
+                            .location("부산")
+                            .phoneNumber("00000000000")
+                            .cost(20)
+                            .area(100)
+                            .barbellDrop(false)
+                            .url("dropin.com")
+                            .detail("널은 박스! 꺠끗한 시설")
+                            .build();
 
+            mockBox.addMember(reassignMember);
+            boxRepository.save(mockBox);
+        }
+    }
 }

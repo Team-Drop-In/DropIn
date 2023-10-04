@@ -13,6 +13,8 @@ public interface LikeRepository extends JpaRepository<Like, Long> {
     Optional<Like> findByMemberIdAndCommentId(Long memberId, Long commentId);
     Optional<Like> findByMemberIdAndBoxId(Long memberId, Long boxId);
 
+    Optional<Like> findByMemberIdAndReviewId(Long memberId, Long reviewId);
+
     List<Like> findByMemberIdAndLikeCategory(Long memberId, LikeCategory likeCategory);
 
     void deleteAllByBoxId(Long boxId);

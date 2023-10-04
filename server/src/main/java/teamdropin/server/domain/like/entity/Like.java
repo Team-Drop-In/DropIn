@@ -5,6 +5,7 @@ import teamdropin.server.domain.box.entity.Box;
 import teamdropin.server.domain.comment.entity.Comment;
 import teamdropin.server.domain.member.entity.Member;
 import teamdropin.server.domain.post.entity.Post;
+import teamdropin.server.domain.review.entity.Review;
 import teamdropin.server.global.util.enumValid.ValidEnum;
 
 import javax.persistence.*;
@@ -40,6 +41,12 @@ public class Like {
     @JoinColumn(name = "box_id")
     private Box box;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "review_id")
+    private Review review;
+
+
+
     public Like(Member member, Post post, LikeCategory likeCategory){
         this.member = member;
         this.post = post;
@@ -55,6 +62,12 @@ public class Like {
     public Like(Member member, Box box, LikeCategory likeCategory){
         this.member = member;
         this.box = box;
+        this.likeCategory = likeCategory;
+    }
+
+    public Like(Member member, Review review, LikeCategory likeCategory) {
+        this.member = member;
+        this.review = review;
         this.likeCategory = likeCategory;
     }
 }

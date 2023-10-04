@@ -69,9 +69,6 @@ public class PostController {
 
     private GetPostResponseDto translateGetPostResponseDto(Member member, Post post) {
         List<Comment> comments = post.getComments();
-        for (Comment comment : comments) {
-            log.info(comment.getBody());
-        }
         List<CommentResponseDto> commentResponseDtoList = new ArrayList<>();
         for(Comment comment : comments){
             CommentResponseDto commentResponseDto = commentMapper.commentToCommentResponseDto(comment);
