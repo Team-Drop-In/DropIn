@@ -8,6 +8,7 @@ import teamdropin.server.domain.like.entity.Like;
 import teamdropin.server.domain.member.entity.Member;
 import teamdropin.server.domain.post.entity.Post;
 import teamdropin.server.global.audit.BaseEntity;
+import teamdropin.server.global.audit.BaseTimeEntity;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -21,7 +22,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Comment extends BaseEntity {
+public class Comment extends BaseTimeEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "comment_id")
     private Long id;
@@ -49,6 +50,7 @@ public class Comment extends BaseEntity {
 
     public void addPost(Post post){
         this.post = post;
+        post.getComments().add(this);
     }
 
     public void updateCommentInfo(String body){
