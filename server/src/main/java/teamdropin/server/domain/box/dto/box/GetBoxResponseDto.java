@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import teamdropin.server.domain.box.dto.boxImage.BoxImageResponseDto;
+import teamdropin.server.domain.review.dto.ReviewResponseDto;
 
 import java.util.List;
 
@@ -28,5 +29,6 @@ public class GetBoxResponseDto {
     private boolean checkBoxLike;
     private List<String> tagList;
     private List<BoxImageResponseDto> boxImageResponseDtoList;
+    private List<ReviewResponseDto> reviewResponseDtoList;
 
 }

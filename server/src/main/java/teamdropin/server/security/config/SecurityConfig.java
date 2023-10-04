@@ -63,13 +63,27 @@ public class SecurityConfig {
                 .oauth2Login(oauth2 -> oauth2
                         .successHandler(new OAuth2MemberSuccessHandler(jwtTokenizer,jwtService, authorityUtils, memberService,memberRepository)))
                 .authorizeHttpRequests()
+
+                //마이페이지 접근
                 .antMatchers("/api/member/my-page").hasAnyRole("USER")
-                .antMatchers( "/api/post").hasAnyRole("USER")
+
+                //게시글 등록, 수정, 삭제
+                .antMatchers(HttpMethod.POST,"/api/post").hasAnyRole("USER")
                 .antMatchers(HttpMethod.PUT, "/api/post/{id}").hasAnyRole("USER")
                 .antMatchers(HttpMethod.DELETE, "/api/post/{id}").hasAnyRole("USER")
+
+                //코멘트 등록, 수정, 삭제
                 .antMatchers("/api/post/{id}/comment/**").hasAnyRole("USER")
+
+                //좋아요 기능
                 .antMatchers("/api/post/like").hasAnyRole("USER")
                 .antMatchers("/api/comment/like").hasAnyRole("USER")
+                .antMatchers("/api/review/like").hasAnyRole("USER")
+
+                //리뷰 등록, 수정, 삭제
+                .antMatchers("api/box/{boxId}/review/**").hasAnyRole("USER")
+
+                //박스 등록,수정, 삭제
                 .antMatchers(HttpMethod.POST,"/api/box").hasRole("MANAGER")
                 .antMatchers(HttpMethod.DELETE, "/api/box/{id}").hasRole("MANAGER")
                 .antMatchers(HttpMethod.PUT,"/api/box/{id}").hasRole("MANAGER")

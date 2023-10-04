@@ -20,6 +20,9 @@ import teamdropin.server.domain.box.mapper.BoxMapper;
 import teamdropin.server.domain.box.service.BoxService;
 import teamdropin.server.domain.like.service.LikeService;
 import teamdropin.server.domain.member.entity.Member;
+import teamdropin.server.domain.review.dto.ReviewResponseDto;
+import teamdropin.server.domain.review.entity.Review;
+import teamdropin.server.domain.review.mapper.ReviewMapper;
 import teamdropin.server.global.dto.MultiResponseDto;
 import teamdropin.server.global.dto.SingleResponseDto;
 import teamdropin.server.global.util.UriCreator;
@@ -27,6 +30,7 @@ import teamdropin.server.global.util.UriCreator;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -41,6 +45,7 @@ public class BoxController {
     private final BoxMapper boxMapper;
     private final BoxImageMapper boxImageMapper;
     private final LikeService likeService;
+    private final ReviewMapper reviewMapper;
 
 
     /**
@@ -62,14 +67,33 @@ public class BoxController {
     public ResponseEntity<SingleResponseDto> getBox(@PathVariable("id") Long boxId,
                                                     @AuthenticationPrincipal Member member){
         Box box = boxService.getBox(boxId);
+
+
         List<BoxImage> boxImageList = box.getBoxImageList();
         List<BoxImageResponseDto> boxImageResponseDtoList = boxImageMapper.boxImageListToBoxImageResponseDtoList(boxImageList);
         GetBoxResponseDto getBoxResponseDto = boxMapper.boxToGetBoxResponseDto(box,boxImageResponseDtoList);
         boolean checkBoxLike = likeService.checkBoxLike(member, box.getId());
         getBoxResponseDto.setCheckBoxLike(checkBoxLike);
 
+        List<Review> reviews = box.getReviews();
+        List<ReviewResponseDto> reviewResponseDtoList = new ArrayList<>();
+        for (Review review : reviews) {
+            ReviewResponseDto reviewResponseDto = reviewMapper.reviewToReviewResponseDto(review);
+            boolean checkLike = likeService.checkReviewLike(member, review.getId());
+            boolean checkWriter = false;
+            if(member != null && review.getMember().getId().equals(member.getId())){
+                checkWriter = true;
+            }
+            reviewResponseDto.setCheckLike(checkLike);
+            reviewResponseDto.setCheckWriter(checkWriter);
+            reviewResponseDtoList.add(reviewResponseDto);
+        }
+
+        getBoxResponseDto.setReviewResponseDtoList(reviewResponseDtoList);
+
         return new ResponseEntity<>(new SingleResponseDto<>(getBoxResponseDto), HttpStatus.OK);
     }
+
 
     /**
      * 박스 전체 조회
