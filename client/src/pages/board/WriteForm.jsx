@@ -20,4 +20,12 @@ const Contain = styled(Content)`
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
+
+  .quill {
+    padding: 0px 8px;
+    width: 100%;
+  }
+  .ql-container {
+    min-height: 400px;
+  }
 `;

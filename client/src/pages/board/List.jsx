@@ -125,6 +125,9 @@ const List = () => {
             </ListItem>
           </Link>
         </BoardList>
+        <WriteBtn>
+          <Link to="/board/writeform">작성하기</Link>
+        </WriteBtn>
         <Pagination
           currentPage={currentPage}
           totalPages={totalPages}
@@ -260,7 +263,22 @@ const SearchWordBtn = styled.div`
 const BoardList = styled.ul`
   width: 100%;
   height: fit-content;
-  min-height: 75vh;
+  min-height: 69vh;
+`;
+
+const WriteBtn = styled.div`
+  width: 100%;
+  margin-top: 15px;
+  display: flex;
+  justify-content: flex-end;
+  padding: 0px 8px;
+
+  a {
+    padding: 5px 8px;
+    color: black;
+    background-color: ${COLOR.main_grey};
+    border-radius: 5px;
+  }
 `;
 
 const ListItem = styled.li`
