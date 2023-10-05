@@ -18,10 +18,11 @@ public class GetPostResponseDto {
     private int viewCount;
     private Category category;
     private String nickname;
-    private List<CommentResponseDto> comments;
     private int likeCount;
     private boolean checkPostLike;
+    private boolean checkWriter;
     private LocalDateTime createdDate;
     private String profileImageUrl;
+    private List<CommentResponseDto> comments;
 
 }
