@@ -20,7 +20,7 @@ import teamdropin.server.domain.box.entity.Box;
 import teamdropin.server.domain.box.mapper.BoxMapper;
 import teamdropin.server.domain.box.repository.BoxQueryRepository;
 import teamdropin.server.domain.box.repository.BoxRepository;
-import teamdropin.server.domain.boxTag.service.BoxTagService;
+import teamdropin.server.domain.box.repository.BoxTagRepository;
 import teamdropin.server.domain.like.entity.Like;
 import teamdropin.server.domain.like.repository.LikeRepository;
 import teamdropin.server.domain.like.service.LikeService;
@@ -44,6 +44,7 @@ public class BoxService {
 
     private final BoxRepository boxRepository;
     private final BoxQueryRepository boxQueryRepository;
+    private final BoxTagRepository boxTagRepository;
     private final BoxImageRepository boxImageRepository;
     private final LikeRepository likeRepository;
     private final ReviewRepository reviewRepository;
@@ -112,6 +113,7 @@ public class BoxService {
         List<Review> reviews = reviewRepository.findByBoxId(box.getId());
         likeRepository.deleteAllByReviews(reviews);
         boxImageRepository.deleteAllByBoxId(boxId);
+        boxTagRepository.deleteAllByBoxId(boxId);
         likeRepository.deleteAllByBoxId(boxId);
         reviewRepository.deleteAllReviewByBoxId(boxId);
         boxRepository.delete(box);

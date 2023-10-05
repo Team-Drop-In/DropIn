@@ -1,4 +1,4 @@
-package teamdropin.server.domain.boxTag.entity;
+package teamdropin.server.domain.box.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

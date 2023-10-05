@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import teamdropin.server.domain.boxTag.entity.BoxTag;
 import teamdropin.server.domain.like.entity.Like;
 import teamdropin.server.domain.member.entity.Member;
 import teamdropin.server.domain.review.entity.Review;
@@ -66,7 +65,7 @@ public class Box extends BaseTimeEntity {
 
     @Builder.Default
     @OneToMany(mappedBy = "box"
-            , cascade = CascadeType.REMOVE, orphanRemoval = true
+//            , cascade = CascadeType.REMOVE, orphanRemoval = true
     )
     private List<BoxTag> boxTagList = new ArrayList<>();
 

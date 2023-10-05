@@ -6,7 +6,7 @@ import teamdropin.server.domain.box.dto.box.*;
 import teamdropin.server.domain.box.dto.boxImage.BoxImageResponseDto;
 import teamdropin.server.domain.box.entity.Box;
 import teamdropin.server.domain.box.entity.BoxImage;
-import teamdropin.server.domain.boxTag.entity.BoxTag;
+import teamdropin.server.domain.box.entity.BoxTag;
 
 import java.util.List;
 import java.util.stream.Collectors;
