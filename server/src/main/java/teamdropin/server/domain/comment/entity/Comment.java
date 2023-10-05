@@ -40,7 +40,9 @@ public class Comment extends BaseTimeEntity {
     private Post post;
 
     @Builder.Default
-    @OneToMany(mappedBy = "comment", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @OneToMany(mappedBy = "comment"
+//            , cascade = CascadeType.REMOVE, orphanRemoval = true
+    )
     private List<Like> commentLikes = new ArrayList<>();
 
     public void addMember(Member member){

@@ -72,6 +72,7 @@ public class MockDataService {
                 mockComment.addMember(reassignMember);
                 mockComment.addPost(mockPost);
                 commentRepository.save(mockComment);
+
             }
         }
         for(int i = 0; i < 5; i++){

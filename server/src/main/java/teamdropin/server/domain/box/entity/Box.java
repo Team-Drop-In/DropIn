@@ -49,7 +49,9 @@ public class Box extends BaseTimeEntity {
 
     private String detail;
 
-    @OneToMany(mappedBy = "box", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @OneToMany(mappedBy = "box"
+//            , cascade = CascadeType.REMOVE, orphanRemoval = true
+    )
     private List<BoxImage> boxImageList;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -57,21 +59,28 @@ public class Box extends BaseTimeEntity {
     private Member member;
 
     @Builder.Default
-    @OneToMany(mappedBy = "box")
+    @OneToMany(mappedBy = "box"
+//            , cascade = CascadeType.REMOVE, orphanRemoval = true
+    )
     private List<Like> boxLikes = new ArrayList<>();
 
     @Builder.Default
-    @OneToMany(mappedBy = "box", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @OneToMany(mappedBy = "box"
+            , cascade = CascadeType.REMOVE, orphanRemoval = true
+    )
     private List<BoxTag> boxTagList = new ArrayList<>();
 
     @Builder.Default
-    @OneToMany(mappedBy = "box", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @OneToMany(mappedBy = "box"
+//            , cascade = CascadeType.REMOVE, orphanRemoval = true
+    )
     private List<Review> reviews = new ArrayList<>();
 
     public void addMember(Member member){
         this.member = member;
         member.getBoxes().add(this);
     }
+
 
     public void viewCountUp(){this.viewCount = this.viewCount +1 ;}
 

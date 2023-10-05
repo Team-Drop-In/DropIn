@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import teamdropin.server.domain.box.entity.Box;
 import teamdropin.server.domain.box.repository.BoxRepository;
+import teamdropin.server.domain.like.repository.LikeRepository;
 import teamdropin.server.domain.member.entity.Member;
 import teamdropin.server.domain.review.dto.CreateReviewRequestDto;
 import teamdropin.server.domain.review.dto.UpdateReviewRequestDto;
@@ -23,6 +24,7 @@ public class ReviewService {
     private final ReviewRepository reviewRepository;
     private final ReviewMapper reviewMapper;
     private final BoxRepository boxRepository;
+    private final LikeRepository likeRepository;
 
     @Transactional(readOnly = false)
     public Long createReview(CreateReviewRequestDto createReviewRequestDto, Member member, Long boxId) {
@@ -54,6 +56,7 @@ public class ReviewService {
         if(!review.getMember().getId().equals(member.getId())){
             throw new BusinessLogicException(ExceptionCode.USER_NOT_AUTHORIZED);
         }
+        likeRepository.deleteAllByReviewId(review.getId());
         reviewRepository.delete(review);
     }
 

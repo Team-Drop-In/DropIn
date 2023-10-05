@@ -44,11 +44,15 @@ public class Post extends BaseTimeEntity {
     private Member member;
 
     @Builder.Default
-    @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @OneToMany(mappedBy = "post"
+//            , cascade = CascadeType.REMOVE, orphanRemoval = true
+    )
     private List<Comment> comments = new ArrayList<>();
 
     @Builder.Default
-    @OneToMany(mappedBy = "post",cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @OneToMany(mappedBy = "post"
+//            ,cascade = CascadeType.REMOVE, orphanRemoval = true
+    )
     private List<Like> postLikes = new ArrayList<>();
 
     public void addMember(Member member){
