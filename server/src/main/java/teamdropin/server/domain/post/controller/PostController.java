@@ -73,7 +73,12 @@ public class PostController {
         for(Comment comment : comments){
             CommentResponseDto commentResponseDto = commentMapper.commentToCommentResponseDto(comment);
             boolean checkCommentLike = likeService.checkCommentLike(member, comment.getId());
+            boolean checkWriter = false;
+            if(comment.getMember().getId().equals(member.getId())){
+                checkWriter = true;
+            }
             commentResponseDto.setCheckCommentLike(checkCommentLike);
+            commentResponseDto.setCheckWriter(checkWriter);
             commentResponseDtoList.add(commentResponseDto);
         }
         GetPostResponseDto getPostResponseDto = postMapper.postToGetPostResponseDto(post, commentResponseDtoList);
