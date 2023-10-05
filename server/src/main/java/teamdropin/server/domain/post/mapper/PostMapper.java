@@ -28,6 +28,7 @@ public class PostMapper {
                 .comments(commentResponseDtoList)
                 .likeCount(post.getPostLikes().size())
                 .checkPostLike(false)
+                .checkWriter(false)
                 .createdDate(post.getCreatedDate())
                 .profileImageUrl(post.getMember().getProfileImageUrl())
                 .build();

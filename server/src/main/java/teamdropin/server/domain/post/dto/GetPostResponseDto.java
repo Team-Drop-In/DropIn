@@ -21,6 +21,7 @@ public class GetPostResponseDto {
     private List<CommentResponseDto> comments;
     private int likeCount;
     private boolean checkPostLike;
+    private boolean checkWriter;
     private LocalDateTime createdDate;
     private String profileImageUrl;
 

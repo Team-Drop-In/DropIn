@@ -78,7 +78,12 @@ public class PostController {
         }
         GetPostResponseDto getPostResponseDto = postMapper.postToGetPostResponseDto(post, commentResponseDtoList);
         boolean checkPostLike = likeService.checkPostLike(member, post.getId());
+        boolean checkWriter = false;
+        if(member != null && post.getMember().getId().equals(member.getId())){
+            checkWriter = true;
+        }
         getPostResponseDto.setCheckPostLike(checkPostLike);
+        getPostResponseDto.setCheckWriter(checkWriter);
         return getPostResponseDto;
     }
 
