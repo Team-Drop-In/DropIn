@@ -35,7 +35,9 @@ public class Review extends BaseTimeEntity {
     private Box box;
 
     @Builder.Default
-    @OneToMany(mappedBy = "review", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @OneToMany(mappedBy = "review"
+//            , cascade = CascadeType.REMOVE, orphanRemoval = true
+    )
     private List<Like> reviewLikes = new ArrayList<>();
 
     public void addMember(Member member){

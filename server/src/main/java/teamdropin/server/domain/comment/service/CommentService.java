@@ -8,6 +8,7 @@ import teamdropin.server.domain.comment.dto.UpdateCommentRequestDto;
 import teamdropin.server.domain.comment.entity.Comment;
 import teamdropin.server.domain.comment.mapper.CommentMapper;
 import teamdropin.server.domain.comment.repository.CommentRepository;
+import teamdropin.server.domain.like.repository.LikeRepository;
 import teamdropin.server.domain.member.entity.Member;
 import teamdropin.server.domain.post.repository.PostRepository;
 import teamdropin.server.global.exception.BusinessLogicException;
@@ -20,6 +21,7 @@ public class CommentService {
 
     private final PostRepository postRepository;
     private final CommentRepository commentRepository;
+    private final LikeRepository likeRepository;
     private final CommentMapper commentMapper;
 
     @Transactional
@@ -51,6 +53,7 @@ public class CommentService {
         if(!comment.getMember().getId().equals(member.getId())){
             throw new BusinessLogicException(ExceptionCode.USER_NOT_AUTHORIZED);
         }
+        likeRepository.deleteAllByCommentId(commentId);
         commentRepository.delete(comment);
     }
 

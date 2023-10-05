@@ -7,7 +7,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import teamdropin.server.domain.comment.entity.Comment;
 import teamdropin.server.domain.comment.mapper.CommentMapper;
+import teamdropin.server.domain.comment.repository.CommentRepository;
 import teamdropin.server.domain.like.repository.LikeRepository;
 import teamdropin.server.domain.like.service.LikeService;
 import teamdropin.server.domain.member.entity.Member;
@@ -23,6 +25,8 @@ import teamdropin.server.domain.post.repository.PostRepository;
 import teamdropin.server.global.exception.BusinessLogicException;
 import teamdropin.server.global.exception.ExceptionCode;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -31,6 +35,7 @@ public class PostService {
     private final MemberRepository memberRepository;
     private final PostRepository postRepository;
     private final LikeRepository likeRepository;
+    private final CommentRepository commentRepository;
     private final PostMapper postMapper;
     private final CommentMapper commentMapper;
     private final MemberService memberService;
@@ -69,6 +74,11 @@ public class PostService {
         if(!findPost.getMember().getId().equals(member.getId())){
             throw new BusinessLogicException(ExceptionCode.USER_NOT_AUTHORIZED);
         }
+
+        List<Comment> comments = commentRepository.findAllCommentsByPostId(findPost.getId());
+        likeRepository.deleteAllByComments(comments);
+        commentRepository.deleteAllCommentsByPostId(findPost.getId());
+        likeRepository.deleteAllByPostId(findPost.getId());
         postRepository.delete(findPost);
     }
 

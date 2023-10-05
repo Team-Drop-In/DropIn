@@ -25,12 +25,15 @@ import teamdropin.server.domain.like.entity.Like;
 import teamdropin.server.domain.like.repository.LikeRepository;
 import teamdropin.server.domain.like.service.LikeService;
 import teamdropin.server.domain.member.entity.Member;
+import teamdropin.server.domain.review.entity.Review;
+import teamdropin.server.domain.review.repository.ReviewRepository;
 import teamdropin.server.global.exception.BusinessLogicException;
 import teamdropin.server.global.exception.ExceptionCode;
 
 import java.io.IOException;
 import java.text.Normalizer;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional(readOnly = true)
@@ -43,6 +46,7 @@ public class BoxService {
     private final BoxQueryRepository boxQueryRepository;
     private final BoxImageRepository boxImageRepository;
     private final LikeRepository likeRepository;
+    private final ReviewRepository reviewRepository;
     private final BoxTagService boxTagService;
     private final BoxMapper boxMapper;
     private final S3Uploader s3Uploader;
@@ -105,8 +109,11 @@ public class BoxService {
         for (BoxImage boxImage : boxImageList) {
             s3Uploader.deleteFile(boxImage.getBoxImageUrl());
         }
-
+        List<Review> reviews = reviewRepository.findByBoxId(box.getId());
+        likeRepository.deleteAllByReviews(reviews);
+        boxImageRepository.deleteAllByBoxId(boxId);
         likeRepository.deleteAllByBoxId(boxId);
+        reviewRepository.deleteAllReviewByBoxId(boxId);
         boxRepository.delete(box);
     }
 
@@ -167,10 +174,10 @@ public class BoxService {
 
     public List<Box> findLikeBoxList(Long memberId){
         List<Like> likeBoxList = likeService.findLikeBoxList(memberId);
-        List<Box> boxList = new ArrayList<>();
-        for (Like like : likeBoxList) {
-            boxList.add(like.getBox());
-        }
+
+        List<Long> boxIds = likeBoxList.stream().map(like -> like.getBox().getId()).collect(Collectors.toList());
+        List<Box> boxList = boxRepository.findAllById(boxIds);
+
         return boxList;
     }
 
