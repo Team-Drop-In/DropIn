@@ -4,7 +4,8 @@ import lombok.Data;
 
 @Data
 public class BoxSearchCondition {
-    private String orderBy;
-    private String search;
+    private String sortCondition;
+    private String searchKeyword;
+    private String searchType;
     private String barbellDrop;
 }

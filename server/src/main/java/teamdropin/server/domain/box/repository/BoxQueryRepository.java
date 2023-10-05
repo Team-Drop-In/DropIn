@@ -2,7 +2,6 @@ package teamdropin.server.domain.box.repository;
 
 import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
-import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -14,9 +13,7 @@ import teamdropin.server.domain.box.dto.box.BoxSearchCondition;
 import teamdropin.server.domain.box.dto.box.BoxSearchDto;
 import teamdropin.server.domain.box.entity.Box;
 import teamdropin.server.domain.box.entity.BoxImage;
-import teamdropin.server.domain.box.entity.QBoxImage;
 import teamdropin.server.domain.boxTag.entity.BoxTag;
-import teamdropin.server.domain.boxTag.entity.QBoxTag;
 import teamdropin.server.domain.like.entity.Like;
 import teamdropin.server.domain.like.entity.LikeCategory;
 
@@ -98,11 +95,8 @@ public class BoxQueryRepository {
         JPAQuery<Long> count = queryFactory
                 .select(box.count())
                 .from(box)
-                .leftJoin(box.boxImageList)
-                .leftJoin(box.boxImageList)
                 .where(searchEq(condition))
                 .groupBy(box.id, boxTag.id);
-
 
         return PageableExecutionUtils.getPage(content, pageable, count::fetchOne);
     }
@@ -128,23 +122,53 @@ public class BoxQueryRepository {
     }
 
     private BooleanExpression searchEq(BoxSearchCondition condition){
-        String search = condition.getSearch();
-        return hasText(search) ? box.name.contains(search)
-                .or(box.location.contains(search))
-                .or(boxTag.tagName.contains(search)) : null;
+        if(condition.getSearchType() != null){
+            String searchType = condition.getSearchType();
+            if(searchType.equals("all")){
+                return searchBoxName(condition).or(searchBoxLocation(condition)).or(searchTagName(condition));
+            }
+            if(searchType.equals("box-name")){
+                return searchBoxName(condition);
+            }
+            if(searchType.equals("box-location")){
+                return searchBoxLocation(condition);
+            }
+            if(searchType.equals("tag-name")){
+                return searchTagName(condition);
+            }
+        }
+        return null;
+    }
+
+    private BooleanExpression searchBoxName(BoxSearchCondition condition){
+        String searchKeyword = condition.getSearchKeyword();
+        return hasText(searchKeyword) ? box.name.contains(searchKeyword) : null;
+    }
+
+    private BooleanExpression searchBoxLocation(BoxSearchCondition condition){
+        String searchKeyword = condition.getSearchKeyword();
+        return hasText(searchKeyword) ? box.location.contains(searchKeyword) : null;
+    }
+
+    private BooleanExpression searchTagName(BoxSearchCondition condition){
+        String searchKeyword = condition.getSearchKeyword();
+        return hasText(searchKeyword) ? boxTag.tagName.contains(searchKeyword) : null;
     }
 
     private BooleanExpression searchBarbellDrop(BoxSearchCondition condition){
         String barbellDrop = condition.getBarbellDrop();
-        return hasText(barbellDrop) ? box.barbellDrop.eq(true) : null;
+        return hasText(barbellDrop) ? box.barbellDrop.eq(Boolean.valueOf(barbellDrop)) : null;
     }
 
     private OrderSpecifier<?> boxSort(BoxSearchCondition condition){
-        if(condition.getOrderBy() != null){
-            String orderBy = condition.getOrderBy();
-            if(orderBy.equals("like-count")){
+        if(condition.getSortCondition() != null){
+            String sortCondition = condition.getSortCondition();
+            if(sortCondition.equals("latest")){
+                return new OrderSpecifier<>(Order.DESC, box.createdDate);
+            }
+            if(sortCondition.equals("like-count")){
                 return new OrderSpecifier<>(Order.DESC, box.boxLikes.size());
-            } else if(orderBy.equals("view-count")){
+            } else if(sortCondition.equals("view-count")){
                 return new OrderSpecifier<>(Order.DESC, box.viewCount);
             }
         }
