@@ -13,7 +13,7 @@ import teamdropin.server.domain.box.dto.box.BoxSearchCondition;
 import teamdropin.server.domain.box.dto.box.BoxSearchDto;
 import teamdropin.server.domain.box.entity.Box;
 import teamdropin.server.domain.box.entity.BoxImage;
-import teamdropin.server.domain.boxTag.entity.BoxTag;
+import teamdropin.server.domain.box.entity.BoxTag;
 import teamdropin.server.domain.like.entity.Like;
 import teamdropin.server.domain.like.entity.LikeCategory;
 
@@ -27,7 +27,7 @@ import static com.querydsl.core.types.dsl.Expressions.list;
 import static org.springframework.util.StringUtils.hasText;
 import static teamdropin.server.domain.box.entity.QBox.box;
 import static teamdropin.server.domain.box.entity.QBoxImage.boxImage;
-import static teamdropin.server.domain.boxTag.entity.QBoxTag.*;
+import static teamdropin.server.domain.box.entity.QBoxTag.*;
 import static teamdropin.server.domain.like.entity.QLike.like;
 
 @Repository

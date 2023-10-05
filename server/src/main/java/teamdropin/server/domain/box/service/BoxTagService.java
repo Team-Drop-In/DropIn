@@ -1,18 +1,16 @@
-package teamdropin.server.domain.boxTag.service;
+package teamdropin.server.domain.box.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import teamdropin.server.domain.box.entity.Box;
 import teamdropin.server.domain.box.repository.BoxRepository;
-import teamdropin.server.domain.box.service.BoxService;
-import teamdropin.server.domain.boxTag.entity.BoxTag;
-import teamdropin.server.domain.boxTag.repository.BoxTagRepository;
+import teamdropin.server.domain.box.entity.BoxTag;
+import teamdropin.server.domain.box.repository.BoxTagRepository;
 import teamdropin.server.global.exception.BusinessLogicException;
 import teamdropin.server.global.exception.ExceptionCode;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
