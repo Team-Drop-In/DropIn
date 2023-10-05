@@ -24,6 +24,7 @@ public class CommentMapper {
                 .nickname(comment.getMember().getNickname())
                 .body(comment.getBody())
                 .checkCommentLike(false)
+                .checkWriter(false)
                 .likeCommentCount(comment.getCommentLikes().size())
                 .createdAt(comment.getCreatedDate())
                 .profileImageUrl(comment.getMember().getProfileImageUrl())

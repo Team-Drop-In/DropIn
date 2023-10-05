@@ -5,6 +5,7 @@ import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.support.PageableExecutionUtils;
@@ -26,6 +27,7 @@ import static teamdropin.server.domain.member.entity.QMember.member;
 import static teamdropin.server.domain.post.entity.QPost.post;
 
 @Repository
+@Slf4j
 public class PostQueryRepository {
 
     private final EntityManager em;
@@ -53,9 +55,6 @@ public class PostQueryRepository {
                         post.createdDate,
                         post.member.profileImageUrl)
                 ).from(post)
-                .leftJoin(post.member, member)
-                .leftJoin(post.comments, comment)
-                .leftJoin(post.postLikes, like)
                 .where(searchEq(condition))
                 .orderBy(postSort(condition), post.createdDate.desc())
                 .groupBy(post)
@@ -66,11 +65,9 @@ public class PostQueryRepository {
         JPAQuery<Long> count = queryFactory
                 .select(post.count())
                 .from(post)
-                .leftJoin(post.member, member)
-                .leftJoin(post.comments, comment)
-                .leftJoin(post.postLikes, like)
-                .where(searchEq(condition))
-                .groupBy(post);
+                .where(searchEq(condition));
+
+        log.info("get Count = {}", count);
 
         return PageableExecutionUtils.getPage(content, pageable, count::fetchOne);
     }
@@ -79,8 +76,7 @@ public class PostQueryRepository {
         String search = condition.getSearch();
         return hasText(search) ? post.member.nickname.contains(search)
                 .or(post.title.contains(search))
-                .or(post.body.contains(search))
-                .or(comment.body.contains(search)) : null;
+                .or(post.body.contains(search)) : null;
     }
 
     private OrderSpecifier<?> postSort(PostSearchCondition condition) {

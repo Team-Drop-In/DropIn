@@ -17,6 +17,7 @@ public class CommentResponseDto {
     private String nickname;
     private String body;
     private boolean checkCommentLike;
+    private boolean checkWriter;
     private int likeCommentCount;
     private LocalDateTime createdAt;
     private String profileImageUrl;
