@@ -10,8 +10,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.stereotype.Repository;
-import org.springframework.util.StringUtils;
-import teamdropin.server.domain.comment.entity.QComment;
 import teamdropin.server.domain.post.dto.PostSearchCondition;
 import teamdropin.server.domain.post.dto.PostSearchDto;
 import teamdropin.server.domain.post.dto.QPostSearchDto;
@@ -21,9 +19,6 @@ import javax.persistence.EntityManager;
 import java.util.List;
 
 import static org.springframework.util.StringUtils.hasText;
-import static teamdropin.server.domain.comment.entity.QComment.comment;
-import static teamdropin.server.domain.like.entity.QLike.like;
-import static teamdropin.server.domain.member.entity.QMember.member;
 import static teamdropin.server.domain.post.entity.QPost.post;
 
 @Repository
@@ -72,19 +67,50 @@ public class PostQueryRepository {
         return PageableExecutionUtils.getPage(content, pageable, count::fetchOne);
     }
 
-    private BooleanExpression searchEq(PostSearchCondition condition) {
-        String search = condition.getSearch();
-        return hasText(search) ? post.member.nickname.contains(search)
-                .or(post.title.contains(search))
-                .or(post.body.contains(search)) : null;
+
+    private BooleanExpression searchEq(PostSearchCondition condition){
+        if(condition.getSearchType() != null) {
+            String searchType = condition.getSearchType();
+            if(searchType.equals("all")){
+                return searchPostTitle(condition).or(searchPostBody(condition)).or(searchWriter(condition));
+            }
+            if (searchType.equals("post-title")){
+                return searchPostTitle(condition);
+            }
+            if (searchType.equals("post-body")){
+                return searchPostBody(condition);
+            }
+            if (searchType.equals("nickname")){
+                return searchWriter(condition);
+            }
+        }
+        return null;
+    }
+
+    private BooleanExpression searchPostTitle(PostSearchCondition condition){
+        String searchKeyword = condition.getSearchKeyword();
+        return hasText(searchKeyword) ? post.title.contains(searchKeyword) : null;
+    }
+
+    private BooleanExpression searchPostBody(PostSearchCondition condition){
+        String searchKeyword = condition.getSearchKeyword();
+        return hasText(searchKeyword) ? post.body.contains(searchKeyword) : null;
+    }
+
+    private BooleanExpression searchWriter(PostSearchCondition condition){
+        String searchKeyword = condition.getSearchKeyword();
+        return hasText(searchKeyword) ? post.member.nickname.contains(searchKeyword) : null;
     }
 
     private OrderSpecifier<?> postSort(PostSearchCondition condition) {
-        if (condition.getOrderBy() != null) {
-            String orderBy = condition.getOrderBy();
-            if (orderBy.equals("like-count")){
+        if (condition.getSortCondition() != null) {
+            String sortCondition = condition.getSortCondition();
+            if(sortCondition.equals("latest")){
+                return new OrderSpecifier<>(Order.DESC,post.createdDate);
+            }
+            if (sortCondition.equals("like-count")){
                 return new OrderSpecifier<>(Order.DESC, post.postLikes.size());
-            } else if (orderBy.equals("view-count")){
+            } else if (sortCondition.equals("view-count")){
                 return new OrderSpecifier<>(Order.DESC, post.viewCount);
             }
         }

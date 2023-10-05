@@ -50,18 +50,20 @@ public class MockDataService {
                         .build();
         memberRepository.save(reassignMember);
 
+        int tmp = 31;
         for(int i = 0; i < 30; i++){
+            tmp--;
             Post mockPost =
                     Post.builder()
                             .title("제목 입니다." + i)
-                            .body("본문 입니다." + i)
+                            .body("본문 입니다." + tmp)
                             .category(Category.QUESTION)
                             .build();
 
             mockPost.addMember(reassignMember);
             postRepository.save(mockPost);
 
-            for(int j = 0; j < 10; j++){
+            for(int j = 10; j > 0; j--){
                 Comment mockComment =
                         Comment.builder()
                                 .body("댓글 입니다." + i)
