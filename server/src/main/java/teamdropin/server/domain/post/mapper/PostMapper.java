@@ -25,12 +25,12 @@ public class PostMapper {
                 .viewCount(post.getViewCount())
                 .category(post.getCategory())
                 .nickname(post.getMember().getNickname())
-                .comments(commentResponseDtoList)
                 .likeCount(post.getPostLikes().size())
                 .checkPostLike(false)
                 .checkWriter(false)
                 .createdDate(post.getCreatedDate())
                 .profileImageUrl(post.getMember().getProfileImageUrl())
+                .comments(commentResponseDtoList)
                 .build();
     }
 
