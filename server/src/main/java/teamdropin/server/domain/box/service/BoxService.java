@@ -9,13 +9,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import teamdropin.server.aws.service.S3Uploader;
-import teamdropin.server.domain.box.dto.box.BoxSearchCondition;
-import teamdropin.server.domain.box.dto.box.BoxSearchDto;
+import teamdropin.server.domain.box.dto.box.*;
 import teamdropin.server.domain.box.dto.boxImage.CreateBoxImageRequestDto;
 import teamdropin.server.domain.box.entity.BoxImage;
 import teamdropin.server.domain.box.repository.BoxImageRepository;
-import teamdropin.server.domain.box.dto.box.BoxCreateRequestDto;
-import teamdropin.server.domain.box.dto.box.UpdateBoxRequestDto;
 import teamdropin.server.domain.box.entity.Box;
 import teamdropin.server.domain.box.mapper.BoxMapper;
 import teamdropin.server.domain.box.repository.BoxQueryRepository;
@@ -91,11 +88,11 @@ public class BoxService {
         return box.getId();
     }
 
-    public Box getBox(Long boxId) {
+    @Transactional(readOnly = false)
+    public GetBoxResponseDto getBox(Long boxId, Member member){
         Box box =  findVerifyBox(boxId);
         box.viewCountUp();
-
-        return box;
+        return boxQueryRepository.getBoxQuery(boxId, member);
     }
 
     public Page<Box> getAllBoxes(Pageable pageable) {
@@ -147,14 +144,17 @@ public class BoxService {
         boxTagService.updateAndDeleteBoxTag(updateBoxRequestDto.getTagList(), boxId);
 
         List<BoxImage> boxImageList = box.getBoxImageList();
-        Map<Integer, String> imageInfoDto = updateBoxRequestDto.getImageInfo();
-        ArrayList<Integer> updateIndex = new ArrayList();
+        Map<Long, String> imageInfoDto = updateBoxRequestDto.getImageInfo();
+        ArrayList<Long> updateIndex = new ArrayList();
         for (BoxImage boxImage : boxImageList) {
-            for (Map.Entry<Integer, String> imageInfoDtoEntrySet : imageInfoDto.entrySet()) {
+            for (Map.Entry<Long, String> imageInfoDtoEntrySet : imageInfoDto.entrySet()) {
                 if (boxImage.getBoxImageUrl().equals(imageInfoDtoEntrySet.getValue())) {
                     updateIndex.add(imageInfoDtoEntrySet.getKey());
                 }
             }
+            log.info("imageInfo 1 ={}", imageInfoDto.get(1));
+            log.info("imageInfo ={}", imageInfoDto.get(boxImage.getImageIndex()));
+            log.info("boxImage.getIndex = {}", boxImage.getImageIndex());
             if (updateIndex.contains(boxImage.getImageIndex())) {
                 String boxImageUrl = imageInfoDto.get(boxImage.getImageIndex());
                 boxImage.updateBoxImage(boxImageUrl, boxImage.getImageIndex());
@@ -176,7 +176,6 @@ public class BoxService {
 
     public List<Box> findLikeBoxList(Long memberId){
         List<Like> likeBoxList = likeService.findLikeBoxList(memberId);
-
         List<Long> boxIds = likeBoxList.stream().map(like -> like.getBox().getId()).collect(Collectors.toList());
         List<Box> boxList = boxRepository.findAllById(boxIds);
 

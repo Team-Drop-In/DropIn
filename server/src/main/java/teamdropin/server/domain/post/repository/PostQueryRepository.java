@@ -169,7 +169,7 @@ public class PostQueryRepository {
                         post.member.profileImageUrl))
                 .from(post)
                 .where(post.id.eq(postId))
-                .groupBy(post.id)
+                .groupBy(post)
                 .fetchOne();
 
         getPostResponseDto.setComments(commentResponseDtos);

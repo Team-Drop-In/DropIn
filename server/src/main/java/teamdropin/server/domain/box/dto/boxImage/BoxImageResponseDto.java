@@ -9,11 +9,15 @@ import lombok.NoArgsConstructor;
 @Data
 @Builder
 @NoArgsConstructor
-@AllArgsConstructor
 public class BoxImageResponseDto {
 
     private Long id;
-    private int imageIndex;
+    private long imageIndex;
     private String boxImageUrl;
 
+    public BoxImageResponseDto(Long id, long imageIndex, String boxImageUrl) {
+        this.id = id;
+        this.imageIndex = imageIndex;
+        this.boxImageUrl = boxImageUrl;
+    }
 }

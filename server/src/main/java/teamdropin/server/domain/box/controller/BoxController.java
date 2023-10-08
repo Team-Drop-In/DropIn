@@ -66,47 +66,25 @@ public class BoxController {
     @GetMapping("/box/{id}")
     public ResponseEntity<SingleResponseDto> getBox(@PathVariable("id") Long boxId,
                                                     @AuthenticationPrincipal Member member){
-        Box box = boxService.getBox(boxId);
-
-
-        List<BoxImage> boxImageList = box.getBoxImageList();
-        List<BoxImageResponseDto> boxImageResponseDtoList = boxImageMapper.boxImageListToBoxImageResponseDtoList(boxImageList);
-        GetBoxResponseDto getBoxResponseDto = boxMapper.boxToGetBoxResponseDto(box,boxImageResponseDtoList);
-        boolean checkBoxLike = likeService.checkBoxLike(member, box.getId());
-        getBoxResponseDto.setCheckBoxLike(checkBoxLike);
-
-        List<Review> reviews = box.getReviews();
-        List<ReviewResponseDto> reviewResponseDtoList = new ArrayList<>();
-        for (Review review : reviews) {
-            ReviewResponseDto reviewResponseDto = reviewMapper.reviewToReviewResponseDto(review);
-            boolean checkLike = likeService.checkReviewLike(member, review.getId());
-            boolean checkWriter = false;
-            if(member != null && review.getMember().getId().equals(member.getId())){
-                checkWriter = true;
-            }
-            reviewResponseDto.setCheckLike(checkLike);
-            reviewResponseDto.setCheckWriter(checkWriter);
-            reviewResponseDtoList.add(reviewResponseDto);
-        }
-
-        getBoxResponseDto.setReviewResponseDtoList(reviewResponseDtoList);
-
+        GetBoxResponseDto getBoxResponseDto = boxService.getBox(boxId, member);
         return new ResponseEntity<>(new SingleResponseDto<>(getBoxResponseDto), HttpStatus.OK);
     }
 
+//    /**
+//     * 박스 전체 조회
+//     */
+//    @GetMapping("/boxes")
+//    public ResponseEntity<MultiResponseDto> getAllBoxes(Pageable pageable){
+//        pageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by("id").descending());
+//        Page<Box> pageBoxes = boxService.getAllBoxes(pageable);
+//        List<Box> boxes = pageBoxes.getContent();
+//        List<GetAllBoxResponseDto> getAllPostResponseDtoList = boxMapper.boxToGetAllBoxResponseDtoList(boxes);
+//        return new ResponseEntity<>(new MultiResponseDto<>(getAllPostResponseDtoList,pageBoxes), HttpStatus.OK);
+//    }
 
     /**
-     * 박스 전체 조회
+     * 박스 검색 및 전체 조회
      */
-    @GetMapping("/boxes")
-    public ResponseEntity<MultiResponseDto> getAllBoxes(Pageable pageable){
-        pageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by("id").descending());
-        Page<Box> pageBoxes = boxService.getAllBoxes(pageable);
-        List<Box> boxes = pageBoxes.getContent();
-        List<GetAllBoxResponseDto> getAllPostResponseDtoList = boxMapper.boxToGetAllBoxResponseDtoList(boxes);
-        return new ResponseEntity<>(new MultiResponseDto<>(getAllPostResponseDtoList,pageBoxes), HttpStatus.OK);
-    }
-
     @GetMapping("/box/search")
     public ResponseEntity<MultiResponseDto> searchBoxesPage(BoxSearchCondition condition, Pageable pageable){
         Page<BoxSearchDto> searchBoxes = boxService.getSearchBoxes(condition,pageable);
@@ -114,6 +92,9 @@ public class BoxController {
         return new ResponseEntity<>(new MultiResponseDto(boxes,searchBoxes), HttpStatus.OK);
     }
 
+    /**
+     * 박스 수정
+     */
     @PutMapping("box/{id}")
     public ResponseEntity<Void> updateBox(@AuthenticationPrincipal Member member,
                                           @PathVariable("id") Long boxId,
@@ -124,6 +105,9 @@ public class BoxController {
         return ResponseEntity.ok().build();
     }
 
+    /**
+     * 박스 삭제
+     */
     @DeleteMapping("box/{id}")
     public ResponseEntity<Void> deleteBox(@AuthenticationPrincipal Member member,
                                           @PathVariable("id") Long boxId){
