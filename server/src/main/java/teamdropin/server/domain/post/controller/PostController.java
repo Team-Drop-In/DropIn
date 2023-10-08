@@ -62,34 +62,8 @@ public class PostController {
     @GetMapping("/post/{id}")
     public ResponseEntity<SingleResponseDto> getPost(@PathVariable("id") Long postId,
                                                      @AuthenticationPrincipal Member member){
-        Post post = postService.getPost(postId, member);
-        GetPostResponseDto getPostResponseDto = translateGetPostResponseDto(member, post);
+        GetPostResponseDto getPostResponseDto = postService.getPostQuery(postId, member);
         return new ResponseEntity<>(new SingleResponseDto<>(getPostResponseDto), HttpStatus.OK);
-    }
-
-    private GetPostResponseDto translateGetPostResponseDto(Member member, Post post) {
-        List<Comment> comments = post.getComments();
-        List<CommentResponseDto> commentResponseDtoList = new ArrayList<>();
-        for(Comment comment : comments){
-            CommentResponseDto commentResponseDto = commentMapper.commentToCommentResponseDto(comment);
-            boolean checkCommentLike = likeService.checkCommentLike(member, comment.getId());
-            boolean checkWriter = false;
-            if(comment.getMember().getId().equals(member.getId())){
-                checkWriter = true;
-            }
-            commentResponseDto.setCheckCommentLike(checkCommentLike);
-            commentResponseDto.setCheckWriter(checkWriter);
-            commentResponseDtoList.add(commentResponseDto);
-        }
-        GetPostResponseDto getPostResponseDto = postMapper.postToGetPostResponseDto(post, commentResponseDtoList);
-        boolean checkPostLike = likeService.checkPostLike(member, post.getId());
-        boolean checkWriter = false;
-        if(member != null && post.getMember().getId().equals(member.getId())){
-            checkWriter = true;
-        }
-        getPostResponseDto.setCheckPostLike(checkPostLike);
-        getPostResponseDto.setCheckWriter(checkWriter);
-        return getPostResponseDto;
     }
 
     @PutMapping("/post/{id}")

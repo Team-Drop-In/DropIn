@@ -15,6 +15,7 @@ import teamdropin.server.domain.like.service.LikeService;
 import teamdropin.server.domain.member.entity.Member;
 import teamdropin.server.domain.member.repository.MemberRepository;
 import teamdropin.server.domain.member.service.MemberService;
+import teamdropin.server.domain.post.dto.GetPostResponseDto;
 import teamdropin.server.domain.post.dto.PostSearchCondition;
 import teamdropin.server.domain.post.dto.PostSearchDto;
 import teamdropin.server.domain.post.dto.UpdatePostRequestDto;
@@ -98,5 +99,12 @@ public class PostService {
 
     public long countWritePost(Long memberId){
         return postRepository.countByMemberId(memberId);
+    }
+
+    @Transactional
+    public GetPostResponseDto getPostQuery(Long postId, Member member) {
+        Post post = findVerifiedPost(postId);
+        post.viewCountUp();
+        return postQueryRepository.getPost(postId, member);
     }
 }

@@ -13,11 +13,11 @@ public class GetAllPostResponseDto {
     private Long id;
     private String title;
     private String body;
-    private int viewCount;
+    private long viewCount;
     private Category category;
-    private int likeCount;
+    private long likeCount;
     private String nickname;
-    private int commentCount;
+    private long commentCount;
     private LocalDateTime createdDate;
     private String profileImageUrl;
 
