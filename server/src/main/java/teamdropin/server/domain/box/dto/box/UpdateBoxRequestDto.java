@@ -30,7 +30,7 @@ public class UpdateBoxRequestDto {
     private boolean barbellDrop;
     private String url;
     private String detail;
-    private List<String> tagList;
+    private List<UpdateBoxTagRequestDto> tagList;
     private HashMap<Long,String> imageInfo;
 
 }

@@ -25,37 +25,37 @@ public class BoxTagService {
     private final BoxRepository boxRepository;
 
     @Transactional(readOnly = false)
-    public void createBoxTag(List<String> boxTagNameList, Long boxId){
+    public void createBoxTag(List<CreateBoxTagRequestDto> boxTagNameList, Long boxId){
         Box box = boxRepository.findById(boxId).orElseThrow(() -> new BusinessLogicException(ExceptionCode.BOX_NOT_FOUND));
+
         if(boxTagNameList != null) {
-            for (String boxTagName : boxTagNameList) {
-                BoxTag newBoxTag = new BoxTag(boxTagName);
-                newBoxTag.addBox(box);
-                boxTagRepository.save(newBoxTag);
-            }
+            boxTagNameList.stream()
+                    .map(CreateBoxTagRequestDto::getTagName)
+                    .map(BoxTag::new)
+                    .peek(newBoxTag -> newBoxTag.addBox(box))
+                    .forEach(boxTagRepository::save);
         }
     }
 
     @Transactional(readOnly = false)
-    public void updateAndDeleteBoxTag(List<String> updateBoxTagNameList, Long boxId){
+    public void updateAndDeleteBoxTag(List<UpdateBoxTagRequestDto> updateBoxTagRequestDtoList, Long boxId){
         Box box = boxRepository.findById(boxId).orElseThrow(() -> new BusinessLogicException(ExceptionCode.BOX_NOT_FOUND));
-        if(updateBoxTagNameList == null){
+        if(updateBoxTagRequestDtoList == null){
             boxTagRepository.deleteAllByBoxId(boxId);
         } else {
             List<BoxTag> currentBoxTagList = box.getBoxTagList();
             List<String> currentBoxTagNameList = currentBoxTagList.stream().map(BoxTag::getTagName).collect(Collectors.toList());
-            for (String newBoxTagName : updateBoxTagNameList) {
-                if (!currentBoxTagNameList.contains(newBoxTagName)) {
-                    BoxTag newBoxTag = new BoxTag(newBoxTagName);
-                    newBoxTag.addBox(box);
-                    boxTagRepository.save(newBoxTag);
-                }
-            }
-            for (BoxTag currentBoxTag : currentBoxTagList) {
-                if (!updateBoxTagNameList.contains(currentBoxTag.getTagName())) {
-                    boxTagRepository.delete(currentBoxTag);
-                }
-            }
+            List<String> updateBoxTagNameList = updateBoxTagRequestDtoList.stream().map(UpdateBoxTagRequestDto::getTagName).collect(Collectors.toList());
+
+            updateBoxTagNameList.stream()
+                    .filter(newBoxTagName -> !currentBoxTagNameList.contains(newBoxTagName))
+                    .map(BoxTag::new)
+                    .peek(newBoxTag -> newBoxTag.addBox(box))
+                    .forEach(boxTagRepository::save);
+
+            currentBoxTagList.stream()
+                    .filter(currentBoxTag -> !updateBoxTagNameList.contains(currentBoxTag.getTagName()))
+                    .forEach(boxTagRepository::delete);
         }
     }
 }
