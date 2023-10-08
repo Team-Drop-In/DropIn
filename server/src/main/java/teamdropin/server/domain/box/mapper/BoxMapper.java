@@ -35,7 +35,7 @@ public class BoxMapper {
                 .id(box.getId())
                 .name(box.getName())
                 .location(box.getLocation())
-                .boxImageResponseDtoList(boxImageResponseDtoList)
+                .boxImages(boxImageResponseDtoList)
                 .phoneNumber(box.getPhoneNumber())
                 .cost(box.getCost())
                 .area(box.getArea())

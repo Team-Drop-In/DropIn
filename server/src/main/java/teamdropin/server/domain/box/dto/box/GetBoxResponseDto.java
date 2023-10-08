@@ -28,7 +28,21 @@ public class GetBoxResponseDto {
     private long viewCount;
     private boolean checkBoxLike;
     private List<String> tagList;
-    private List<BoxImageResponseDto> boxImageResponseDtoList;
-    private List<ReviewResponseDto> reviewResponseDtoList;
+    private List<BoxImageResponseDto> boxImages;
+    private List<ReviewResponseDto> reviews;
 
+    public GetBoxResponseDto(Long id, String name, String location, String phoneNumber, Long cost, Long area, boolean barbellDrop, String url, String detail, long likeCount, long viewCount, boolean checkBoxLike) {
+        this.id = id;
+        this.name = name;
+        this.location = location;
+        this.phoneNumber = phoneNumber;
+        this.cost = cost;
+        this.area = area;
+        this.barbellDrop = barbellDrop;
+        this.url = url;
+        this.detail = detail;
+        this.likeCount = likeCount;
+        this.viewCount = viewCount;
+        this.checkBoxLike = checkBoxLike;
+    }
 }

@@ -81,16 +81,9 @@ public class PostController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/posts")
-    public ResponseEntity<MultiResponseDto> getPosts(@RequestParam int page,
-                                                     @RequestParam int size){
-        Page<Post> pagePosts = postService.getAllPosts(page , size);
-        List<Post> posts = pagePosts.getContent();
-        List<GetAllPostResponseDto> getAllPostResponseDtoList = postMapper.postToGetAllPostResponseDtoList(posts);
-        return new ResponseEntity<>(new MultiResponseDto<>(getAllPostResponseDtoList,pagePosts),HttpStatus.OK);
-    }
-
-
+    /**
+     * 게시글 검색 및 전체 조회
+     */
     @GetMapping("post/search")
     public ResponseEntity<MultiResponseDto> searchPostsPage(PostSearchCondition condition, Pageable pageable){
         Page<PostSearchDto> searchPosts = postService.getSearchPosts(condition,pageable);

@@ -19,20 +19,20 @@ public class BoxImage extends BaseTimeEntity {
     @Column(name = "boxImage_id")
     private Long id;
 
-    private int imageIndex;
+    private long imageIndex;
     private String boxImageUrl;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "box_id")
     private Box box;
 
-    public BoxImage(String boxImageUrl, int imageIndex, Box box){
+    public BoxImage(String boxImageUrl, long imageIndex, Box box){
         this.boxImageUrl = boxImageUrl;
         this.imageIndex = imageIndex;
         this.box = box;
     }
 
-    public void updateBoxImage(String boxImageUrl, int imageIndex){
+    public void updateBoxImage(String boxImageUrl, long imageIndex){
         this.boxImageUrl = boxImageUrl;
         this.imageIndex = imageIndex;
     }

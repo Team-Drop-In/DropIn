@@ -2,7 +2,11 @@ package teamdropin.server.domain.box.repository;
 
 import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
+import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.jpa.JPAExpressions;
+import com.querydsl.jpa.JPQLQuery;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.data.domain.Page;
@@ -11,11 +15,16 @@ import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.stereotype.Repository;
 import teamdropin.server.domain.box.dto.box.BoxSearchCondition;
 import teamdropin.server.domain.box.dto.box.BoxSearchDto;
+import teamdropin.server.domain.box.dto.box.GetBoxResponseDto;
+import teamdropin.server.domain.box.dto.boxImage.BoxImageResponseDto;
 import teamdropin.server.domain.box.entity.Box;
 import teamdropin.server.domain.box.entity.BoxImage;
 import teamdropin.server.domain.box.entity.BoxTag;
 import teamdropin.server.domain.like.entity.Like;
 import teamdropin.server.domain.like.entity.LikeCategory;
+import teamdropin.server.domain.member.entity.Member;
+import teamdropin.server.domain.review.dto.ReviewResponseDto;
+import teamdropin.server.domain.review.entity.Review;
 
 import javax.persistence.EntityManager;
 import java.util.List;
@@ -28,7 +37,9 @@ import static org.springframework.util.StringUtils.hasText;
 import static teamdropin.server.domain.box.entity.QBox.box;
 import static teamdropin.server.domain.box.entity.QBoxImage.boxImage;
 import static teamdropin.server.domain.box.entity.QBoxTag.*;
+import static teamdropin.server.domain.comment.entity.QComment.comment;
 import static teamdropin.server.domain.like.entity.QLike.like;
+import static teamdropin.server.domain.review.entity.QReview.review;
 
 @Repository
 public class BoxQueryRepository {
@@ -174,4 +185,107 @@ public class BoxQueryRepository {
         }
         return new OrderSpecifier<>(Order.DESC, box.createdDate);
     }
+
+    public GetBoxResponseDto getBoxQuery(Long boxId, Member member) {
+
+        JPQLQuery<Long> boxLikeCount =
+                JPAExpressions.select(like.count())
+                        .from(like)
+                        .where(like.box.id.eq(box.id));
+
+        JPQLQuery<Long> reviewLikeCount =
+                JPAExpressions.select(like.count())
+                        .from(like)
+                        .where(like.review.id.eq(review.id));
+
+        List<String> tagList = queryFactory
+                .select(boxTag.tagName)
+                .from(boxTag)
+                .where(boxTag.box.id.eq(boxId))
+                .fetch();
+
+        List<BoxImageResponseDto> boxImageResponseDtoList = queryFactory
+                .select(Projections.constructor(
+                        BoxImageResponseDto.class,
+                        boxImage.id,
+                        boxImage.imageIndex,
+                        boxImage.boxImageUrl
+                ))
+                .from(boxImage)
+                .where(boxImage.box.id.eq(boxId))
+                .fetch();
+
+        List<ReviewResponseDto > reviewResponseDtoList = queryFactory
+                .select(Projections.constructor(
+                        ReviewResponseDto.class,
+                        review.id,
+                        review.member.nickname,
+                        review.body,
+                        reviewLikeCount,
+                        checkReviewLike(member),
+                        checkReviewWriter(member),
+                        review.createdDate
+                ))
+                .from(review)
+                .where(review.box.id.eq(boxId))
+                .fetch();
+
+        GetBoxResponseDto getBoxResponseDto =  queryFactory
+                .select(Projections.constructor(
+                        GetBoxResponseDto.class,
+                        box.id,
+                        box.name,
+                        box.location,
+                        box.phoneNumber,
+                        box.cost,
+                        box.area,
+                        box.barbellDrop,
+                        box.url,
+                        box.detail,
+                        boxLikeCount,
+                        box.viewCount,
+                        checkBoxLike(member)
+                ))
+                .from(box)
+                .where(box.id.eq(boxId))
+                .groupBy(box.id)
+                .fetchOne();
+
+        getBoxResponseDto.setTagList(tagList);
+        getBoxResponseDto.setBoxImages(boxImageResponseDtoList);
+        getBoxResponseDto.setReviews(reviewResponseDtoList);
+
+        return getBoxResponseDto;
+    }
+
+    private BooleanExpression checkBoxLike(Member member){
+        if(member == null){
+            return Expressions.FALSE;
+        }
+        return JPAExpressions.select(like.id)
+                .from(like)
+                .where(like.member.id.eq(member.getId()).and(like.box.id.eq(box.id)))
+                .exists();
+    }
+
+    private BooleanExpression checkReviewLike(Member member){
+        if(member == null){
+            return Expressions.FALSE;
+        }
+        return JPAExpressions.select(like.id)
+                .from(like)
+                .where(like.member.id.eq(member.getId()).and(like.review.id.eq(review.id)))
+                .exists();
+    }
+
+    private BooleanExpression checkReviewWriter(Member member){
+        if(member == null){
+            return Expressions.FALSE;
+        }
+        return JPAExpressions.select(review.id)
+                .from(review)
+                .where(review.member.id.eq(member.getId()))
+                .exists();
+    }
+
 }
