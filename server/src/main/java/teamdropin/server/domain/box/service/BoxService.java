@@ -144,14 +144,17 @@ public class BoxService {
         boxTagService.updateAndDeleteBoxTag(updateBoxRequestDto.getTagList(), boxId);
 
         List<BoxImage> boxImageList = box.getBoxImageList();
-        Map<Integer, String> imageInfoDto = updateBoxRequestDto.getImageInfo();
-        ArrayList<Integer> updateIndex = new ArrayList();
+        Map<Long, String> imageInfoDto = updateBoxRequestDto.getImageInfo();
+        ArrayList<Long> updateIndex = new ArrayList();
         for (BoxImage boxImage : boxImageList) {
-            for (Map.Entry<Integer, String> imageInfoDtoEntrySet : imageInfoDto.entrySet()) {
+            for (Map.Entry<Long, String> imageInfoDtoEntrySet : imageInfoDto.entrySet()) {
                 if (boxImage.getBoxImageUrl().equals(imageInfoDtoEntrySet.getValue())) {
                     updateIndex.add(imageInfoDtoEntrySet.getKey());
                 }
             }
+            log.info("imageInfo 1 ={}", imageInfoDto.get(1));
+            log.info("imageInfo ={}", imageInfoDto.get(boxImage.getImageIndex()));
+            log.info("boxImage.getIndex = {}", boxImage.getImageIndex());
             if (updateIndex.contains(boxImage.getImageIndex())) {
                 String boxImageUrl = imageInfoDto.get(boxImage.getImageIndex());
                 boxImage.updateBoxImage(boxImageUrl, boxImage.getImageIndex());

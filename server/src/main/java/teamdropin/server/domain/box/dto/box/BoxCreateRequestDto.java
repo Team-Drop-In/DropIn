@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import teamdropin.server.domain.box.dto.boxImage.CreateBoxImageRequestDto;
+import teamdropin.server.domain.box.dto.boxTag.CreateBoxTagRequestDto;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;

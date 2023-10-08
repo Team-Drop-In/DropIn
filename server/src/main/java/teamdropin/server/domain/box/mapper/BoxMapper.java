@@ -44,7 +44,7 @@ public class BoxMapper {
                 .viewCount(box.getViewCount())
                 .url(box.getUrl())
                 .detail(box.getDetail())
-                .tagList(tagList)
+//                .tagList(tagList)
                 .build();
     }
 
