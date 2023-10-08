@@ -33,7 +33,7 @@ public class Post extends BaseTimeEntity {
     private String body;
 
     @Column(columnDefinition = "integer default 0")
-    private int viewCount;
+    private long viewCount;
 
     @Enumerated(EnumType.STRING)
     @ValidEnum(enumClass = Category.class)

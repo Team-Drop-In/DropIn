@@ -10,7 +10,6 @@ import java.time.LocalDateTime;
 @Data
 @Builder
 @NoArgsConstructor
-@AllArgsConstructor
 public class CommentResponseDto {
 
     private Long id;
@@ -18,8 +17,18 @@ public class CommentResponseDto {
     private String body;
     private boolean checkCommentLike;
     private boolean checkWriter;
-    private int likeCommentCount;
+    private long likeCommentCount;
     private LocalDateTime createdAt;
     private String profileImageUrl;
 
+    public CommentResponseDto(Long id, String nickname, String body, boolean checkCommentLike, boolean checkWriter, long likeCommentCount, LocalDateTime createdAt, String profileImageUrl) {
+        this.id = id;
+        this.nickname = nickname;
+        this.body = body;
+        this.checkCommentLike = checkCommentLike;
+        this.checkWriter = checkWriter;
+        this.likeCommentCount = likeCommentCount;
+        this.createdAt = createdAt;
+        this.profileImageUrl = profileImageUrl;
+    }
 }

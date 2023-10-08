@@ -16,7 +16,7 @@ public class ReviewResponseDto {
     private Long id;
     private String nickname;
     private String body;
-    private Integer likeCount;
+    private long likeCount;
     private boolean checkLike;
     private boolean checkWriter;
     private LocalDateTime createdAt;

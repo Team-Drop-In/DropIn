@@ -35,12 +35,12 @@ public class Box extends BaseTimeEntity {
     private String phoneNumber;
 
     @NotNull
-    private Integer cost;
+    private Long cost;
 
     @NotNull
-    private Integer area;
+    private Long area;
 
-    private int viewCount;
+    private long viewCount;
 
     private boolean barbellDrop;
 
@@ -83,7 +83,7 @@ public class Box extends BaseTimeEntity {
 
     public void viewCountUp(){this.viewCount = this.viewCount +1 ;}
 
-    public void updateBox(String name, String location, String phoneNumber, int cost, int area, boolean barbellDrop, String url, String detail){
+    public void updateBox(String name, String location, String phoneNumber, Long cost, Long area, boolean barbellDrop, String url, String detail){
         this.name= name;
         this.location = location;
         this.phoneNumber = phoneNumber;

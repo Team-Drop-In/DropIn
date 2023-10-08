@@ -26,10 +26,10 @@ public class BoxCreateRequestDto {
     private String phoneNumber;
 
     @NotNull
-    private Integer cost;
+    private Long cost;
 
     @NotNull
-    private Integer area;
+    private Long area;
 
     private boolean barbellDrop;
     private String url;

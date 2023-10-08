@@ -16,8 +16,8 @@ public class BoxSearchDto {
     private Long id;
     private String name;
     private String location;
-    private int likeCount;
-    private int viewCount;
+    private long likeCount;
+    private long viewCount;
     private String mainImageUrl;
     private List<String> tagList;
 

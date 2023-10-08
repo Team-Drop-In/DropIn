@@ -19,13 +19,13 @@ public class GetBoxResponseDto {
     private String name;
     private String location;
     private String phoneNumber;
-    private int cost;
-    private int area;
+    private Long cost;
+    private Long area;
     private boolean barbellDrop;
     private String url;
     private String detail;
-    private int likeCount;
-    private int viewCount;
+    private long likeCount;
+    private long viewCount;
     private boolean checkBoxLike;
     private List<String> tagList;
     private List<BoxImageResponseDto> boxImageResponseDtoList;

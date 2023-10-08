@@ -15,8 +15,8 @@ public class GetAllBoxResponseDto {
     private Long id;
     private String name;
     private String mainImageUrl;
-    private int likeCount;
-    private int viewCount;
+    private long likeCount;
+    private long viewCount;
     private String location;
     private List<String> tagList;
 }
