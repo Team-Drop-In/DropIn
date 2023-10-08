@@ -90,6 +90,11 @@ public class MemberController {
     public ResponseEntity<SingleResponseDto> getMember(@AuthenticationPrincipal Member member, @PathVariable("id") Long memberId ){
         Member findMember = memberService.getMember(memberId);
         GetMemberResponseDto getMemberResponseDto = memberMapper.memberToGetMemberResponseDto(findMember);
+        getMemberResponseDto.setWritePostCount(postService.countWritePost(member.getId()));
+        getMemberResponseDto.setWriteCommentCount(commentService.countWriteComment(member.getId()));
+        List<Box> likeBoxList = boxService.findLikeBoxList(member.getId());
+        List<LikeBoxResponseDto> likeBoxResponseDtoList = boxMapper.boxToLikeBoxResponseDtoList(likeBoxList);
+        getMemberResponseDto.setLikeBoxList(likeBoxResponseDtoList);
         return new ResponseEntity<>(new SingleResponseDto(getMemberResponseDto), HttpStatus.OK);
     }
 
