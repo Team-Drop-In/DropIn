@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { COLOR } from "../../styles/theme";
 import { FiThumbsUp } from "react-icons/fi";
 import { BsEye } from "react-icons/bs";
+import { Link } from "react-router-dom";
 
 const MainText = () => {
   return (
@@ -33,6 +34,9 @@ const MainText = () => {
         </TitleAndTime>
       </Head>
       <Body>본문</Body>
+      <ModifyBtn>
+        <Link to="/board/edit">수정</Link>
+      </ModifyBtn>
     </Wrap>
   );
 };
@@ -132,4 +136,22 @@ const Body = styled.div`
   padding: 12px 8px;
   min-height: 380px;
   height: fit-content;
+`;
+
+const ModifyBtn = styled.div`
+  width: 100%;
+  position: relative;
+  display: flex;
+  justify-content: flex-end;
+
+  a {
+    position: absolute;
+    bottom: 5px;
+    width: 2.2rem;
+    height: 1.2rem;
+    color: ${COLOR.main_grey};
+    background-color: transparent;
+    font-size: 0.9rem;
+    text-align: center;
+  }
 `;

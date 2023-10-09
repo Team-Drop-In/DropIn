@@ -11,7 +11,9 @@ const WriteForm = () => {
         <Form>
           <Title placeholder="제목을 입력해주세요 (최대 50자)" />
           <ReactQuill />
-          <button></button>
+          <SubmitBtn>
+            <button>등록</button>
+          </SubmitBtn>
         </Form>
       </Contain>
     </Container>
@@ -29,9 +31,13 @@ const Contain = styled(Content)`
   .quill {
     width: 100%;
     color: white;
+
+    .ql-editor p {
+      color: white;
+    }
   }
   .ql-container {
-    min-height: 400px;
+    min-height: 35rem;
   }
 
   .ql-snow .ql-stroke {
@@ -85,9 +91,6 @@ const Contain = styled(Content)`
 const Form = styled.form`
   width: 100%;
   margin-top: 50px;
-
-  button {
-  }
 `;
 
 const Title = styled.input`
@@ -98,4 +101,26 @@ const Title = styled.input`
   outline: none;
   padding: 10px;
   letter-spacing: 0.5px;
+`;
+
+const SubmitBtn = styled.div`
+  width: 100%;
+  margin-top: 20px;
+  display: flex;
+  justify-content: flex-end;
+
+  button {
+    width: 6rem;
+    height: 2rem;
+    font-size: 1.1rem;
+    border-radius: 5px;
+    cursor: pointer;
+
+    &:hover {
+      background-color: ${COLOR.main_yellow};
+    }
+    &:active {
+      background-color: ${COLOR.active_yellow};
+    }
+  }
 `;

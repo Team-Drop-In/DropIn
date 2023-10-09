@@ -17,10 +17,18 @@ const CommentList = () => {
                 <p>5시간전</p>
               </NameAndTime>
             </User>
-            <span>
-              <FiThumbsUp />
-              좋아요
-            </span>
+            <LikeAndBtn>
+              <DeleteAndModify>
+                <button>수정</button>
+                <button>삭제</button>
+              </DeleteAndModify>
+              <span>
+                <button>
+                  <FiThumbsUp />
+                </button>
+                좋아요
+              </span>
+            </LikeAndBtn>
           </Info>
           <Content>하이</Content>
         </CommentItem>
@@ -54,21 +62,42 @@ const Info = styled.div`
   justify-content: space-between;
   align-items: center;
   margin-bottom: 10px;
-
-  & > span {
-    display: flex;
-    align-items: center;
-    font-size: 0.9rem;
-    color: ${COLOR.main_grey};
-  }
-  svg {
-    margin-right: 2px;
-  }
 `;
 
 const User = styled.div`
   display: flex;
   align-items: center;
+`;
+
+const LikeAndBtn = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  & > span {
+    display: flex;
+    align-items: center;
+    font-size: 0.9rem;
+    color: ${COLOR.main_grey};
+
+    button {
+      color: ${COLOR.main_grey};
+      background-color: transparent;
+      margin-left: 5px;
+    }
+  }
+  svg {
+    margin-right: 2px;
+  }
+`;
+const DeleteAndModify = styled.div`
+  margin-bottom: 3px;
+
+  button {
+    font-size: 0.9rem;
+    color: ${COLOR.main_grey};
+    background-color: transparent;
+    margin-left: 5px;
+  }
 `;
 
 const Imgbox = styled.div`

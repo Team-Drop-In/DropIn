@@ -126,7 +126,7 @@ const List = () => {
           </Link>
         </BoardList>
         <WriteBtn>
-          <Link to="/board/writeform">작성하기</Link>
+          <Link to="/board/write">작성</Link>
         </WriteBtn>
         <Pagination
           currentPage={currentPage}
@@ -274,10 +274,22 @@ const WriteBtn = styled.div`
   padding: 0px 8px;
 
   a {
-    padding: 5px 8px;
+    width: 6rem;
+    height: 2rem;
+    font-size: 1.1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     color: black;
     background-color: ${COLOR.main_grey};
     border-radius: 5px;
+
+    &:hover {
+      background-color: ${COLOR.main_yellow};
+    }
+    &:active {
+      background-color: ${COLOR.active_yellow};
+    }
   }
 `;
 
@@ -352,7 +364,7 @@ const Tag = styled.div`
   display: flex;
 
   & > p {
-    background-color: ${COLOR.btn_grey};
+    background-color: ${COLOR.main_grey};
     padding: 2px 5px;
     color: black;
     border-radius: 3px;

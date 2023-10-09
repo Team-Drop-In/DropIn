@@ -10,15 +10,16 @@ const api = axios.create({
   withCredentials: true,
 });
 
-export const getHelloApi = async () => {
-  try {
-    const response = await api.get("/hello");
-    return response.data;
-  } catch (error) {
-    throw new Error(error.response);
-  }
-};
+// export const getHelloApi = async () => {
+//   try {
+//     const response = await api.get("/hello");
+//     return response.data;
+//   } catch (error) {
+//     throw new Error(error.response);
+//   }
+// };
 
+// 회원
 export const loginApi = async (data) => {
   try {
     const res = await api.post("/api/login", data);
@@ -29,15 +30,6 @@ export const loginApi = async (data) => {
     throw error.response;
   }
 };
-
-// export const googleloginApi = async () => {
-//   try {
-//     const res = await api.get("/oauth2/authorization/google");
-//     return res.data;
-//   } catch (error) {
-//     throw error.response;
-//   }
-// };
 
 export const googleloginApi = () => {
   window.location.assign(`${baseURL}/oauth2/authorization/google`);
@@ -161,6 +153,39 @@ export const modifyInfo = async (data) => {
         "Content-Type": "multipart/form-data",
       },
     });
+    return response.data;
+  } catch (error) {
+    throw error.response;
+  }
+};
+
+// 보드
+export const getBoardLists = async (
+  page = 1,
+  searchKeyword,
+  searchType,
+  sortCondition
+) => {
+  try {
+    const params = {
+      page: page,
+      size: 10,
+      searchKeyword: searchKeyword,
+      searchType: searchType,
+      sortCondition: sortCondition,
+    };
+
+    const response = await api.get(
+      "/api/post/search?",
+      {
+        params: params,
+      },
+      {
+        headers: {
+          Authorization: `${localStorage.getItem("accessToken")}`,
+        },
+      }
+    );
     return response.data;
   } catch (error) {
     throw error.response;

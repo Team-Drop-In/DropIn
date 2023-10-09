@@ -18,6 +18,7 @@ const Mypage = lazy(() => import("./pages/user/Mypage"));
 const List = lazy(() => import("./pages/board/List"));
 const View = lazy(() => import("./pages/board/View"));
 const WriteForm = lazy(() => import("./pages/board/WriteForm"));
+const ModifyForm = lazy(() => import("./pages/board/ModifyForm"));
 
 const App = () => {
   const isOpenModal = useRecoilValue(ModalState);
@@ -41,7 +42,8 @@ const App = () => {
           <Route path="/leaveconfirm" element={<LeaveConfirm />} />
           <Route path="/board" element={<List />} />
           <Route path="/board/:boardId" element={<View />} />
-          <Route path="/board/writeform" element={<WriteForm />} />
+          <Route path="/board/write" element={<WriteForm />} />
+          <Route path="/board/:boardId/edit" element={<ModifyForm />} />
         </Routes>
       </Suspense>
     </div>
