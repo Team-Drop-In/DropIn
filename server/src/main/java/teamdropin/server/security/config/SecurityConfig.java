@@ -87,6 +87,8 @@ public class SecurityConfig {
                 .antMatchers(HttpMethod.POST,"/api/box").hasRole("MANAGER")
                 .antMatchers(HttpMethod.DELETE, "/api/box/{id}").hasRole("MANAGER")
                 .antMatchers(HttpMethod.PUT,"/api/box/{id}").hasRole("MANAGER")
+
+                //스웨거 경로
                 .anyRequest()
                 .permitAll();
         return http.build();

@@ -42,8 +42,8 @@ public enum ExceptionCode {
     TOKEN_INVALID(401, "Token is invalid"),
     LIKE_NOT_FOUND(404, "Like not found" ),
     BOX_NOT_FOUND(404, "BOX not found" ),
-    WRONG_INPUT_IMAGE(400, "Image is invalid" ),
-    WRONG_IMAGE_FORMAT(400, "Image format is wrong" ),
+    WRONG_INPUT_IMAGE(415, "Image is invalid" ),
+    WRONG_IMAGE_FORMAT(415, "Image format is wrong" ),
     UPLOAD_IMAGE_LIMIT_EXCEEDED(400, "Maximum number of images exceeded"),
     BOX_IMAGE_NOT_FOUND(404, "BoxImage not found" ),
     REVIEW_NOT_FOUND(404, "Review not found"  );
