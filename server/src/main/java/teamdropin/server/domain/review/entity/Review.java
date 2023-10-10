@@ -7,6 +7,8 @@ import teamdropin.server.domain.member.entity.Member;
 import teamdropin.server.global.audit.BaseTimeEntity;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,6 +23,8 @@ public class Review extends BaseTimeEntity {
     @Column(name = "review_id")
     private Long id;
 
+    @NotNull
+    @Size(min = 1, max = 50)
     private String body;
 
     private String anonymousName;
