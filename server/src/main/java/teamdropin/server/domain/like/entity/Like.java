@@ -18,7 +18,7 @@ import javax.persistence.*;
 @Table(name = "heart")
 public class Like {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "post_like_id")
+    @Column(name = "like_id")
     private Long id;
 
     @Enumerated(EnumType.STRING)

@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import teamdropin.server.domain.box.entity.Box;
+import teamdropin.server.domain.box.entity.BoxTag;
 import teamdropin.server.domain.box.repository.BoxRepository;
 import teamdropin.server.domain.comment.entity.Comment;
 import teamdropin.server.domain.comment.repository.CommentRepository;
@@ -90,6 +91,11 @@ public class MockDataService {
 
             mockBox.addMember(reassignMember);
             boxRepository.save(mockBox);
+
+            BoxTag mockBoxTag =
+                    BoxTag.builder()
+                            .tagName(String.valueOf(i))
+                            .build();
         }
     }
 }
