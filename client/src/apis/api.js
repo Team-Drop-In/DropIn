@@ -161,31 +161,27 @@ export const modifyInfo = async (data) => {
 
 // 보드
 export const getBoardLists = async (
-  page = 1,
   searchKeyword,
   searchType,
-  sortCondition
+  sortCondition,
+  page = 1
 ) => {
   try {
     const params = {
       page: page,
-      size: 10,
+      size: 20, // Adjusted the size to match the desired size of 20
       searchKeyword: searchKeyword,
       searchType: searchType,
       sortCondition: sortCondition,
     };
 
-    const response = await api.get(
-      "/api/post/search?",
-      {
-        params: params,
+    const response = await api.get("/api/post/search", {
+      params: params,
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("accessToken")}`, // Adjusted Authorization header
       },
-      {
-        headers: {
-          Authorization: `${localStorage.getItem("accessToken")}`,
-        },
-      }
-    );
+    });
+
     return response.data;
   } catch (error) {
     throw error.response;

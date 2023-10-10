@@ -2,19 +2,23 @@ import styled from "styled-components";
 import { useState, useEffect, useRef } from "react";
 import { Container, Content } from "../../styles/style";
 import { COLOR } from "../../styles/theme";
-import { FiSearch } from "react-icons/fi";
+import { FiSearch, FiThumbsUp } from "react-icons/fi";
 import { BsEye, BsChevronDown, BsChevronUp } from "react-icons/bs";
-import { FiThumbsUp } from "react-icons/fi";
 import { GoComment } from "react-icons/go";
 import Pagination from "../../components/board/Pagination";
+import { getBoardLists } from "../../apis/api";
 import { Link } from "react-router-dom";
 
 const List = () => {
   const [openOrderBy, setOpenOrderBy] = useState(false);
   const [openSearch, setOpenSearch] = useState(false);
   const [orderBy, setOrderBy] = useState("latest");
+  const [searchWord, setSearchWord] = useState("");
+  const [searchSort, setSearchSort] = useState("all");
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(10);
+  const [boardData, setBoardData] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const previousPage = useRef(1);
 
@@ -29,6 +33,31 @@ const List = () => {
   useEffect(() => {
     previousPage.current = currentPage;
   }, [currentPage]);
+
+  useEffect(() => {
+    const fetchListData = async () => {
+      try {
+        const searchKeyword = searchWord;
+        const searchType = searchSort;
+        const sortCondition = orderBy;
+        const page = 0;
+
+        const data = await getBoardLists(
+          searchKeyword,
+          searchType,
+          sortCondition,
+          page
+        );
+        setBoardData(data);
+        console.log(boardData);
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchListData();
+  }, []);
 
   return (
     <Container>
