@@ -17,6 +17,7 @@ public class BoxTag {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "boxTag_id")
     private Long id;
 
     private String tagName;
