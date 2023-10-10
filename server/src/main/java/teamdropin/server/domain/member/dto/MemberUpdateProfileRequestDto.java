@@ -9,13 +9,10 @@ import javax.validation.constraints.Size;
 
 @Data
 public class MemberUpdateProfileRequestDto {
-
     @NotBlank
     @Size(min = 2, max = 20)
     @Pattern(regexp = MemberValidation.NICKNAME_REGEX)
     private String nickname;
-
     private String profileImageUrl;
-
 
 }

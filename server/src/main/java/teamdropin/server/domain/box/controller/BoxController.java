@@ -1,5 +1,9 @@
 package teamdropin.server.domain.box.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -48,11 +52,15 @@ public class BoxController {
     private final ReviewMapper reviewMapper;
 
 
-    /**
-     * 박스 등록
-     */
+    @Operation(summary = "박스 등록 API", description = "**AccessToken이 필수입니다.** <br> **MANAGER_ROLE 권한이 필요합니다.**")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "박스 등록 성공 "),
+            @ApiResponse(responseCode = "400", description = "박스 등록 유효성 검증에 실패한 경우 <br> 이미지 등록 갯수가 초과한 경우"),
+            @ApiResponse(responseCode = "401", description = "인증 권한이 없거나, 유효하지 않은 JWT일 경우"),
+            @ApiResponse(responseCode = "415", description = "이미지 포맷이 틀린 경우")
+    })
     @PostMapping("/box")
-    public ResponseEntity<URI> createBox(@AuthenticationPrincipal Member member,
+    public ResponseEntity<URI> createBox(@Parameter(hidden = true) @AuthenticationPrincipal Member member,
                                          @RequestPart(value = "image", required = false) List<MultipartFile> multipartFileList,
                                          @RequestPart("boxCreateRequest") @Valid BoxCreateRequestDto boxCreateRequestDto) throws IOException {
         Long boxId = boxService.createBox(member, boxCreateRequestDto, multipartFileList);
@@ -60,31 +68,24 @@ public class BoxController {
         return ResponseEntity.created(location).build();
     }
 
-    /**
-     * 박스 단건 조회
-     */
+    @Operation(summary = "박스 조회 API")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "박스 조회 성공 "),
+            @ApiResponse(responseCode = "401", description = "인증 권한이 없거나, 유효하지 않은 JWT일 경우"),
+            @ApiResponse(responseCode = "404", description = "박스를 찾을 수 없는 경우")
+    })
     @GetMapping("/box/{id}")
     public ResponseEntity<SingleResponseDto> getBox(@PathVariable("id") Long boxId,
-                                                    @AuthenticationPrincipal Member member){
+                                                    @Parameter(hidden = true) @AuthenticationPrincipal Member member){
         GetBoxResponseDto getBoxResponseDto = boxService.getBox(boxId, member);
         return new ResponseEntity<>(new SingleResponseDto<>(getBoxResponseDto), HttpStatus.OK);
     }
 
-//    /**
-//     * 박스 전체 조회
-//     */
-//    @GetMapping("/boxes")
-//    public ResponseEntity<MultiResponseDto> getAllBoxes(Pageable pageable){
-//        pageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by("id").descending());
-//        Page<Box> pageBoxes = boxService.getAllBoxes(pageable);
-//        List<Box> boxes = pageBoxes.getContent();
-//        List<GetAllBoxResponseDto> getAllPostResponseDtoList = boxMapper.boxToGetAllBoxResponseDtoList(boxes);
-//        return new ResponseEntity<>(new MultiResponseDto<>(getAllPostResponseDtoList,pageBoxes), HttpStatus.OK);
-//    }
-
-    /**
-     * 박스 검색 및 전체 조회
-     */
+    @Operation(summary = "박스 검색 API", description = "추후 묘사 예정")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "박스 전체 조회 및 검색 성공 "),
+            @ApiResponse(responseCode = "401", description = "인증 권한이 없거나, 유효하지 않은 JWT일 경우")
+    })
     @GetMapping("/box/search")
     public ResponseEntity<MultiResponseDto> searchBoxesPage(BoxSearchCondition condition, Pageable pageable){
         Page<BoxSearchDto> searchBoxes = boxService.getSearchBoxes(condition,pageable);
@@ -92,11 +93,16 @@ public class BoxController {
         return new ResponseEntity<>(new MultiResponseDto(boxes,searchBoxes), HttpStatus.OK);
     }
 
-    /**
-     * 박스 수정
-     */
+    @Operation(summary = "박스 수정 API", description = "**AccessToken이 필수입니다.** <br> **MANAGER_ROLE 권한이 필요합니다.**")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "박스 수정 성공 "),
+            @ApiResponse(responseCode = "400", description = "박스 수정 유효성 검증에 실패한 경우 <br> 이미지 등록 갯수가 초과한 경우"),
+            @ApiResponse(responseCode = "404", description = "박스가 존재하지 않는 경우"),
+            @ApiResponse(responseCode = "401", description = "인증 권한이 없거나, 유효하지 않은 JWT일 경우"),
+            @ApiResponse(responseCode = "415", description = "이미지 포맷이 틀린 경우")
+    })
     @PutMapping("box/{id}")
-    public ResponseEntity<Void> updateBox(@AuthenticationPrincipal Member member,
+    public ResponseEntity<Void> updateBox(@Parameter(hidden = true) @AuthenticationPrincipal Member member,
                                           @PathVariable("id") Long boxId,
                                           @RequestPart(value = "image", required = false) List<MultipartFile> multipartFileList,
                                           @RequestPart(value = "UpdateBoxRequestDto") @Valid UpdateBoxRequestDto updateBoxRequestDto){
@@ -105,11 +111,15 @@ public class BoxController {
         return ResponseEntity.ok().build();
     }
 
-    /**
-     * 박스 삭제
-     */
+    @Operation(summary = "박스 삭제 API", description = "**AccessToken이 필수입니다.** <br> **MANAGER_ROLE 권한이 필요합니다.**")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "박스 삭제 성공"),
+            @ApiResponse(responseCode = "204", description = "박스 삭제 성공"),
+            @ApiResponse(responseCode = "401", description = "인증 권한이 없거나, 유효하지 않은 JWT일 경우"),
+            @ApiResponse(responseCode = "404", description = "박스가 존재하지 않는 경우")
+    })
     @DeleteMapping("box/{id}")
-    public ResponseEntity<Void> deleteBox(@AuthenticationPrincipal Member member,
+    public ResponseEntity<Void> deleteBox(@Parameter(hidden = true) @AuthenticationPrincipal Member member,
                                           @PathVariable("id") Long boxId){
         boxService.deleteBox(boxId);
         return ResponseEntity.noContent().build();
