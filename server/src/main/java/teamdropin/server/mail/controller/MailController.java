@@ -3,6 +3,7 @@ package teamdropin.server.mail.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +18,7 @@ import teamdropin.server.mail.dto.request.VerificationCodeRequest;
 import teamdropin.server.mail.dto.response.ResetPasswordEmailResponse;
 import teamdropin.server.mail.service.MailService;
 
+@Tag(name = "7. Mail API", description = "Mail API Document")
 @RestController
 @RequestMapping("/api/email")
 @RequiredArgsConstructor

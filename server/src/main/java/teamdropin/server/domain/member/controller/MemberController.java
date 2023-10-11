@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -33,6 +34,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.List;
 
+@Tag(name = "1. Member API", description = "Member API Document")
 @RestController
 @RequestMapping("/api")
 @RequiredArgsConstructor
@@ -149,7 +151,7 @@ public class MemberController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @Operation(summary = "회원 비밀번호 수정, description = \"**AccessToken이 필수입니다.** <br> **USER_ROLE 권한이 필요합니다.**\"")
+    @Operation(summary = "회원 비밀번호 수정", description = "**AccessToken이 필수입니다.** <br> **USER_ROLE 권한이 필요합니다.**")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "비밀번호 수정 성공"),
             @ApiResponse(responseCode = "400", description = "비밀번호 유효성 검증 실패 <br> 현재 비밀번호와 새로운 비밀번호 일치하지 않음")

@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -19,6 +20,7 @@ import teamdropin.server.global.util.UriCreator;
 import javax.validation.Valid;
 import java.net.URI;
 
+@Tag(name = "3. Comment API", description = "Comment API Document")
 @RestController
 @RequestMapping("/api")
 @RequiredArgsConstructor

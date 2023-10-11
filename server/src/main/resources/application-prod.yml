@@ -45,3 +45,11 @@ cloud:
         secretKey:
       region:
         static:
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    enabled: true
+    tagsSorter: alpha
+    operations-sorter: method
+    display-request-duration: true
