@@ -6,7 +6,7 @@ import { FiSearch, FiThumbsUp } from "react-icons/fi";
 import { BsEye, BsChevronDown, BsChevronUp } from "react-icons/bs";
 import { GoComment } from "react-icons/go";
 import Pagination from "../../components/board/Pagination";
-import { getBoardLists } from "../../apis/api";
+import { getLists } from "../../apis/api";
 import { Link } from "react-router-dom";
 
 const List = () => {
@@ -21,6 +21,28 @@ const List = () => {
   const [loading, setLoading] = useState(true);
 
   const previousPage = useRef(1);
+
+  const getOrderMessage = () => {
+    if (orderBy === "latest") {
+      return "최신순";
+    } else if (orderBy === "view-count") {
+      return "조회순";
+    } else if (orderBy === "like-count") {
+      return "좋아요순";
+    }
+  };
+
+  const getSearchSort = () => {
+    if (searchSort === "all") {
+      return "전체";
+    } else if (searchSort === "post-title") {
+      return "제목";
+    } else if (searchSort === "post-body") {
+      return "내용";
+    } else if (searchSort === "nickname") {
+      return "작성자";
+    }
+  };
 
   const handlePaginationClick = (pageNumber) => {
     if (pageNumber === previousPage.current) {
@@ -37,17 +59,10 @@ const List = () => {
   useEffect(() => {
     const fetchListData = async () => {
       try {
-        const searchKeyword = searchWord;
-        const searchType = searchSort;
         const sortCondition = orderBy;
         const page = 0;
 
-        const data = await getBoardLists(
-          searchKeyword,
-          searchType,
-          sortCondition,
-          page
-        );
+        const data = await getLists(sortCondition, page);
         setBoardData(data);
         console.log(boardData);
         setLoading(false);
@@ -57,7 +72,7 @@ const List = () => {
     };
 
     fetchListData();
-  }, []);
+  }, [orderBy]);
 
   return (
     <Container>
@@ -65,7 +80,7 @@ const List = () => {
         <Option>
           <Sort>
             <span onClick={() => setOpenOrderBy((prev) => !prev)}>
-              <p>최신순</p>
+              <p>{getOrderMessage()}</p>
               {openOrderBy ? (
                 <BsChevronUp color={COLOR.main_grey} />
               ) : (
@@ -75,13 +90,34 @@ const List = () => {
             {openOrderBy ? (
               <SortBtn>
                 <div>
-                  <button>최신순</button>
+                  <button
+                    onClick={() => {
+                      setOrderBy("latest");
+                      setOpenOrderBy(false);
+                    }}
+                  >
+                    최신순
+                  </button>
                 </div>
                 <div>
-                  <button>추천순</button>
+                  <button
+                    onClick={() => {
+                      setOrderBy("view-count");
+                      setOpenOrderBy(false);
+                    }}
+                  >
+                    조회순
+                  </button>
                 </div>
                 <div>
-                  <button>좋아요순</button>
+                  <button
+                    onClick={() => {
+                      setOrderBy("like-count");
+                      setOpenOrderBy(false);
+                    }}
+                  >
+                    좋아요순
+                  </button>
                 </div>
               </SortBtn>
             ) : null}
@@ -89,22 +125,50 @@ const List = () => {
           <Search>
             <Searchfield openSearch={openSearch}>
               <span onClick={() => setOpenSearch((prev) => !prev)}>
-                <p>전체</p>
+                <p>{getSearchSort()}</p>
                 {openSearch ? <BsChevronUp /> : <BsChevronDown />}
               </span>
               {openSearch ? (
                 <SearchWordBtn>
                   <div>
-                    <button>전체</button>
+                    <button
+                      onClick={() => {
+                        setSearchSort("all");
+                        setOpenSearch(false);
+                      }}
+                    >
+                      전체
+                    </button>
                   </div>
                   <div>
-                    <button>제목</button>
+                    <button
+                      onClick={() => {
+                        setSearchSort("post-title");
+                        setOpenSearch(false);
+                      }}
+                    >
+                      제목
+                    </button>
                   </div>
                   <div>
-                    <button>내용</button>
+                    <button
+                      onClick={() => {
+                        setSearchSort("post-body");
+                        setOpenSearch(false);
+                      }}
+                    >
+                      내용
+                    </button>
                   </div>
                   <div>
-                    <button>작성자</button>
+                    <button
+                      onClick={() => {
+                        setSearchSort("nickname");
+                        setOpenSearch(false);
+                      }}
+                    >
+                      작성자
+                    </button>
                   </div>
                 </SearchWordBtn>
               ) : null}
