@@ -126,9 +126,17 @@ public class MemberService {
      * 회원정보 수정
      */
     @Transactional(readOnly = false)
-    public void updateProfile(String username, MemberUpdateProfileRequestDto memberUpdateProfileRequestDto, MultipartFile image) throws IOException {
+    public String updateProfile(String username, MemberUpdateProfileRequestDto memberUpdateProfileRequestDto, MultipartFile image) throws IOException {
         Member member = findVerifyMember(username);
-        validateDuplicateNickname(memberUpdateProfileRequestDto.getNickname());
+
+        log.info("member nickname ={}", member.getNickname());
+        log.info("request nickname ={}", memberUpdateProfileRequestDto.getNickname());
+        log.info("check = {}", member.getNickname().equals(memberUpdateProfileRequestDto.getNickname()));
+
+
+        if(!memberUpdateProfileRequestDto.getNickname().equals(member.getNickname())) {
+            validateDuplicateNickname(memberUpdateProfileRequestDto.getNickname());
+        }
         String profileImageUrl = null;
         if(image == null && member.getProfileImageUrl() != null){
             s3Uploader.deleteFile(member.getProfileImageUrl());
@@ -137,6 +145,8 @@ public class MemberService {
             profileImageUrl = uploadProfileImageToS3(member, image);
         }
         member.updateInfo(memberUpdateProfileRequestDto.getNickname(), profileImageUrl);
+
+        return profileImageUrl;
     }
 
     @Transactional(readOnly = false)
