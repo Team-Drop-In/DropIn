@@ -160,12 +160,7 @@ export const modifyInfo = async (data) => {
 };
 
 // 보드
-export const getLists = async (
-  searchKeyword,
-  searchType,
-  sortCondition,
-  page = 1
-) => {
+export const getLists = async (sortCondition, page = 0) => {
   try {
     const params = {
       page: page,
@@ -173,7 +168,7 @@ export const getLists = async (
       sortCondition: sortCondition,
     };
 
-    const response = await api.get("/api/post", {
+    const response = await api.get("/api/post/search", {
       params: params,
       headers: {
         Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -190,7 +185,7 @@ export const getListsWithSearch = async (
   searchKeyword,
   searchType,
   sortCondition,
-  page = 1
+  page = 0
 ) => {
   try {
     const params = {
