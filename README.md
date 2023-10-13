@@ -16,6 +16,39 @@
 
 ## 🛫 Intro
 
+## 👨‍👩‍👧‍👦 Team
+| 조현화<br>(BE) | 조지현<br>(FE) |
+| :---: | :---: |
+| <img alt="조현화" src="https://avatars.githubusercontent.com/u/104138036?v=4" height="100" width="100"> | <img alt="조지현" src="https://avatars.githubusercontent.com/u/104323906?v=4" height="100" width="100"> |
+| [@CHOHYUNHWA](https://github.com/CHOHYUNHWA) | [@chochojj](https://github.com/) |
+|<p align="left">- App 서버 기능 구현 <br/>- 배포환경 및 CI/CD 구축  |  <p align="left">- 프론트 엔드 담당 <br/> </p>|
+
+<br>
+
+### 커뮤니케이션
+- 주 3회 미팅 진행
+- 미팅 시 진행된 개발에 대한 간단한 브리핑을 진행합니다. 이슈가 없다면 빠르게 끝냅니다.
+- 자료 공유, 회의 등과 같은 모든 소통은 디스코드를 이용하고 급한 경우에만 카카오톡을 이용합니다.
+
+<br>
+
+## 📺 Demo
+
+<br>
+
+## ✨ Pages & Features
+|메인 페이지|로그인 / 회원가입 페이지|
+|:---:|:---:|
+
+<br>
+
+## ➡️ User flow
+
+## 📊ERD (Entity Relationship Diagram)
+<img width="1807" alt="DropIn_Project_ERD" src="https://github.com/Team-Drop-In/dropin/assets/104138036/d536227b-4afb-4884-9d32-9ff040cf6d9f">
+
+<br>
+
 ## 🔧 Skills
 ![DropIn App Architecture](https://github.com/Team-Drop-In/dropin/assets/104138036/6cf86cdd-6dae-4742-8d7c-3834ba4668c9)
 
