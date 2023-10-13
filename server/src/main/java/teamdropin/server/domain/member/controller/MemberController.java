@@ -144,11 +144,12 @@ public class MemberController {
     })
     @PutMapping(value = "/member",
             consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
-    public ResponseEntity<Void> updateProfile(@Parameter(hidden = true) @AuthenticationPrincipal Member member,
+    public ResponseEntity<MemberUpdateProfileResponseDto> updateProfile(@Parameter(hidden = true) @AuthenticationPrincipal Member member,
                                               @RequestPart MemberUpdateProfileRequestDto memberUpdateProfileRequestDto,
                                               @RequestPart(value = "image", required = false)MultipartFile image) throws IOException {
-        memberService.updateProfile(member.getUsername(), memberUpdateProfileRequestDto, image);
-        return new ResponseEntity<>(HttpStatus.OK);
+        String profileImageUrl = memberService.updateProfile(member.getUsername(), memberUpdateProfileRequestDto, image);
+        MemberUpdateProfileResponseDto memberUpdateProfileResponseDto = new MemberUpdateProfileResponseDto(profileImageUrl);
+        return new ResponseEntity<>(memberUpdateProfileResponseDto,HttpStatus.OK);
     }
 
     @Operation(summary = "회원 비밀번호 수정", description = "**AccessToken이 필수입니다.** <br> **USER_ROLE 권한이 필요합니다.**")
