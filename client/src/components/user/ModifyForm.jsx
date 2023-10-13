@@ -11,7 +11,13 @@ import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { duplicateNicknameApi, modifyInfo } from "../../apis/api";
 
-const ModifyForm = ({ setUsername, setUserimgUrl, setChangeInfo, data }) => {
+const ModifyForm = ({
+  username,
+  setUsername,
+  setUserimgUrl,
+  setChangeInfo,
+  data,
+}) => {
   const [nicknameValue, setNicknameValue] = useState("");
   const [isNicknameAvailable, setIsNicknameAvailable] = useState(false);
   const [isNicknameError, setIsNicknameError] = useState(true);
@@ -93,7 +99,7 @@ const ModifyForm = ({ setUsername, setUserimgUrl, setChangeInfo, data }) => {
       }
 
       const res = await modifyInfo(formData);
-      setUserimgUrl(nicknameValue);
+      setUsername(nicknameValue);
       console.log(res);
       setChangeInfo(false);
       navigate("/mypage");
@@ -123,7 +129,7 @@ const ModifyForm = ({ setUsername, setUserimgUrl, setChangeInfo, data }) => {
             setImageData={setImageData}
           />
           <Username>
-            <span>닉네임</span>
+            <span>{username}</span>
             {genderIcon}
           </Username>
         </Img>

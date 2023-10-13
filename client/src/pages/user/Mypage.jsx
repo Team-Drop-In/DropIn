@@ -37,6 +37,7 @@ const Mypage = () => {
           />
         ) : (
           <ModifyForm
+            username={username}
             setUsername={setUsername}
             setUserimgUrl={setUserimgUrl}
             setChangeInfo={setChangeInfo}
