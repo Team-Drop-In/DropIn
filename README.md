@@ -31,7 +31,7 @@
 | :---: | :---: |
 | <img alt="조현화" src="https://avatars.githubusercontent.com/u/104138036?v=4" height="100" width="100"> | <img alt="조지현" src="https://avatars.githubusercontent.com/u/104323906?v=4" height="100" width="100"> |
 | [@CHOHYUNHWA](https://github.com/CHOHYUNHWA) | [@chochojj](https://github.com/) |
-|<p align="left">- App 서버 기능 구현 <br/>- 배포환경 및 CI/CD 구축  |  <p align="left">- 프론트 엔드 담당 <br/> </p>|
+|<p align="left">- 백엔드 담당 <br/>- 배포환경 및 CI/CD 구축  |  <p align="left">- 프론트엔드 담당 <br/>- 퍼블리싱 및 디자인 </p>|
 
 <br>
 
