@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { toast } from "react-toastify";
 import { Container, Content } from "../../styles/style";
 import { COLOR } from "../../styles/theme";
 import { useNavigate } from "react-router-dom";
@@ -183,6 +184,7 @@ const Signup = () => {
   const onFormSubmit = async ({ emailAuth, passwordcheck, ...data }) => {
     try {
       await signupApi(data);
+      toast.success("회원가입 완료");
       navigate("/login");
     } catch (error) {
       console.error("로그인 실패:", error);
