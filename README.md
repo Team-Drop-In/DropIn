@@ -44,6 +44,14 @@
 
 ## ➡️ User flow
 
+## 📐 Wire Frame(Figma)
+<img width="1481" alt="DropIn - Figma" src="https://github.com/Team-Drop-In/dropin/assets/104138036/1a87ced9-0a2b-4309-9635-180d60930ea5">
+
+[Figma 바로가기](https://www.figma.com/file/ATm4Jtw4WmPZIbfyoa95Hj/Drop-In?type=design&node-id=0-1&mode=design&t=3mX0djEbiWZASwPa-0)
+
+<br>
+
+
 ## 📊ERD (Entity Relationship Diagram)
 <img width="1807" alt="DropIn_Project_ERD" src="https://github.com/Team-Drop-In/dropin/assets/104138036/d536227b-4afb-4884-9d32-9ff040cf6d9f">
 
@@ -58,6 +66,7 @@
 | Git | Github | Discord |
 | :---: | :---: | :---: |
 | <img alt="git logo" src="https://git-scm.com/images/logos/logomark-orange@2x.png" width="65" height="65" > | <img alt="github logo" src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" width="65" height="65"> | <img alt="Discord logo" src="https://assets-global.website-files.com/6257adef93867e50d84d30e2/62595384e89d1d54d704ece7_3437c10597c1526c3dbd98c737c2bcae.svg" height="65" width="65"> |
+
 ### Front-end
 | Html | JavaScript | React | Styled-<br>Components | esLint | Prettier |
 | :---: | :---: | :---: | :---: | :---: | :---: |
@@ -71,12 +80,12 @@
 <br/>
 
 
-
 ## 🌲 Git
 ### Branch
 - `main` : 서비스 운영 브랜치입니다.
 - `develop` : 개발 환경 브랜치입니다. 개별적으로 작업했던 내용을 합치고 검토합니다.
-- `feat/fe(or be)/...` : 프론트(백엔드) 세부 브랜치입니다.
+- `fe/...` : 프론트 세부 브랜치입니다.
+- `be/...` : 백엔드 세부 브랜치입니다.
 ### Commit & Pull-Request Message
 | "feat: ~ " | 새로운 기능 추가 |
 | :---: | :--- |
