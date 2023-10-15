@@ -64,8 +64,9 @@ public class SecurityConfig {
                         .successHandler(new OAuth2MemberSuccessHandler(jwtTokenizer,jwtService, authorityUtils, memberService,memberRepository)))
                 .authorizeHttpRequests()
 
-                //마이페이지 접근
+                //회원 조회 및 마이페이지
                 .antMatchers("/api/member/my-page").hasAnyRole("USER")
+//                .antMatchers("/api/member/{id}").hasAnyRole("USER")
 
                 //게시글 등록, 수정, 삭제
                 .antMatchers(HttpMethod.POST,"/api/post").hasAnyRole("USER")

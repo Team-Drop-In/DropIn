@@ -51,6 +51,7 @@ public class MailController {
     @Operation(summary = "임시 비밀번호 메일 발송 API")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "인증 이메일 발송 성공"),
+            @ApiResponse(responseCode = "400", description = "구글 로그인 회원인 경우"),
             @ApiResponse(responseCode = "404", description = "존재하지 않는 이메일인 경우")
     })
     @PostMapping("send-new-password")

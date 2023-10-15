@@ -104,7 +104,7 @@ public class MemberController {
         return new ResponseEntity<>(new SingleResponseDto(myInfoResponseDto), HttpStatus.OK);
     }
 
-    @Operation(summary = "회원 조회 API", description = "**AccessToken이 필수입니다.** <br> **USER_ROLE 권한이 필요합니다.**")
+    @Operation(summary = "회원 조회 API")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "회원 조회 성공"),
             @ApiResponse(responseCode = "401", description = "인증 권한이 없거나, 유효하지 않은 JWT일 경우"),
@@ -115,9 +115,9 @@ public class MemberController {
                                                        @PathVariable("id") Long memberId ){
         Member findMember = memberService.getMember(memberId);
         GetMemberResponseDto getMemberResponseDto = memberMapper.memberToGetMemberResponseDto(findMember);
-        getMemberResponseDto.setWritePostCount(postService.countWritePost(member.getId()));
-        getMemberResponseDto.setWriteCommentCount(commentService.countWriteComment(member.getId()));
-        List<Box> likeBoxList = boxService.findLikeBoxList(member.getId());
+        getMemberResponseDto.setWritePostCount(postService.countWritePost(findMember.getId()));
+        getMemberResponseDto.setWriteCommentCount(commentService.countWriteComment(findMember.getId()));
+        List<Box> likeBoxList = boxService.findLikeBoxList(findMember.getId());
         List<LikeBoxResponseDto> likeBoxResponseDtoList = boxMapper.boxToLikeBoxResponseDtoList(likeBoxList);
         getMemberResponseDto.setLikeBoxList(likeBoxResponseDtoList);
         return new ResponseEntity<>(new SingleResponseDto(getMemberResponseDto), HttpStatus.OK);
