@@ -110,8 +110,8 @@ const Signup = () => {
       message: "닉네임은 최대 20글자까지 가능합니다.",
     },
     pattern: {
-      value: /^[A-Za-z가-힣]+$/,
-      message: "닉네임은 한글과 영어만 사용 가능합니다.",
+      value: /^[A-Za-z가-힣0-9]+$/,
+      message: "닉네임은 한글, 영어, 숫자만 사용 가능합니다.",
     },
     validate: (value) => {
       if (/\s/.test(value)) {
@@ -265,59 +265,61 @@ const Signup = () => {
             )}
           </div>
           {isExistEmail && <ErrorMsg>{errorMsg}</ErrorMsg>}
-          <div>
-            <Controller
-              name={"emailAuth"}
-              rules={authOptions}
-              control={control}
-              render={({ field, fieldState: { error } }) => (
-                <Input
-                  id="emailAuth"
-                  label="인증번호"
-                  type="text"
-                  width={"300px"}
-                  placeholder="발송된 인증번호를 입력해주세요"
-                  errorMessage={error?.message}
-                  onChange={(e) => {
-                    field.onChange(e.target.value);
-                    setAuthcodeValue(e.target.value);
+          {isEmailAvailable && (
+            <div>
+              <Controller
+                name={"emailAuth"}
+                rules={authOptions}
+                control={control}
+                render={({ field, fieldState: { error } }) => (
+                  <Input
+                    id="emailAuth"
+                    label="인증번호"
+                    type="text"
+                    width={"300px"}
+                    placeholder="발송된 인증번호를 입력해주세요"
+                    errorMessage={error?.message}
+                    onChange={(e) => {
+                      field.onChange(e.target.value);
+                      setAuthcodeValue(e.target.value);
+                    }}
+                    value={field.value || ""}
+                  />
+                )}
+              />
+              {getAuthCode ? (
+                <Button
+                  text={checkAuthCode ? "확인완료" : "인증하기"}
+                  type="button"
+                  width={"110px"}
+                  height={"39px"}
+                  style={{
+                    marginTop: "20px",
+                    marginLeft: "5px",
+                    backgroundColor: checkAuthCode
+                      ? ` ${COLOR.main_yellow}`
+                      : ` ${COLOR.gender_pink}`,
                   }}
-                  value={field.value || ""}
+                  onClick={handleSendAuthCode}
+                />
+              ) : (
+                <Button
+                  text={"인증번호 발송"}
+                  type="button"
+                  width={"110px"}
+                  height={"39px"}
+                  style={{
+                    marginTop: "20px",
+                    marginLeft: "5px",
+                    backgroundColor: isEmailAvailable
+                      ? ` ${COLOR.main_yellow}`
+                      : ` ${COLOR.btn_grey}`,
+                  }}
+                  onClick={handleGetAuthCode}
                 />
               )}
-            />
-            {getAuthCode ? (
-              <Button
-                text={checkAuthCode ? "확인완료" : "인증하기"}
-                type="button"
-                width={"110px"}
-                height={"39px"}
-                style={{
-                  marginTop: "20px",
-                  marginLeft: "5px",
-                  backgroundColor: checkAuthCode
-                    ? ` ${COLOR.main_yellow}`
-                    : ` ${COLOR.gender_pink}`,
-                }}
-                onClick={handleSendAuthCode}
-              />
-            ) : (
-              <Button
-                text={"인증번호 발송"}
-                type="button"
-                width={"110px"}
-                height={"39px"}
-                style={{
-                  marginTop: "20px",
-                  marginLeft: "5px",
-                  backgroundColor: isEmailAvailable
-                    ? ` ${COLOR.main_yellow}`
-                    : ` ${COLOR.btn_grey}`,
-                }}
-                onClick={handleGetAuthCode}
-              />
-            )}
-          </div>
+            </div>
+          )}
           <Controller
             name={"password"}
             control={control}

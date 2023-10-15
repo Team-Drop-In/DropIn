@@ -1,14 +1,21 @@
 import styled from "styled-components";
+import { useState } from "react";
 import { Container, Content } from "../../styles/style";
 import { COLOR } from "../../styles/theme";
 import Input from "../../components/common/Input";
 import Button from "../../components/common/Button";
 import { useForm, Controller } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+import { loginState } from "../../atoms/atom";
+import { useSetRecoilState } from "recoil";
 import { changePwdApi } from "../../apis/api";
 
 const ChangePwd = () => {
   const navigate = useNavigate();
+  const setLogin = useSetRecoilState(loginState);
+  const [error, setIsError] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
+
   const {
     handleSubmit,
     control,
@@ -52,10 +59,14 @@ const ChangePwd = () => {
     try {
       console.log(data);
       await changePwdApi(data);
+      localStorage.removeItem("accessToken");
+      setLogin(false);
       navigate("/login");
     } catch (error) {
-      console.log(error);
-      console.error("비밀번호 찾기 실패:", error);
+      if (error.data.status === 403) {
+        setIsError(true);
+        setErrorMsg("비밀번호가 일치하지 않습니다");
+      }
     }
   };
 
@@ -114,6 +125,7 @@ const ChangePwd = () => {
             )}
           />
           {errors.form && <ErrorMsg>일치하는 정보가 없습니다</ErrorMsg>}
+          {error && <ErrorMsg>{errorMsg}</ErrorMsg>}
           <Button
             type="submit"
             text={"확인"}
@@ -167,7 +179,6 @@ const Form = styled.form`
 `;
 
 const ErrorMsg = styled.div`
-  color: ${COLOR.main_yellow};
-  font-size: 12px;
+  color: ${COLOR.btn_grey};
   margin-top: 4px;
 `;

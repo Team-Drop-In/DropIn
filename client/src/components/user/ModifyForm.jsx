@@ -52,8 +52,8 @@ const ModifyForm = ({
       message: "닉네임은 최대 20글자까지 가능합니다.",
     },
     pattern: {
-      value: /^[A-Za-z가-힣]+$/,
-      message: "닉네임은 한글과 영어만 사용 가능합니다.",
+      value: /^[A-Za-z가-힣0-9]+$/,
+      message: "닉네임은 한글, 영어, 숫자만 사용 가능합니다.",
     },
     validate: (value) => {
       if (/\s/.test(value)) {

@@ -7,11 +7,18 @@ import FindMessage from "../../components/user/FindMessage";
 import { useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { findPwdApi } from "../../apis/api";
+import { useNavigate } from "react-router-dom";
+import { loginState } from "../../atoms/atom";
+import { useSetRecoilState } from "recoil";
 
 const findword = "임시 비밀번호";
 
 const FindPwd = () => {
   const [findpwd, setFindPwd] = useState(false);
+  const navigate = useNavigate();
+  const setLogin = useSetRecoilState(loginState);
+  const [error, setIsError] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
 
   const {
     handleSubmit,
@@ -46,10 +53,15 @@ const FindPwd = () => {
   const onFormSubmit = async (data) => {
     try {
       await findPwdApi(data);
+      localStorage.removeItem("accessToken");
+      setLogin(false);
+      navigate("/login");
       setFindPwd(true);
     } catch (error) {
-      console.log(error);
-      console.error("비밀번호 찾기 실패:", error);
+      if (error.data.status === 404) {
+        setIsError(true);
+        setErrorMsg("가입정보를 찾을 수 없습니다");
+      }
     }
   };
 
@@ -96,6 +108,7 @@ const FindPwd = () => {
               )}
             />
             {errors.form && <ErrorMsg>일치하는 정보가 없습니다</ErrorMsg>}
+            {error && <ErrorMsg>{errorMsg}</ErrorMsg>}
             <Button
               type="submit"
               text={"확인"}
@@ -152,7 +165,6 @@ const Form = styled.form`
 `;
 
 const ErrorMsg = styled.div`
-  color: ${COLOR.main_yellow};
-  font-size: 12px;
+  color: ${COLOR.btn_grey};
   margin-top: 4px;
 `;
