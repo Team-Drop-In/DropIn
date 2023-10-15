@@ -4,7 +4,7 @@
 
 </div>
 </br>
-<h3 align="center"> 크로스핏 커뮤니티 DropIn </h3> 
+<h3 align="center">🔥 크로스핏터들을 위한 커뮤니티 DropIn </h3> 
 
 - **팀 명 :**  Team DropIn
 - **프로젝트 명 :** DropIn(드랍인)
@@ -14,7 +14,17 @@
 - **프로젝트 소개서 :** [💁🏻 DropIn 프로젝트 소개서](https://dropinproject.netlify.app/)
 - **배포 링크 :** [🏋️‍♀️ https://dropinproject.netlify.app/](https://dropinproject.netlify.app/)
 
+<br>
+
 ## 🛫 Intro
+> 🏋️‍♀️ 크로스핏터들을 위한 커뮤니티 서비스
+
+- 🤝크로스핏터들과 소통하며, 함께 운동할 파트너를 구하고, 정보들을 교환하세요.
+- 🔎당신에게 딱 맞는 박스를 찾아보세요.
+- ✍️오늘의 Wod를 기록하고 얼마나 성장했는지 확인하세요.
+- 🔥크로스핏의 Hero Wod를 확인하고, 수행 후 다른 크로스핏터들과 경쟁하세요.
+
+<br>
 
 ## 👨‍👩‍👧‍👦 Team
 | 조현화<br>(BE) | 조지현<br>(FE) |
@@ -32,17 +42,15 @@
 
 <br>
 
-## 📺 Demo
-
-<br>
-
 ## ✨ Pages & Features
-|메인 페이지|로그인 / 회원가입 페이지|
+|메인 페이지1|메인 페이지2|
 |:---:|:---:|
+|<img width="612" alt="image" src="https://github.com/Team-Drop-In/dropin/assets/104138036/a1243ce5-dd8c-406b-a79b-fad00e360f9e">|<img width="612" alt="image" src="https://github.com/Team-Drop-In/dropin/assets/104138036/a30ba481-05d2-4430-be2a-3fd6d9977c24">|
+|로그인 페이지|게시판 등록|
+|<img width="612" alt="image" src="https://github.com/Team-Drop-In/dropin/assets/104138036/58e1bf28-c9fe-4a82-957e-49c53f784a80">
+| |
 
 <br>
-
-## ➡️ User flow
 
 ## 📐 Wire Frame(Figma)
 <img width="1481" alt="DropIn - Figma" src="https://github.com/Team-Drop-In/dropin/assets/104138036/1a87ced9-0a2b-4309-9635-180d60930ea5">
@@ -50,6 +58,13 @@
 [Figma 바로가기](https://www.figma.com/file/ATm4Jtw4WmPZIbfyoa95Hj/Drop-In?type=design&node-id=0-1&mode=design&t=3mX0djEbiWZASwPa-0)
 
 <br>
+
+## API Document
+|메인 페이지1|메인 페이지2|
+|:---:|:---:|
+| ||
+| ||
+| ||
 
 
 ## 📊ERD (Entity Relationship Diagram)
@@ -60,7 +75,7 @@
 ## 🔧 Skills
 ![DropIn App Architecture](https://github.com/Team-Drop-In/dropin/assets/104138036/6cf86cdd-6dae-4742-8d7c-3834ba4668c9)
 
-
+<br>
 
 ### Tools
 | Git | Github | Discord |
@@ -86,6 +101,15 @@
 - `develop` : 개발 환경 브랜치입니다. 개별적으로 작업했던 내용을 합치고 검토합니다.
 - `fe/...` : 프론트 세부 브랜치입니다.
 - `be/...` : 백엔드 세부 브랜치입니다.
+
+### Git 저장소 이용법
+로컬에서 작업 후 개인 branch Push
+
+1. `git checkout 브랜치`
+2. `git add 파일/디렉토리 경로`
+3. `git commit -m "message"`
+4. `git push origin 브랜치"`
+  
 ### Commit & Pull-Request Message
 | "feat: ~ " | 새로운 기능 추가 |
 | :---: | :--- |
@@ -93,3 +117,5 @@
 | "design: ~ " | css와 같은 UI 수정 |
 | "docs: ~ " | 문서 수정 (ex. README.md) |
 | "remove: ~ " | 파일을 삭제만 한 경우 |
+| "test: ~ " | 테스트 및 테스트 코드 작성 시 |
+
