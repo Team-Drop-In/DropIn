@@ -1,6 +1,7 @@
 package teamdropin.server.mail.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -22,6 +23,7 @@ import teamdropin.server.redis.util.RedisUtil;
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
+@Slf4j
 public class MailService {
 
     private final MemberRepository memberRepository;
@@ -60,8 +62,13 @@ public class MailService {
     @Transactional(readOnly = false)
     public ResetPasswordEmailResponse createResetPasswordEmail(FindPasswordRequest findPasswordRequest){
         Member member = memberService.findVerifyMember(findPasswordRequest.getUsername());
+        log.info("oauth Provider = {}", member.getOauthProvider());
+
         if(!findPasswordRequest.getName().equals(member.getName())){
             throw new BusinessLogicException(ExceptionCode.USER_NOT_FOUND);
+        }
+        if(findPasswordRequest.getName().equals(member.getName()) && member.getOauthProvider().equals("google")){
+            throw new BusinessLogicException(ExceptionCode.BAD_REQUEST);
         }
         String createdPassword = createPassword();
         String encodedPassword = passwordEncoder.encode(createdPassword);

@@ -46,7 +46,8 @@ public enum ExceptionCode {
     WRONG_IMAGE_FORMAT(415, "Image format is wrong" ),
     UPLOAD_IMAGE_LIMIT_EXCEEDED(400, "Maximum number of images exceeded"),
     BOX_IMAGE_NOT_FOUND(404, "BoxImage not found" ),
-    REVIEW_NOT_FOUND(404, "Review not found"  );
+    REVIEW_NOT_FOUND(404, "Review not found"  ),
+    BAD_REQUEST(400, "User Info is Google Authorized");
     @Getter
     private final int status;
     @Getter
