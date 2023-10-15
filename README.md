@@ -59,12 +59,16 @@
 
 <br>
 
-## API Document
-|메인 페이지1|메인 페이지2|
-|:---:|:---:|
-| ||
-| ||
-| ||
+## 📄API Document
+|Member | Post,Comment|
+|:---:|:---: |
+|![6F9F485B-F49F-4A33-B72C-66D2AF946452_1_201_a](https://github.com/Team-Drop-In/dropin/assets/104138036/4a134d42-f073-412d-99f8-65c202a04ccd) | ![6F9F485B-F49F-4A33-B72C-66D2AF946452_1_201_a](https://github.com/Team-Drop-In/dropin/assets/104138036/c2cad85b-cc20-4765-8181-9216606da535)| 
+|Box, Review|Like, Mail |
+|![6F9F485B-F49F-4A33-B72C-66D2AF946452_1_201_a](https://github.com/Team-Drop-In/dropin/assets/104138036/ea53f10c-e5c2-413b-bb4c-40265778904f)| ![6F9F485B-F49F-4A33-B72C-66D2AF946452_1_201_a](https://github.com/Team-Drop-In/dropin/assets/104138036/b346404d-0360-45eb-a5c5-b74967bd29f4)| 
+
+[API 명세서 바로가기](https://projectdropin.store/swagger-ui/index.html#/)
+
+<br>
 
 
 ## 📊ERD (Entity Relationship Diagram)
