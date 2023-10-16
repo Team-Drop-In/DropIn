@@ -31,7 +31,7 @@
 |:---:| :---: | :---: |
 |Profile| <img alt="조현화" src="https://avatars.githubusercontent.com/u/104138036?v=4" height="100" width="100"> | <img alt="조지현" src="https://avatars.githubusercontent.com/u/104323906?v=4" height="100" width="100"> |
 |Gihbub| [@CHOHYUNHWA](https://github.com/CHOHYUNHWA) | [@chochojj](https://github.com/) |
-|Role|- 백엔드 담당 <br/>- 각 도메인 기능 구현 <br>- 서버 아키텍쳐 설계 <br>- ERD 설계 <br/>- 백엔드 배포 환경 구축 <br>- GihubAction CI/CD 구축 |- 프론트엔드 담당 <br/>- 퍼블리싱 및 디자인 <br/>- 프론트 엔드 배포|
+|Role|- 백엔드 담당 <br/>- 각 도메인 기능 구현 <br>- 서버 아키텍쳐 설계 <br>- ERD 설계 <br/>- 백엔드 배포 환경 구축 <br>- GihubAction CI/CD 구축 |- 프론트엔드 담당 <br/>- 각 도메인별 페이지 구현 <br/>- 와이어프레임 작성 <br/>- 퍼블리싱 및 디자인 <br/>- 프론트 엔드 배포|
 
 <br>
 
