@@ -77,7 +77,6 @@
 
 <br>
 
-
 ## 📊ERD (Entity Relationship Diagram)
 <img width="1807" alt="DropIn_Project_ERD" src="https://github.com/Team-Drop-In/dropin/assets/104138036/d536227b-4afb-4884-9d32-9ff040cf6d9f">
 
@@ -85,6 +84,7 @@
 
 ## 🔧 Skills
 ![DropIn App Architecture](https://github.com/Team-Drop-In/dropin/assets/104138036/6cf86cdd-6dae-4742-8d7c-3834ba4668c9)
+
 
 <br>
 
@@ -121,6 +121,7 @@
 3. `git commit -m "message"`
 4. `git push origin 브랜치"`
   
+
 ### Commit & Pull-Request Message
 | "feat: ~ " | 새로운 기능 추가 |
 | :---: | :--- |
