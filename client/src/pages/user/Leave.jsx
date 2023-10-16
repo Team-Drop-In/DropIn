@@ -43,6 +43,7 @@ const Leave = () => {
     try {
       await leaveMemberApi();
       localStorage.removeItem("accessToken");
+      localStorage.removeItem("accessTokenExpiration");
       setLogin(false);
       navigate("/leaveconfirm");
     } catch (error) {

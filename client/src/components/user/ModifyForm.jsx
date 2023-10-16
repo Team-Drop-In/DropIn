@@ -42,7 +42,7 @@ const ModifyForm = ({
     );
 
   const nickValidationOptions = {
-    required: "닉네임을 입력해주세요.",
+    // required: "닉네임을 입력해주세요.",
     minLength: {
       value: 2,
       message: "닉네임은 최소 2글자 이상이어야 합니다.",
@@ -81,9 +81,13 @@ const ModifyForm = ({
   };
 
   const onFormSubmit = async () => {
-    let myInfo = {
-      nickname: nicknameValue,
-    };
+    let myInfo = {};
+
+    if (nicknameValue) {
+      myInfo.nickname = nicknameValue;
+    } else {
+      myInfo.nickname = username;
+    }
 
     try {
       const formData = new FormData();
@@ -100,7 +104,7 @@ const ModifyForm = ({
 
       const res = await modifyInfo(formData);
       setUsername(nicknameValue);
-      console.log(res);
+      setUserimgUrl(res.profileImageUrl);
       setChangeInfo(false);
       navigate("/mypage");
     } catch (error) {
@@ -113,10 +117,11 @@ const ModifyForm = ({
       nicknameValue.trim().length >= nickValidationOptions.minLength.value &&
       nicknameValue.trim().length <= nickValidationOptions.maxLength.value &&
       nickValidationOptions.pattern.value.test(nicknameValue) &&
-      !/\s/.test(nicknameValue);
+      !/\s/.test(nicknameValue) &&
+      nicknameValue !== username; // Check if nicknameValue is different from username
 
     setIsNicknameError(!isNicknameValid);
-  }, [nicknameValue]);
+  }, [nicknameValue, username]);
 
   return (
     <>
@@ -161,7 +166,7 @@ const ModifyForm = ({
                     setNicknameValue(e.target.value);
                     setIsNicknameAvailable(false);
                   }}
-                  value={field.value || ""}
+                  value={field.value === undefined ? username : field.value}
                 />
               )}
             />

@@ -54,6 +54,7 @@ const FindPwd = () => {
     try {
       await findPwdApi(data);
       localStorage.removeItem("accessToken");
+      localStorage.removeItem("accessTokenExpiration");
       setLogin(false);
       navigate("/login");
       setFindPwd(true);

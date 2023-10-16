@@ -43,18 +43,22 @@ const MyInfo = ({ username, userimgUrl, setChangeInfo, data }) => {
           </div>
           <div>
             <Label>작성한 게시글수</Label>
-            <span>5개</span>
+            <span>{data.writePostCount}개</span>
           </div>
           <div>
             <Label>작성한 댓글수</Label>
-            <span>5개</span>
+            <span>{data.writeCommentCount}개</span>
           </div>
           <div>
             <Label>좋아요한 박스 목록</Label>
             <BoxList>
-              <li>온오프짐</li>
-              <li>짐박스</li>
-              <li>피트니스</li>
+              {data.likeBoxList && data.likeBoxList.length > 0 ? (
+                data.likeBoxList.map((item, index) => (
+                  <li key={index}>{item}</li>
+                ))
+              ) : (
+                <p>박스 목록이 없습니다</p>
+              )}
             </BoxList>
           </div>
         </Info>

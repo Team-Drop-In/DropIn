@@ -14,11 +14,3 @@ export const ModalState = atom({
   key: "ModalState",
   default: false,
 });
-
-export const toastState = atom({
-  key: "toastState",
-  default: {
-    type: "remove",
-    message: "",
-  },
-});

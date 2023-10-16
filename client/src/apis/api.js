@@ -25,6 +25,12 @@ export const loginApi = async (data) => {
     const res = await api.post("/api/login", data);
     const accessToken = res.headers["authorization"];
     localStorage.setItem("accessToken", accessToken);
+    //만료시간 설정
+    const expirationTime = new Date();
+    expirationTime.setMinutes(expirationTime.getMinutes() + 60);
+
+    localStorage.setItem("accessToken", accessToken);
+    localStorage.setItem("accessTokenExpiration", expirationTime);
     axios.defaults.headers["Authorization"] = accessToken;
   } catch (error) {
     throw error.response;
@@ -170,9 +176,6 @@ export const getLists = async (sortCondition, page = 0) => {
 
     const response = await api.get("/api/post/search", {
       params: params,
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-      },
     });
 
     return response.data;
@@ -198,9 +201,6 @@ export const getListsWithSearch = async (
 
     const response = await api.get("/api/post/search", {
       params: params,
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-      },
     });
 
     return response.data;

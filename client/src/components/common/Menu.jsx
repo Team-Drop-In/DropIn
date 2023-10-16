@@ -18,6 +18,7 @@ const Menu = () => {
   const handleLogout = () => {
     localStorage.removeItem("accessToken");
     localStorage.removeItem("refreshToken");
+    localStorage.removeItem("accessTokenExpiration");
     setLogin(false);
     setModal(false);
     navigate("/");

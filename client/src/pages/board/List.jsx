@@ -6,7 +6,7 @@ import { FiSearch, FiThumbsUp } from "react-icons/fi";
 import { BsEye, BsChevronDown, BsChevronUp } from "react-icons/bs";
 import { GoComment } from "react-icons/go";
 import Pagination from "../../components/board/Pagination";
-import { getLists } from "../../apis/api";
+import { getLists, getListsWithSearch } from "../../apis/api";
 import { Link } from "react-router-dom";
 
 const List = () => {
@@ -16,7 +16,7 @@ const List = () => {
   const [searchWord, setSearchWord] = useState("");
   const [searchSort, setSearchSort] = useState("all");
   const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(10);
+  const [totalPages, setTotalPages] = useState(1);
   const [boardData, setBoardData] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -44,6 +44,24 @@ const List = () => {
     }
   };
 
+  const formatDate = (createdDate) => {
+    const currentDate = new Date();
+    const date = new Date(createdDate);
+    const timeDifference = currentDate - date;
+
+    if (timeDifference > 24 * 60 * 60 * 1000) {
+      // If older than 24 hours, display in YYYY-MM-DD format
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, "0");
+      const day = String(date.getDate()).padStart(2, "0");
+      return `${year}-${month}-${day}`;
+    } else {
+      // If within 24 hours, display in X hours ago format
+      const hoursAgo = Math.floor(timeDifference / (60 * 60 * 1000));
+      return `${hoursAgo}시간 전`;
+    }
+  };
+
   const handlePaginationClick = (pageNumber) => {
     if (pageNumber === previousPage.current) {
       return;
@@ -60,11 +78,11 @@ const List = () => {
     const fetchListData = async () => {
       try {
         const sortCondition = orderBy;
-        const page = 0;
+        const page = currentPage - 1;
 
-        const data = await getLists(sortCondition, page);
-        setBoardData(data);
-        console.log(data);
+        const res = await getLists(sortCondition, page);
+        setBoardData(res.data);
+        setTotalPages(res.pageInfo.totalPages);
         setLoading(false);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -72,7 +90,7 @@ const List = () => {
     };
 
     fetchListData();
-  }, [orderBy]);
+  }, [orderBy, currentPage]);
 
   return (
     <Container>
@@ -180,43 +198,43 @@ const List = () => {
           </Search>
         </Option>
         <BoardList>
-          <Link to="/board/1">
-            <ListItem>
-              <Info>
-                <NameAndTime>
-                  <Imgbox>
-                    <img src="http://via.placeholder.com/20x20" alt="" />
-                  </Imgbox>
-                  닉네임
-                  <p>시간</p>
-                </NameAndTime>
-                <span>
-                  <p>
-                    <BsEye />
-                    조회수
-                  </p>
-                  <p>
-                    <GoComment />
-                    댓글
-                  </p>
-                </span>
-              </Info>
-              <TitleAndTag>
-                <Title>제목</Title>
-                <span>
-                  <Tag>
-                    <p>태그</p>
-                    <p>태그</p>
-                    <p>태그</p>
-                  </Tag>
-                  <p>
-                    <FiThumbsUp />
-                    추천
-                  </p>
-                </span>
-              </TitleAndTag>
-            </ListItem>
-          </Link>
+          {boardData.map((data) => (
+            <Link key={data.id} to={`/board/${data.id}`}>
+              <ListItem>
+                <Info>
+                  <NameAndTime>
+                    <Imgbox>
+                      <img src="http://via.placeholder.com/20x20" alt="" />
+                    </Imgbox>
+                    {data.nickname}
+                    <p>{formatDate(data.createdDate)}</p>
+                  </NameAndTime>
+                  <span>
+                    <p>
+                      <BsEye />
+                      {data.viewCount}
+                    </p>
+                    <p>
+                      <GoComment />
+                      {data.commentCount}
+                    </p>
+                  </span>
+                </Info>
+                <TitleAndTag>
+                  <Title>{data.title}</Title>
+                  <span>
+                    <Tag>
+                      <p>{data.category}</p>
+                    </Tag>
+                    <p>
+                      <FiThumbsUp />
+                      {data.likeCount}
+                    </p>
+                  </span>
+                </TitleAndTag>
+              </ListItem>
+            </Link>
+          ))}
         </BoardList>
         <WriteBtn>
           <Link to="/board/write">작성</Link>

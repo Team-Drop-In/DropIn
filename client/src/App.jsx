@@ -1,12 +1,14 @@
-import { Suspense, lazy } from "react";
+import { Suspense, lazy, useEffect } from "react";
 import { Routes, Route } from "react-router-dom";
 import styled from "styled-components";
 import "react-toastify/dist/ReactToastify.css";
+import { toast } from "react-toastify";
 import { ToastContainer } from "react-toastify";
+import { isAccessTokenExpired, handleTokenExpiration } from "./util/auth";
 import Header from "./components/common/Header";
 import Menu from "./components/common/Menu";
-import { ModalState } from "./atoms/atom";
-import { useRecoilValue } from "recoil";
+import { ModalState, loginState } from "./atoms/atom";
+import { useRecoilValue, useRecoilState } from "recoil";
 import TokenPage from "./controller/Token";
 const Main = lazy(() => import("./pages/Main"));
 const Login = lazy(() => import("./pages/user/Login"));
@@ -25,6 +27,23 @@ const ModifyForm = lazy(() => import("./pages/board/ModifyForm"));
 
 const App = () => {
   const isOpenModal = useRecoilValue(ModalState);
+  const [isLogin, setLogin] = useRecoilState(loginState);
+
+  useEffect(() => {
+    if (isLogin) {
+      const intervalId = setInterval(() => {
+        if (isAccessTokenExpired()) {
+          setLogin(false);
+          handleTokenExpiration();
+          toast.warning("인증기간이 만료되었습니다");
+          console.log("만료됨");
+        }
+        console.log("만료안됨");
+      }, 60000);
+
+      return () => clearInterval(intervalId);
+    }
+  }, [isLogin]);
 
   return (
     <div>
