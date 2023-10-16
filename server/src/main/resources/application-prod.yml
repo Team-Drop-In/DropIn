@@ -1,0 +1,55 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url:
+    username:
+    password:
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    hibernate:
+      ddl-auto: create
+    show-sql: true
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            clientId:
+            clientSecret:
+            scope:
+            redirectUrl:
+
+  jwt:
+    key:
+    access-token-expiration-minutes:
+    refresh-token-expiration-minutes:
+  mail:
+    host: smtp.gmail.com
+    port: 465
+    username:
+    password:
+    properties:
+      mail.smtp.auth: true
+      mail.smtp.ssl.enable: true
+      mail.smtp.ssl.trust: smtp.gmail.com
+  redis:
+    host:
+    port:
+cloud:
+  aws:
+    imageS3:
+      bucket:
+      bucketUrl:
+      credentials:
+        accessKey:
+        secretKey:
+      region:
+        static:
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    enabled: true
+    tagsSorter: alpha
+    operations-sorter: method
+    display-request-duration: true
