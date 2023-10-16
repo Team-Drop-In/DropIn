@@ -21,17 +21,17 @@
 
 - 🤝크로스핏터들과 소통하며, 함께 운동할 파트너를 구하고, 정보들을 교환하세요.
 - 🔎당신에게 딱 맞는 박스를 찾아보세요.
-- ✍️오늘의 Wod를 기록하고 얼마나 성장했는지 확인하세요.
-- 🔥크로스핏의 Hero Wod를 확인하고, 수행 후 다른 크로스핏터들과 경쟁하세요.
+- ✍️오늘의 Wod를 기록하고 얼마나 성장했는지 확인하세요. (개발 준비중)
+- 🔥크로스핏의 Hero Wod를 확인하고, 수행 후 다른 크로스핏터들과 경쟁하세요. (개발 준비중)
 
 <br>
 
 ## 👨‍👩‍👧‍👦 Team
-| 조현화<br>(BE) | 조지현<br>(FE) |
-| :---: | :---: |
-| <img alt="조현화" src="https://avatars.githubusercontent.com/u/104138036?v=4" height="100" width="100"> | <img alt="조지현" src="https://avatars.githubusercontent.com/u/104323906?v=4" height="100" width="100"> |
-| [@CHOHYUNHWA](https://github.com/CHOHYUNHWA) | [@chochojj](https://github.com/) |
-|<p align="left">- 백엔드 담당 <br/>- 배포환경 및 CI/CD 구축  |  <p align="left">- 프론트엔드 담당 <br/>- 퍼블리싱 및 디자인 </p>|
+| Name | 조현화<br>(BE) | 조지현<br>(FE) |
+|:---:| :---: | :---: |
+|Profile| <img alt="조현화" src="https://avatars.githubusercontent.com/u/104138036?v=4" height="100" width="100"> | <img alt="조지현" src="https://avatars.githubusercontent.com/u/104323906?v=4" height="100" width="100"> |
+|Gihbub| [@CHOHYUNHWA](https://github.com/CHOHYUNHWA) | [@chochojj](https://github.com/) |
+|Role|- 백엔드 담당 <br/>- 각 도메인 기능 구현 <br>- 서버 아키텍쳐 설계 <br>- ERD 설계 <br/>- 백엔드 배포 환경 구축 <br>- GihubAction CI/CD 구축 |- 프론트엔드 담당 <br/>- 퍼블리싱 및 디자인 <br/>- 프론트 엔드 배포|
 
 <br>
 
