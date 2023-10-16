@@ -45,10 +45,17 @@
 ## ✨ Pages & Features
 |메인 페이지1|메인 페이지2|
 |:---:|:---:|
-|<img width="612" alt="image" src="https://github.com/Team-Drop-In/dropin/assets/104138036/a1243ce5-dd8c-406b-a79b-fad00e360f9e">|<img width="612" alt="image" src="https://github.com/Team-Drop-In/dropin/assets/104138036/a30ba481-05d2-4430-be2a-3fd6d9977c24">|
-|로그인 페이지|게시판 등록|
-|<img width="612" alt="image" src="https://github.com/Team-Drop-In/dropin/assets/104138036/58e1bf28-c9fe-4a82-957e-49c53f784a80">
-| |
+|<img width="555" alt="image" src="https://github.com/Team-Drop-In/dropin/assets/104138036/32d16f78-ed7f-4a05-9d09-02dcfee0e95b">|<img width="555" alt="image" src="https://github.com/Team-Drop-In/dropin/assets/104138036/1a157ba6-8867-46c7-bd07-64dac8028265">|
+|회원가입 페이지|로그인 페이지|
+|<img width="538" alt="image" src="https://github.com/Team-Drop-In/dropin/assets/104138036/81fe7c57-7e0e-49b1-b772-5612557e748c">|<img width="540" alt="image" src="https://github.com/Team-Drop-In/dropin/assets/104138036/449ff6b3-6ab9-4159-97f4-621b4541b2f0">|
+|비밀번호 찾기 페이지|회원정보 페이지|
+|<img width="731" alt="image" src="https://github.com/Team-Drop-In/dropin/assets/104138036/57edb87c-a159-4547-9400-ef05121c4bd2">|<img width="730" alt="image" src="https://github.com/Team-Drop-In/dropin/assets/104138036/ab545465-6d31-4b55-8512-b9c340aeefa0">|
+|회원정보 수정 페이지|비밀번호 변경 페이지|
+|<img width="818" alt="image" src="https://github.com/Team-Drop-In/dropin/assets/104138036/2eedfe52-d0eb-4308-8296-7c3d0aaaecb6">|<img width="818" alt="image" src="https://github.com/Team-Drop-In/dropin/assets/104138036/eaf0cfac-e71f-4737-957a-cda704f7a668">|
+|게시판리스트 페이지|게시판 조회 페이지|
+|<img width="740" alt="image" src="https://github.com/Team-Drop-In/dropin/assets/104138036/24af5187-8cda-422c-87e0-bcc249542eb3">|<img width="738" alt="image" src="https://github.com/Team-Drop-In/dropin/assets/104138036/f5a2afdb-8a56-49f8-89fe-f96c1ee7bf70">|
+|게시판 등록 페이지|게시판 수정 페이지|
+|<img width="734" alt="image" src="https://github.com/Team-Drop-In/dropin/assets/104138036/66c1950e-1faf-4021-aa9c-8dd0c5fa86f7">|<img width="736" alt="image" src="https://github.com/Team-Drop-In/dropin/assets/104138036/5feb068a-c2b5-4bfd-90bc-0427fa2e907a">|
 
 <br>
 
