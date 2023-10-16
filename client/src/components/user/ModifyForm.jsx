@@ -81,13 +81,11 @@ const ModifyForm = ({
   };
 
   const onFormSubmit = async () => {
-    let myInfo = {};
+    const selectedNickname = nicknameValue || username;
 
-    if (nicknameValue) {
-      myInfo.nickname = nicknameValue;
-    } else {
-      myInfo.nickname = username;
-    }
+    let myInfo = {
+      nickname: selectedNickname,
+    };
 
     try {
       const formData = new FormData();
@@ -103,7 +101,7 @@ const ModifyForm = ({
       }
 
       const res = await modifyInfo(formData);
-      setUsername(nicknameValue);
+      setUsername(selectedNickname);
       setUserimgUrl(res.profileImageUrl);
       setChangeInfo(false);
       navigate("/mypage");
