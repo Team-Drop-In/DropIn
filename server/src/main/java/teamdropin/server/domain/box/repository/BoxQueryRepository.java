@@ -1,5 +1,6 @@
 package teamdropin.server.domain.box.repository;
 
+import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Projections;
@@ -23,6 +24,7 @@ import teamdropin.server.domain.box.entity.BoxImage;
 import teamdropin.server.domain.box.entity.BoxTag;
 import teamdropin.server.domain.like.entity.Like;
 import teamdropin.server.domain.like.entity.LikeCategory;
+import teamdropin.server.domain.member.dto.GetWriterResponseDto;
 import teamdropin.server.domain.member.entity.Member;
 import teamdropin.server.domain.review.dto.ReviewResponseDto;
 import teamdropin.server.domain.review.entity.Review;
@@ -200,6 +202,12 @@ public class BoxQueryRepository {
                 .where(boxTag.box.id.eq(boxId))
                 .fetch();
 
+        Expression<GetWriterResponseDto> reviewWriter = Projections.constructor(
+                GetWriterResponseDto.class,
+                review.member.id,
+                review.member.nickname
+        );
+
         List<BoxTagResponseDto> boxTagResponseDtoList = getTagList(boxTags);
 
 
@@ -214,11 +222,11 @@ public class BoxQueryRepository {
                 .where(boxImage.box.id.eq(boxId))
                 .fetch();
 
-        List<ReviewResponseDto > reviewResponseDtoList = queryFactory
+        List<ReviewResponseDto> reviewResponseDtoList = queryFactory
                 .select(Projections.constructor(
                         ReviewResponseDto.class,
                         review.id,
-                        review.member.nickname,
+                        reviewWriter,
                         review.body,
                         reviewLikeCount,
                         checkReviewLike(member),

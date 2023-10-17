@@ -2,6 +2,7 @@ package teamdropin.server.domain.post.dto;
 
 import lombok.Builder;
 import lombok.Data;
+import teamdropin.server.domain.member.dto.GetWriterResponseDto;
 import teamdropin.server.domain.post.entity.Category;
 
 import java.time.LocalDateTime;
@@ -16,7 +17,7 @@ public class GetAllPostResponseDto {
     private long viewCount;
     private Category category;
     private long likeCount;
-    private String nickname;
+    private GetWriterResponseDto writer;
     private long commentCount;
     private LocalDateTime createdDate;
     private String profileImageUrl;

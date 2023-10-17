@@ -113,7 +113,6 @@ public class PostController {
                     "<br> searchKeyword : 검색어" +
                     "<br> searchType : 검색조건 (all, post-title, post-body, nickname)" +
                     "<br> sortCondition : 정렬조건 (latest, like-count, view-count)")
-
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "게시글 검색 및 전체 조회 성공 "),
             @ApiResponse(responseCode = "401", description = "인증 권한이 없거나, 유효하지 않은 JWT일 경우"),

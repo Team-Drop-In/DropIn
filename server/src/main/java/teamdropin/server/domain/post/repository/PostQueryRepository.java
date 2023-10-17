@@ -1,11 +1,11 @@
 package teamdropin.server.domain.post.repository;
 
+import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.Expressions;
-import com.querydsl.core.types.dsl.NumberExpression;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.JPQLQuery;
 import com.querydsl.jpa.impl.JPAQuery;
@@ -16,13 +16,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.stereotype.Repository;
 import teamdropin.server.domain.comment.dto.CommentResponseDto;
-import teamdropin.server.domain.comment.entity.Comment;
-import teamdropin.server.domain.comment.entity.QComment;
+import teamdropin.server.domain.member.dto.GetWriterResponseDto;
 import teamdropin.server.domain.member.entity.Member;
 import teamdropin.server.domain.post.dto.GetPostResponseDto;
 import teamdropin.server.domain.post.dto.PostSearchCondition;
 import teamdropin.server.domain.post.dto.PostSearchDto;
-import teamdropin.server.domain.post.dto.QPostSearchDto;
 
 
 import javax.persistence.EntityManager;
@@ -47,19 +45,27 @@ public class PostQueryRepository {
 
     public Page<PostSearchDto> search(PostSearchCondition condition, Pageable pageable) {
 
+        Expression<GetWriterResponseDto> writer = Projections.constructor(
+                GetWriterResponseDto.class,
+                post.member.id,
+                post.member.nickname
+        );
+
         List<PostSearchDto> content = queryFactory
-                .select(new QPostSearchDto(
-                        post.id.as("postId"),
+                .select(Projections.constructor(
+                        PostSearchDto.class,
+                        post.id,
                         post.title,
                         post.body,
                         post.viewCount,
                         post.category,
                         post.postLikes.size(),
-                        post.member.nickname,
+                        writer,
                         post.comments.size(),
                         post.createdDate,
-                        post.member.profileImageUrl)
-                ).from(post)
+                        post.member.profileImageUrl
+                        ))
+                .from(post)
                 .where(searchEq(condition))
                 .orderBy(postSort(condition), post.createdDate.desc())
                 .groupBy(post)
@@ -136,12 +142,25 @@ public class PostQueryRepository {
                         .from(like)
                         .where(like.comment.id.eq(comment.id));
 
+        Expression<GetWriterResponseDto> postWriter = Projections.constructor(
+                GetWriterResponseDto.class,
+                post.member.id,
+                post.member.nickname
+        );
+
+        Expression<GetWriterResponseDto> commentWriter = Projections.constructor(
+                GetWriterResponseDto.class,
+                comment.member.id,
+                comment.member.nickname
+        );
+
+
 
         List<CommentResponseDto> commentResponseDtos = queryFactory
                 .select(Projections.constructor(
                         CommentResponseDto.class,
                         comment.id,
-                        comment.member.nickname,
+                        commentWriter,
                         comment.body,
                         checkCommentLike(member),
                         checkCommentWriter(member),
@@ -161,7 +180,7 @@ public class PostQueryRepository {
                         post.body,
                         post.viewCount ,
                         post.category,
-                        post.member.nickname,
+                        postWriter,
                         postLikeCount,
                         checkPostLike(member),
                         checkPostWriter(member),

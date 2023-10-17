@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import teamdropin.server.domain.member.dto.GetWriterResponseDto;
 
 import java.time.LocalDateTime;
 
@@ -13,16 +14,16 @@ import java.time.LocalDateTime;
 public class ReviewResponseDto {
 
     private Long id;
-    private String nickname;
+    private GetWriterResponseDto writer;
     private String body;
     private long likeCount;
     private boolean checkLike;
     private boolean checkWriter;
     private LocalDateTime createdAt;
 
-    public ReviewResponseDto(Long id, String nickname, String body, long likeCount, boolean checkLike, boolean checkWriter, LocalDateTime createdAt) {
+    public ReviewResponseDto(Long id, GetWriterResponseDto writer, String body, long likeCount, boolean checkLike, boolean checkWriter, LocalDateTime createdAt) {
         this.id = id;
-        this.nickname = nickname;
+        this.writer = writer;
         this.body = body;
         this.likeCount = likeCount;
         this.checkLike = checkLike;
