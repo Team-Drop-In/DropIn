@@ -83,7 +83,14 @@ public class BoxController {
         return new ResponseEntity<>(new SingleResponseDto<>(getBoxResponseDto), HttpStatus.OK);
     }
 
-    @Operation(summary = "박스 검색 API", description = "추후 묘사 예정")
+    @Operation(summary = "박스 검색 API",
+            description = "**쿼리 파라미터** " +
+                    "<br> page : 페이지 정보 " +
+                    "<br> size : 사이즈 크기 " +
+                    "<br> searchKeyword : 검색어" +
+                    "<br> searchType : 검색조건 (all, box-name, box-location, tag-name)" +
+                    "<br> sortCondition : 정렬조건 (latest, like-count, view-count, review-count) " +
+                    "<br> barbellDrop : 바벨드랍 여부 (true , false)")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "박스 전체 조회 및 검색 성공 "),
             @ApiResponse(responseCode = "401", description = "인증 권한이 없거나, 유효하지 않은 JWT일 경우")
