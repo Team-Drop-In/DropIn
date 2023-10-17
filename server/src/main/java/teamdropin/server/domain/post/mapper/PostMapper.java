@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import teamdropin.server.domain.comment.dto.CommentResponseDto;
 import teamdropin.server.domain.comment.mapper.CommentMapper;
+import teamdropin.server.domain.member.mapper.MemberMapper;
 import teamdropin.server.domain.post.dto.GetAllPostResponseDto;
 import teamdropin.server.domain.post.dto.GetPostResponseDto;
 import teamdropin.server.domain.post.entity.Post;
@@ -16,6 +17,7 @@ import java.util.stream.Collectors;
 public class PostMapper {
 
     private final CommentMapper commentMapper;
+    private final MemberMapper memberMapper;
 
     public GetPostResponseDto postToGetPostResponseDto(Post post, List<CommentResponseDto> commentResponseDtoList){
         return GetPostResponseDto.builder()
@@ -24,7 +26,7 @@ public class PostMapper {
                 .body(post.getBody())
                 .viewCount(post.getViewCount())
                 .category(post.getCategory())
-                .nickname(post.getMember().getNickname())
+                .writer(memberMapper.memberToGetWriterResponseDto(post.getMember()))
                 .likeCount(post.getPostLikes().size())
                 .checkPostLike(false)
                 .checkWriter(false)
@@ -42,7 +44,7 @@ public class PostMapper {
                 .viewCount(post.getViewCount())
                 .category(post.getCategory())
                 .likeCount(post.getPostLikes().size())
-                .nickname(post.getMember().getNickname())
+                .writer(memberMapper.memberToGetWriterResponseDto(post.getMember()))
                 .commentCount(post.getComments().size())
                 .createdDate(post.getCreatedDate())
                 .profileImageUrl(post.getMember().getProfileImageUrl())
