@@ -208,3 +208,13 @@ export const getListsWithSearch = async (
     throw error.response;
   }
 };
+
+export const getBoard = async (boardId) => {
+  try {
+    const response = await api.get(`/api/post/${boardId}`);
+
+    return response.data;
+  } catch (error) {
+    throw error.response;
+  }
+};

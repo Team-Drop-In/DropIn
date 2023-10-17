@@ -1,10 +1,14 @@
 import styled from "styled-components";
 import { COLOR } from "../../styles/theme";
+import { useRecoilValue } from "recoil";
+import { commentsDataState } from "../../atoms/atom";
 
 const CommentForm = () => {
+  const commentsData = useRecoilValue(commentsDataState);
+
   return (
     <Wrap>
-      <CmCount>댓글 (43)</CmCount>
+      <CmCount>댓글 ({commentsData.length})</CmCount>
       <CmForm>
         <UserAndWrite>
           <User>

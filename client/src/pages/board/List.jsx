@@ -204,9 +204,11 @@ const List = () => {
                 <Info>
                   <NameAndTime>
                     <Imgbox>
-                      <img src="http://via.placeholder.com/20x20" alt="" />
+                      <img src={`${boardData.profileImageUrl}`} alt="" />
                     </Imgbox>
-                    {data.nickname}
+                    <Link to={`/profile/${data.writer.id}`}>
+                      {data.writer.nickname}
+                    </Link>
                     <p>{formatDate(data.createdDate)}</p>
                   </NameAndTime>
                   <span>

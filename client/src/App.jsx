@@ -55,7 +55,7 @@ const App = () => {
           <Route path="/token" element={<TokenPage />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
-          <Route path="/profile" element={<Profile />} />
+          <Route path="/profile/:id" element={<Profile />} />
           <Route path="/mypage" element={<Mypage />} />
           <Route path="/findpwd" element={<FindPwd />} />
           {/* <Route path="/findemail" element={<FindEmail />} /> */}

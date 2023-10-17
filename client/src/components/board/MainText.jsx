@@ -3,40 +3,66 @@ import { COLOR } from "../../styles/theme";
 import { FiThumbsUp } from "react-icons/fi";
 import { BsEye } from "react-icons/bs";
 import { Link } from "react-router-dom";
+import { useRecoilValue } from "recoil";
+import { boardDataState } from "../../atoms/atom";
 
 const MainText = () => {
+  const boardData = useRecoilValue(boardDataState);
+
+  const formatDate = (createdDate) => {
+    const currentDate = new Date();
+    const date = new Date(createdDate);
+    const timeDifference = currentDate - date;
+
+    if (timeDifference > 24 * 60 * 60 * 1000) {
+      // If older than 24 hours, display in YYYY-MM-DD format
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, "0");
+      const day = String(date.getDate()).padStart(2, "0");
+      return `${year}-${month}-${day}`;
+    } else {
+      // If within 24 hours, display in X hours ago format
+      const hoursAgo = Math.floor(timeDifference / (60 * 60 * 1000));
+      return `${hoursAgo}시간 전`;
+    }
+  };
+
   return (
     <Wrap>
       <Head>
         <NameAndInfo>
           <User>
             <Imgbox>
-              <img src="http://via.placeholder.com/30x30" alt="" />
+              <img src={`${boardData.profileImageUrl}`} alt="" />
             </Imgbox>
-            닉네임
+            <Link to={`/profile/${boardData.writer.id}`}>
+              {boardData.writer.nickname}
+            </Link>
           </User>
           <ViewAndLike>
             <span>
               <BsEye />
-              조회
+              {boardData.viewCount}
             </span>
             <button>
               <span>
                 <FiThumbsUp />
-                좋아요
+                {boardData.likeCount}
               </span>
             </button>
           </ViewAndLike>
         </NameAndInfo>
         <TitleAndTime>
-          <span>제목</span>
-          <p>시간</p>
+          <span>{boardData.title}</span>
+          <div>
+            <p>{formatDate(boardData.createdDate)}</p>
+            <ModifyBtn>
+              <Link to="/board/edit">수정</Link>|<p>삭제</p>
+            </ModifyBtn>
+          </div>
         </TitleAndTime>
       </Head>
-      <Body>본문</Body>
-      <ModifyBtn>
-        <Link to="/board/edit">수정</Link>
-      </ModifyBtn>
+      <Body>{boardData.body}</Body>
     </Wrap>
   );
 };
@@ -129,6 +155,14 @@ const TitleAndTime = styled.div`
 
   p {
     font-size: 0.9rem;
+    text-align: right;
+    padding-right: 4px;
+    margin-bottom: 8px;
+  }
+
+  & > div {
+    display: flex;
+    flex-direction: column;
   }
 `;
 
@@ -140,12 +174,9 @@ const Body = styled.div`
 
 const ModifyBtn = styled.div`
   width: 100%;
-  position: relative;
   display: flex;
-  justify-content: flex-end;
 
   a {
-    position: absolute;
     bottom: 5px;
     width: 2.2rem;
     height: 1.2rem;
@@ -153,5 +184,8 @@ const ModifyBtn = styled.div`
     background-color: transparent;
     font-size: 0.9rem;
     text-align: center;
+  }
+  p {
+    margin-left: 4px;
   }
 `;
