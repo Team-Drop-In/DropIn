@@ -18,7 +18,6 @@ const List = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [boardData, setBoardData] = useState([]);
-  const [loading, setLoading] = useState(true);
 
   const previousPage = useRef(1);
 
@@ -70,6 +69,30 @@ const List = () => {
     setCurrentPage(pageNumber);
   };
 
+  const handleSearchClick = () => {
+    const fetchListData = async () => {
+      try {
+        const sortCondition = orderBy;
+        const page = currentPage - 1;
+        const searchType = searchSort;
+        const searchKeyword = searchWord;
+
+        const res = await getListsWithSearch(
+          sortCondition,
+          page,
+          searchType,
+          searchKeyword
+        );
+        setBoardData(res.data);
+        setTotalPages(res.pageInfo.totalPages);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchListData();
+  };
+
   useEffect(() => {
     previousPage.current = currentPage;
   }, [currentPage]);
@@ -83,7 +106,6 @@ const List = () => {
         const res = await getLists(sortCondition, page);
         setBoardData(res.data);
         setTotalPages(res.pageInfo.totalPages);
-        setLoading(false);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -91,6 +113,8 @@ const List = () => {
 
     fetchListData();
   }, [orderBy, currentPage]);
+
+  console.log(boardData);
 
   return (
     <Container>
@@ -192,51 +216,60 @@ const List = () => {
               ) : null}
             </Searchfield>
             <SearchWord>
-              <input placeholder="키워드 검색" />
-              <FiSearch color="white" size={24} />
+              <input
+                name="searchword"
+                placeholder="키워드 검색"
+                onChange={(e) => {
+                  setSearchWord(e.target.value);
+                }}
+              />
+              <SearchBtn onClick={handleSearchClick}>
+                <FiSearch color="white" size={24} />
+              </SearchBtn>
             </SearchWord>
           </Search>
         </Option>
         <BoardList>
-          {boardData.map((data) => (
-            <Link key={data.id} to={`/board/${data.id}`}>
-              <ListItem>
-                <Info>
-                  <NameAndTime>
-                    <Imgbox>
-                      <img src={`${boardData.profileImageUrl}`} alt="" />
-                    </Imgbox>
-                    <Link to={`/profile/${data.writer.id}`}>
-                      {data.writer.nickname}
-                    </Link>
-                    <p>{formatDate(data.createdDate)}</p>
-                  </NameAndTime>
-                  <span>
-                    <p>
-                      <BsEye />
-                      {data.viewCount}
-                    </p>
-                    <p>
-                      <GoComment />
-                      {data.commentCount}
-                    </p>
-                  </span>
-                </Info>
-                <TitleAndTag>
-                  <Title>{data.title}</Title>
-                  <span>
-                    <Tag>
-                      <p>{data.category}</p>
-                    </Tag>
-                    <p>
-                      <FiThumbsUp />
-                      {data.likeCount}
-                    </p>
-                  </span>
-                </TitleAndTag>
-              </ListItem>
-            </Link>
-          ))}
+          {boardData &&
+            boardData.map((data) => (
+              <Link key={data.id} to={`/board/${data.id}`}>
+                <ListItem>
+                  <Info>
+                    <NameAndTime>
+                      <Imgbox>
+                        <img src={`${boardData.profileImageUrl}`} alt="" />
+                      </Imgbox>
+                      <Link to={`/profile/${data.writer.id}`}>
+                        {data.writer.nickname}
+                      </Link>
+                      <p>{formatDate(data.createdDate)}</p>
+                    </NameAndTime>
+                    <span>
+                      <p>
+                        <BsEye />
+                        {data.viewCount}
+                      </p>
+                      <p>
+                        <GoComment />
+                        {data.commentCount}
+                      </p>
+                    </span>
+                  </Info>
+                  <TitleAndTag>
+                    <Title>{data.title}</Title>
+                    <span>
+                      <Tag>
+                        <p>{data.category}</p>
+                      </Tag>
+                      <p>
+                        <FiThumbsUp />
+                        {data.likeCount}
+                      </p>
+                    </span>
+                  </TitleAndTag>
+                </ListItem>
+              </Link>
+            ))}
         </BoardList>
         <WriteBtn>
           <Link to="/board/write">작성</Link>
@@ -355,6 +388,11 @@ const SearchWord = styled.div`
     color: ${COLOR.main_grey};
     font-weight: 500;
   }
+`;
+
+const SearchBtn = styled.button`
+  background-color: transparent;
+  height: 24px;
 `;
 
 const SearchWordBtn = styled.div`

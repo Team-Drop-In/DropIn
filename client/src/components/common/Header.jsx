@@ -27,8 +27,10 @@ const Header = () => {
             <button onClick={() => navigate("/")}>
               <Logo src={LogoImage} alt="로고" />
             </button>
-            <Link to="/">DropIn</Link>
-            <Link to="/board">커뮤니티</Link>
+            <Link to="/board">Community</Link>
+            <Link to="/comingsoon">Box</Link>
+            <Link to="/comingsoon">Wod Record</Link>
+            <Link to="/comingsoon">Rank</Link>
           </Tab>
           {isLogin ? (
             <LoginUser onClick={handleModal}>

@@ -24,6 +24,7 @@ const List = lazy(() => import("./pages/board/List"));
 const View = lazy(() => import("./pages/board/View"));
 const WriteForm = lazy(() => import("./pages/board/WriteForm"));
 const ModifyForm = lazy(() => import("./pages/board/ModifyForm"));
+const ComingSoon = lazy(() => import("./pages/ComingSoon"));
 
 const App = () => {
   const isOpenModal = useRecoilValue(ModalState);
@@ -52,6 +53,7 @@ const App = () => {
         {isOpenModal ? <Menu /> : null}
         <Routes>
           <Route path="/" element={<Main />} />
+          <Route path="/comingsoon" element={<ComingSoon />} />
           <Route path="/token" element={<TokenPage />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />

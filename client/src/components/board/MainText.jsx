@@ -8,6 +8,7 @@ import { boardDataState } from "../../atoms/atom";
 
 const MainText = () => {
   const boardData = useRecoilValue(boardDataState);
+  console.log(boardData);
 
   const formatDate = (createdDate) => {
     const currentDate = new Date();
@@ -35,9 +36,9 @@ const MainText = () => {
             <Imgbox>
               <img src={`${boardData.profileImageUrl}`} alt="" />
             </Imgbox>
-            <Link to={`/profile/${boardData.writer.id}`}>
-              {boardData.writer.nickname}
-            </Link>
+            {/* <Link to={`/profile/${boardData.writer.id}`}> */}
+            {boardData.writer.nickname}
+            {/* </Link> */}
           </User>
           <ViewAndLike>
             <span>
