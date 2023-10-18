@@ -2,17 +2,53 @@ import ReactQuill from "react-quill";
 import { useState } from "react";
 import styled from "styled-components";
 import { COLOR } from "../../styles/theme";
+import { createBoard } from "../../apis/api";
 import { Container, Content } from "../../styles/style";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import { loginState } from "../../atoms/atom";
+import { useSetRecoilState } from "recoil";
 
 const WriteForm = () => {
+  const setLogin = useSetRecoilState(loginState);
+  const [title, setTitle] = useState("");
+  const [content, setContent] = useState("");
+  const navigate = useNavigate();
+
+  const postBoard = () => {
+    const data = {
+      title: title,
+      body: content,
+      category: "QUESTION",
+    };
+    createBoard(data)
+      .then(() => {
+        navigate("/board");
+      })
+      .catch((error) => {
+        if (error && error.status === 401) {
+          toast.warning("로그인이 필요합니다");
+          setLogin(false);
+          localStorage.removeItem("accessToken");
+          localStorage.removeItem("refreshToken");
+          localStorage.removeItem("accessTokenExpiration");
+        }
+      });
+  };
+
   return (
     <Container>
       <Contain>
         <Form>
-          <Title placeholder="제목을 입력해주세요 (최대 50자)" />
-          <ReactQuill />
+          <Title
+            placeholder="제목을 입력해주세요 (최대 50자)"
+            onChange={(e) => setTitle(e.target.value)}
+          />
+          <ReactQuill onChange={setContent} />
           <SubmitBtn>
-            <button>등록</button>
+            <button type="button" onClick={postBoard}>
+              등록
+            </button>
           </SubmitBtn>
         </Form>
       </Contain>

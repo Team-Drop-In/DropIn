@@ -69,7 +69,6 @@ const MainText = ({ boardId }) => {
           localStorage.removeItem("accessToken");
           localStorage.removeItem("refreshToken");
           localStorage.removeItem("accessTokenExpiration");
-          navigate("/login");
         }
       });
   };

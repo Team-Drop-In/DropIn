@@ -258,9 +258,7 @@ const List = () => {
                   <TitleAndTag>
                     <Title>{data.title}</Title>
                     <span>
-                      <Tag>
-                        <p>{data.category}</p>
-                      </Tag>
+                      <Tag>{/* <p>{data.category}</p> */}</Tag>
                       <p>
                         <FiThumbsUp />
                         {data.likeCount}

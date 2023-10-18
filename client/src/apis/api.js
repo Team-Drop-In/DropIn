@@ -219,6 +219,19 @@ export const getBoard = async (boardId) => {
   }
 };
 
+export const createBoard = async (data) => {
+  try {
+    const response = await api.post("/api/post", data, {
+      headers: {
+        Authorization: `${localStorage.getItem("accessToken")}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    throw error.response;
+  }
+};
+
 export const deleteBoard = async (boardId) => {
   try {
     const response = await api.delete(`/api/post/${boardId}`, {
