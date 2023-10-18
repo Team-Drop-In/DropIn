@@ -31,36 +31,37 @@ const CommentList = () => {
   return (
     <Wrap>
       <List>
-        {commentsData.map((comment, index) => (
-          <CommentItem key={comment.id}>
-            <Info>
-              <User>
-                <Imgbox>
-                  <img src={`${comment.profileImageUrl}`} alt="" />
-                </Imgbox>
-                <NameAndTime>
-                  <Link to={`/profile/${comment.writer.id}`}>
-                    <span>{comment.writer.nickname}</span>
-                  </Link>
-                  <p>{formatDate(comment.createdAt)}</p>
-                </NameAndTime>
-              </User>
-              <LikeAndBtn>
-                <DeleteAndModify>
-                  <button>수정</button>
-                  <button>삭제</button>
-                </DeleteAndModify>
-                <span>
-                  <button>
-                    <FiThumbsUp />
-                  </button>
-                  {comment.likeCommentCount}
-                </span>
-              </LikeAndBtn>
-            </Info>
-            <Content>{comment.body}</Content>
-          </CommentItem>
-        ))}
+        {commentsData &&
+          commentsData.map((comment, index) => (
+            <CommentItem key={comment.id}>
+              <Info>
+                <User>
+                  <Imgbox>
+                    <img src={`${comment.profileImageUrl}`} alt="" />
+                  </Imgbox>
+                  <NameAndTime>
+                    <Link to={`/profile/${comment.writer.id}`}>
+                      <span>{comment.writer.nickname}</span>
+                    </Link>
+                    <p>{formatDate(comment.createdAt)}</p>
+                  </NameAndTime>
+                </User>
+                <LikeAndBtn>
+                  <DeleteAndModify>
+                    <button>수정</button>
+                    <button>삭제</button>
+                  </DeleteAndModify>
+                  <span>
+                    <button>
+                      <FiThumbsUp />
+                    </button>
+                    {comment.likeCommentCount}
+                  </span>
+                </LikeAndBtn>
+              </Info>
+              <Content>{comment.body}</Content>
+            </CommentItem>
+          ))}
       </List>
     </Wrap>
   );

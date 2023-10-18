@@ -17,7 +17,7 @@ export const ModalState = atom({
 
 export const boardDataState = atom({
   key: "boardData",
-  default: [],
+  default: {},
 });
 
 export const boardLikeState = atom({

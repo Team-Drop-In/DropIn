@@ -5,10 +5,11 @@ import { BsEye } from "react-icons/bs";
 import { Link } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import { boardDataState } from "../../atoms/atom";
+import { useEffect, useState } from "react";
 
 const MainText = () => {
   const boardData = useRecoilValue(boardDataState);
-  console.log(boardData);
+  const [viewData, setViewData] = useState({});
 
   const formatDate = (createdDate) => {
     const currentDate = new Date();
@@ -27,43 +28,50 @@ const MainText = () => {
       return `${hoursAgo}시간 전`;
     }
   };
-
+  useEffect(() => {
+    setViewData(boardData);
+  }, [boardData]);
+  console.log(viewData);
   return (
     <Wrap>
-      <Head>
-        <NameAndInfo>
-          <User>
-            <Imgbox>
-              <img src={`${boardData.profileImageUrl}`} alt="" />
-            </Imgbox>
-            {/* <Link to={`/profile/${boardData.writer.id}`}> */}
-            {boardData.writer.nickname}
-            {/* </Link> */}
-          </User>
-          <ViewAndLike>
-            <span>
-              <BsEye />
-              {boardData.viewCount}
-            </span>
-            <button>
-              <span>
-                <FiThumbsUp />
-                {boardData.likeCount}
-              </span>
-            </button>
-          </ViewAndLike>
-        </NameAndInfo>
-        <TitleAndTime>
-          <span>{boardData.title}</span>
-          <div>
-            <p>{formatDate(boardData.createdDate)}</p>
-            <ModifyBtn>
-              <Link to="/board/edit">수정</Link>|<p>삭제</p>
-            </ModifyBtn>
-          </div>
-        </TitleAndTime>
-      </Head>
-      <Body>{boardData.body}</Body>
+      {viewData.body && (
+        <>
+          <Head>
+            <NameAndInfo>
+              <User>
+                <Imgbox>
+                  <img src={`${viewData.profileImageUrl}`} alt="" />
+                </Imgbox>
+                <Link to={`/profile/${viewData.writer.id}`}>
+                  {viewData.writer.nickname}
+                </Link>
+              </User>
+              <ViewAndLike>
+                <span>
+                  <BsEye />
+                  {viewData.viewCount}
+                </span>
+                <button>
+                  <span>
+                    <FiThumbsUp />
+                    {viewData.likeCount}
+                  </span>
+                </button>
+              </ViewAndLike>
+            </NameAndInfo>
+            <TitleAndTime>
+              <span>{viewData.title}</span>
+              <div>
+                <p>{formatDate(viewData.createdDate)}</p>
+                <ModifyBtn>
+                  <Link to="/board/edit">수정</Link>|<p>삭제</p>
+                </ModifyBtn>
+              </div>
+            </TitleAndTime>
+          </Head>
+          <Body>{viewData.body}</Body>
+        </>
+      )}
     </Wrap>
   );
 };
