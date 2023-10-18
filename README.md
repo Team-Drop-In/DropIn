@@ -12,8 +12,8 @@
 - **한줄 소개 :** 크로스핏터들을 위한 커뮤니티와 크로스핏 박스 정보 제공 어플리케이션
 - **팀원 :** 조현화, 조지현
 - **프로젝트 소개서 :** [💁🏻 DropIn 프로젝트 소개서](https://perfect-pizza-727.notion.site/DROP-IN-f03dac4bdf184959b9c9438fb8b126a5?pvs=4)
-- **배포 링크 :** [🏋️‍♀️ https://dropinproject.netlify.app/](https://dropinproject.netlify.app/) ❗️현재 프론트엔드 미구현으로 정상 작동하지 않습니다.
-
+- **배포 링크 :** [🏋️‍♀️ https://dropinproject.netlify.app/](https://dropinproject.netlify.app/) 
+**❗️현재 프론트엔드 미구현으로 배포링크가 정상 작동하지 않습니다.**
 <br>
 
 ## 🛫 Intro
