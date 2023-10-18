@@ -1,14 +1,10 @@
 package teamdropin.server.domain.member.mapper;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import teamdropin.server.domain.member.dto.*;
 import teamdropin.server.domain.member.entity.Member;
 import teamdropin.server.security.utils.CustomAuthorityUtils;
-
-import javax.swing.text.html.Option;
-import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor
@@ -49,6 +45,13 @@ public class MemberMapper {
                 .nickname(member.getNickname())
                 .gender(member.getGender())
                 .profileImageUrl(member.getProfileImageUrl())
+                .build();
+    }
+
+    public GetWriterResponseDto memberToGetWriterResponseDto(Member member){
+        return GetWriterResponseDto.builder()
+                .id(member.getId())
+                .nickname(member.getNickname())
                 .build();
     }
 }
