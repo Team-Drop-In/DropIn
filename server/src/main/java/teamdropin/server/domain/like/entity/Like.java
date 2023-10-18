@@ -70,4 +70,9 @@ public class Like {
         this.review = review;
         this.likeCategory = likeCategory;
     }
+
+    public void addMember(Member member){
+        this.member = member;
+        member.getLikes().add(this);
+    }
 }

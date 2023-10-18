@@ -37,7 +37,7 @@ public class MockDataService {
      * 테스트용
      */
     @PostConstruct
-    public void createMockData(){
+    public void createMockData() {
 
         Member reassignMember =
                 Member.builder()
@@ -52,7 +52,7 @@ public class MockDataService {
         memberRepository.save(reassignMember);
 
         int tmp = 31;
-        for(int i = 0; i < 30; i++){
+        for (int i = 0; i < 30; i++) {
             tmp--;
             Post mockPost =
                     Post.builder()
@@ -64,7 +64,7 @@ public class MockDataService {
             mockPost.addMember(reassignMember);
             postRepository.save(mockPost);
 
-            for(int j = 10; j > 0; j--){
+            for (int j = 10; j > 0; j--) {
                 Comment mockComment =
                         Comment.builder()
                                 .body("댓글 입니다." + i)
@@ -76,10 +76,10 @@ public class MockDataService {
 
             }
         }
-        for(int i = 0; i < 5; i++){
+        for (int i = 0; i < 5; i++) {
             Box mockBox =
                     Box.builder()
-                            .name("박스 "+ i)
+                            .name("박스 " + i)
                             .location("부산")
                             .phoneNumber("00000000000")
                             .cost(20L)
