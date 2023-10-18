@@ -31,7 +31,7 @@ const View = () => {
   return (
     <Container>
       <Contain>
-        <MainText />
+        <MainText boardId={boardId} />
         <CommentForm />
         <CommentList />
       </Contain>

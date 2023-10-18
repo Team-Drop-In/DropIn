@@ -1,15 +1,21 @@
 import styled from "styled-components";
 import { COLOR } from "../../styles/theme";
 import { FiThumbsUp } from "react-icons/fi";
+import { FaThumbsUp } from "react-icons/fa";
 import { BsEye } from "react-icons/bs";
-import { Link } from "react-router-dom";
-import { useRecoilValue } from "recoil";
-import { boardDataState } from "../../atoms/atom";
+import { Link, useNavigate } from "react-router-dom";
+import { boardDataState, boardLikeState, loginState } from "../../atoms/atom";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import { useEffect, useState } from "react";
+import { deleteBoard, likeBoard } from "../../apis/api";
+import { toast } from "react-toastify";
 
-const MainText = () => {
+const MainText = ({ boardId }) => {
   const boardData = useRecoilValue(boardDataState);
   const [viewData, setViewData] = useState({});
+  const setBoardLikeState = useSetRecoilState(boardLikeState);
+  const setLogin = useSetRecoilState(loginState);
+  const navigate = useNavigate();
 
   const formatDate = (createdDate) => {
     const currentDate = new Date();
@@ -17,21 +23,61 @@ const MainText = () => {
     const timeDifference = currentDate - date;
 
     if (timeDifference > 24 * 60 * 60 * 1000) {
-      // If older than 24 hours, display in YYYY-MM-DD format
+      //24시간 이후
       const year = date.getFullYear();
       const month = String(date.getMonth() + 1).padStart(2, "0");
       const day = String(date.getDate()).padStart(2, "0");
       return `${year}-${month}-${day}`;
     } else {
-      // If within 24 hours, display in X hours ago format
+      //24시간 이내
       const hoursAgo = Math.floor(timeDifference / (60 * 60 * 1000));
       return `${hoursAgo}시간 전`;
     }
   };
+
+  const handleButtonDelete = () => {
+    deleteBoard(boardId)
+      .then(() => {
+        navigate("/board");
+      })
+      .catch((error) => {
+        if (error && error.status === 401) {
+          toast.warning("로그인이 필요합니다");
+          setLogin(false);
+          localStorage.removeItem("accessToken");
+          localStorage.removeItem("refreshToken");
+          localStorage.removeItem("accessTokenExpiration");
+        } else {
+          toast.warning("게시글 삭제 실패");
+        }
+      });
+  };
+
+  const handleLike = () => {
+    const data = {
+      likeCategoryId: boardId,
+      likeCategory: "POST",
+    };
+    likeBoard(data)
+      .then(() => {
+        setBoardLikeState(true);
+      })
+      .catch((error) => {
+        if (error && error.status === 401) {
+          toast.warning("로그인이 필요합니다");
+          setLogin(false);
+          localStorage.removeItem("accessToken");
+          localStorage.removeItem("refreshToken");
+          localStorage.removeItem("accessTokenExpiration");
+          navigate("/login");
+        }
+      });
+  };
+
   useEffect(() => {
     setViewData(boardData);
   }, [boardData]);
-  console.log(viewData);
+
   return (
     <Wrap>
       {viewData.body && (
@@ -53,7 +99,11 @@ const MainText = () => {
                 </span>
                 <button>
                   <span>
-                    <FiThumbsUp />
+                    {viewData.checkPostLike ? (
+                      <FaThumbsUp />
+                    ) : (
+                      <FiThumbsUp onClick={handleLike} />
+                    )}
                     {viewData.likeCount}
                   </span>
                 </button>
@@ -64,7 +114,12 @@ const MainText = () => {
               <div>
                 <p>{formatDate(viewData.createdDate)}</p>
                 <ModifyBtn>
-                  <Link to="/board/edit">수정</Link>|<p>삭제</p>
+                  {viewData.checkWriter && (
+                    <>
+                      <Link to={`/board/${boardId}/edit`}>수정</Link>|
+                      <p onClick={handleButtonDelete}>삭제</p>
+                    </>
+                  )}
                 </ModifyBtn>
               </div>
             </TitleAndTime>
