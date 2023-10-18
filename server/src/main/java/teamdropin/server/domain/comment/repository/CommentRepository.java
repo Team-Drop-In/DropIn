@@ -25,4 +25,9 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
 
     List<Comment> findAllCommentsByPostId(Long postId);
 
+    @Modifying
+    @Query("update Comment c set c.member.id = :newMemberId where c.member.id = :oldMemberId")
+    int updateMemberIdForComments(@Param("oldMemberId") Long oldMemberId, @Param("newMemberId") Long newMemberId);
+
+
 }

@@ -58,21 +58,15 @@ public class Box extends BaseTimeEntity {
     private Member member;
 
     @Builder.Default
-    @OneToMany(mappedBy = "box"
-//            , cascade = CascadeType.REMOVE, orphanRemoval = true
-    )
+    @OneToMany(mappedBy = "box")
     private List<Like> boxLikes = new ArrayList<>();
 
     @Builder.Default
-    @OneToMany(mappedBy = "box"
-//            , cascade = CascadeType.REMOVE, orphanRemoval = true
-    )
+    @OneToMany(mappedBy = "box")
     private List<BoxTag> boxTagList = new ArrayList<>();
 
     @Builder.Default
-    @OneToMany(mappedBy = "box"
-//            , cascade = CascadeType.REMOVE, orphanRemoval = true
-    )
+    @OneToMany(mappedBy = "box")
     private List<Review> reviews = new ArrayList<>();
 
     public void addMember(Member member){
