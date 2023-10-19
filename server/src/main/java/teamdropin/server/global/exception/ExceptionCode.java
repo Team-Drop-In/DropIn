@@ -47,7 +47,7 @@ public enum ExceptionCode {
     UPLOAD_IMAGE_LIMIT_EXCEEDED(400, "Maximum number of images exceeded"),
     BOX_IMAGE_NOT_FOUND(404, "BoxImage not found" ),
     REVIEW_NOT_FOUND(404, "Review not found"  ),
-    BAD_REQUEST(400, "User Info is Google Authorized");
+    BAD_REQUEST(400, "User Info is Google Authorized"), USER_GENDER_CHANGE_IMPOSSIBLE(400, "User's gender can't change" );
     @Getter
     private final int status;
     @Getter
