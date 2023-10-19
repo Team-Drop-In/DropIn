@@ -16,6 +16,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.stereotype.Repository;
 import teamdropin.server.domain.comment.dto.CommentResponseDto;
+import teamdropin.server.domain.member.dto.LoginUserInfoDto;
 import teamdropin.server.domain.member.dto.GetWriterResponseDto;
 import teamdropin.server.domain.member.entity.Member;
 import teamdropin.server.domain.post.dto.GetPostResponseDto;
@@ -48,7 +49,8 @@ public class PostQueryRepository {
         Expression<GetWriterResponseDto> writer = Projections.constructor(
                 GetWriterResponseDto.class,
                 post.member.id,
-                post.member.nickname
+                post.member.nickname,
+                post.member.profileImageUrl
         );
 
         List<PostSearchDto> content = queryFactory
@@ -62,9 +64,7 @@ public class PostQueryRepository {
                         post.postLikes.size(),
                         writer,
                         post.comments.size(),
-                        post.createdDate,
-                        post.member.profileImageUrl
-                        ))
+                        post.createdDate))
                 .from(post)
                 .where(searchEq(condition))
                 .orderBy(postSort(condition), post.createdDate.desc())
@@ -132,6 +132,8 @@ public class PostQueryRepository {
     }
 
     public GetPostResponseDto getPost(Long postId, Member member){
+
+
         JPQLQuery<Long> postLikeCount =
                 JPAExpressions.select(like.count())
                         .from(like)
@@ -145,15 +147,26 @@ public class PostQueryRepository {
         Expression<GetWriterResponseDto> postWriter = Projections.constructor(
                 GetWriterResponseDto.class,
                 post.member.id,
-                post.member.nickname
+                post.member.nickname,
+                post.member.profileImageUrl
         );
+
+        LoginUserInfoDto loginUserInfoDto = null;
+
+        if(member != null){
+            loginUserInfoDto = new LoginUserInfoDto(
+                    member.getId(),
+                    member.getNickname(),
+                    member.getProfileImageUrl()
+            );
+        }
 
         Expression<GetWriterResponseDto> commentWriter = Projections.constructor(
                 GetWriterResponseDto.class,
                 comment.member.id,
-                comment.member.nickname
+                comment.member.nickname,
+                comment.member.profileImageUrl
         );
-
 
 
         List<CommentResponseDto> commentResponseDtos = queryFactory
@@ -165,8 +178,7 @@ public class PostQueryRepository {
                         checkCommentLike(member),
                         checkCommentWriter(member),
                         commentLikeCount,
-                        comment.createdDate,
-                        comment.member.profileImageUrl))
+                        comment.createdDate))
                 .from(comment)
                 .where(comment.post.id.eq(postId))
                 .fetch();
@@ -184,14 +196,14 @@ public class PostQueryRepository {
                         postLikeCount,
                         checkPostLike(member),
                         checkPostWriter(member),
-                        post.createdDate,
-                        post.member.profileImageUrl))
+                        post.createdDate))
                 .from(post)
                 .where(post.id.eq(postId))
                 .groupBy(post)
                 .fetchOne();
 
         getPostResponseDto.setComments(commentResponseDtos);
+        getPostResponseDto.setLoginUserInfo(loginUserInfoDto);
 
         return getPostResponseDto;
     }

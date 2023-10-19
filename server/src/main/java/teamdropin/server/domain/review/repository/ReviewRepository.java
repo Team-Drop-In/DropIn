@@ -21,4 +21,8 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
     @Modifying
     @Query("delete from Review r where r.box.id = :boxId")
     void deleteAllReviewByBoxId(@Param("boxId") Long boxId);
+
+    @Modifying
+    @Query("update Review r set r.member.id = :newMemberId where r.member.id = :oldMemberId")
+    int updateMemberIdForReviews(@Param("oldMemberId") Long oldMemberId, @Param("newMemberId") Long newMemberId);
 }

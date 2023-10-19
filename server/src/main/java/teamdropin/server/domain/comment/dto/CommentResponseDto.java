@@ -20,9 +20,8 @@ public class CommentResponseDto {
     private boolean checkWriter;
     private long likeCommentCount;
     private LocalDateTime createdAt;
-    private String profileImageUrl;
 
-    public CommentResponseDto(Long id, GetWriterResponseDto writer, String body, boolean checkCommentLike, boolean checkWriter, long likeCommentCount, LocalDateTime createdAt, String profileImageUrl) {
+    public CommentResponseDto(Long id, GetWriterResponseDto writer, String body, boolean checkCommentLike, boolean checkWriter, long likeCommentCount, LocalDateTime createdAt) {
         this.id = id;
         this.writer = writer;
         this.body = body;
@@ -30,6 +29,5 @@ public class CommentResponseDto {
         this.checkWriter = checkWriter;
         this.likeCommentCount = likeCommentCount;
         this.createdAt = createdAt;
-        this.profileImageUrl = profileImageUrl;
     }
 }

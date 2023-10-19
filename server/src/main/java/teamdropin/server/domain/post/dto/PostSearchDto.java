@@ -22,9 +22,8 @@ public class PostSearchDto {
     private GetWriterResponseDto writer;
     private int commentCount;
     private LocalDateTime createdDate;
-    private String profileImageUrl;
 
-    public PostSearchDto(Long id, String title, String body, long viewCount, Category category, int likeCount, GetWriterResponseDto writer, int commentCount, LocalDateTime createdDate, String profileImageUrl) {
+    public PostSearchDto(Long id, String title, String body, long viewCount, Category category, int likeCount, GetWriterResponseDto writer, int commentCount, LocalDateTime createdDate) {
         this.id = id;
         this.title = title;
         this.body = body;
@@ -34,7 +33,6 @@ public class PostSearchDto {
         this.writer = writer;
         this.commentCount = commentCount;
         this.createdDate = createdDate;
-        this.profileImageUrl = profileImageUrl;
     }
 
     //    @QueryProjection

@@ -46,4 +46,8 @@ public interface LikeRepository extends JpaRepository<Like, Long> {
     @Query("delete from Like l where l.box.id = :boxId")
     void deleteAllByBoxId(@Param("boxId") Long boxId);
 
+    @Modifying
+    @Query("update Like l set l.member.id = :newMemberId where l.member.id = :oldMemberId")
+    int updateMemberIdForLikes(@Param("oldMemberId") Long oldMemberId,@Param("newMemberId") Long newMemberId);
+
 }
