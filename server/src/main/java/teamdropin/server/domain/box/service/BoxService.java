@@ -22,6 +22,7 @@ import teamdropin.server.domain.like.entity.Like;
 import teamdropin.server.domain.like.repository.LikeRepository;
 import teamdropin.server.domain.like.service.LikeService;
 import teamdropin.server.domain.member.entity.Member;
+import teamdropin.server.domain.member.repository.MemberRepository;
 import teamdropin.server.domain.review.entity.Review;
 import teamdropin.server.domain.review.repository.ReviewRepository;
 import teamdropin.server.global.exception.BusinessLogicException;
@@ -45,6 +46,7 @@ public class BoxService {
     private final BoxImageRepository boxImageRepository;
     private final LikeRepository likeRepository;
     private final ReviewRepository reviewRepository;
+    private final MemberRepository memberRepository;
     private final BoxTagService boxTagService;
     private final BoxMapper boxMapper;
     private final S3Uploader s3Uploader;
@@ -91,8 +93,14 @@ public class BoxService {
     @Transactional(readOnly = false)
     public GetBoxResponseDto getBox(Long boxId, Member member){
         Box box =  findVerifyBox(boxId);
+
+        Member auth = null;
+        if(member != null){
+            auth = memberRepository.findById(member.getId()).orElse(null);
+        }
+
         box.viewCountUp();
-        return boxQueryRepository.getBoxQuery(boxId, member);
+        return boxQueryRepository.getBoxQuery(boxId, auth);
     }
 
     public Page<Box> getAllBoxes(Pageable pageable) {

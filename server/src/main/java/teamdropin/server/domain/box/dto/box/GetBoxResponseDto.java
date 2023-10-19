@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import teamdropin.server.domain.box.dto.boxImage.BoxImageResponseDto;
 import teamdropin.server.domain.box.dto.boxTag.BoxTagResponseDto;
+import teamdropin.server.domain.member.dto.LoginUserInfoDto;
 import teamdropin.server.domain.review.dto.ReviewResponseDto;
 
 import java.util.List;
@@ -30,6 +31,7 @@ public class GetBoxResponseDto {
     private boolean checkBoxLike;
     private List<BoxTagResponseDto> tagList;
     private List<BoxImageResponseDto> boxImages;
+    private LoginUserInfoDto loginUserInfo;
     private List<ReviewResponseDto> reviews;
 
     public GetBoxResponseDto(Long id, String name, String location, String phoneNumber, Long cost, Long area, boolean barbellDrop, String url, String detail, long likeCount, long viewCount, boolean checkBoxLike) {

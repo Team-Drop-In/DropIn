@@ -25,6 +25,7 @@ import teamdropin.server.domain.box.entity.BoxTag;
 import teamdropin.server.domain.like.entity.Like;
 import teamdropin.server.domain.like.entity.LikeCategory;
 import teamdropin.server.domain.member.dto.GetWriterResponseDto;
+import teamdropin.server.domain.member.dto.LoginUserInfoDto;
 import teamdropin.server.domain.member.entity.Member;
 import teamdropin.server.domain.review.dto.ReviewResponseDto;
 import teamdropin.server.domain.review.entity.Review;
@@ -205,8 +206,19 @@ public class BoxQueryRepository {
         Expression<GetWriterResponseDto> reviewWriter = Projections.constructor(
                 GetWriterResponseDto.class,
                 review.member.id,
-                review.member.nickname
+                review.member.nickname,
+                review.member.profileImageUrl
         );
+
+        LoginUserInfoDto loginUserInfoDto = null;
+
+        if(member != null){
+            loginUserInfoDto = new LoginUserInfoDto(
+                    member.getId(),
+                    member.getNickname(),
+                    member.getProfileImageUrl()
+            );
+        }
 
         List<BoxTagResponseDto> boxTagResponseDtoList = getTagList(boxTags);
 
@@ -261,6 +273,7 @@ public class BoxQueryRepository {
         getBoxResponseDto.setTagList(boxTagResponseDtoList);
         getBoxResponseDto.setBoxImages(boxImageResponseDtoList);
         getBoxResponseDto.setReviews(reviewResponseDtoList);
+        getBoxResponseDto.setLoginUserInfo(loginUserInfoDto);
 
         return getBoxResponseDto;
     }

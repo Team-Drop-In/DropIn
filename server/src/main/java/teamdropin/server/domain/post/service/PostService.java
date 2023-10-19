@@ -104,7 +104,11 @@ public class PostService {
     @Transactional
     public GetPostResponseDto getPostQuery(Long postId, Member member) {
         Post post = findVerifiedPost(postId);
+        Member auth = null;
+        if(member != null){
+            auth = memberRepository.findById(member.getId()).orElse(null);
+        }
         post.viewCountUp();
-        return postQueryRepository.getPost(postId, member);
+        return postQueryRepository.getPost(postId, auth);
     }
 }

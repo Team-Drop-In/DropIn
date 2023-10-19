@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import teamdropin.server.domain.comment.dto.CommentResponseDto;
+import teamdropin.server.domain.member.dto.LoginUserInfoDto;
 import teamdropin.server.domain.member.dto.GetWriterResponseDto;
 import teamdropin.server.domain.post.entity.Category;
 
@@ -27,10 +28,10 @@ public class GetPostResponseDto {
     private boolean checkPostLike;
     private boolean checkWriter;
     private LocalDateTime createdDate;
-    private String profileImageUrl;
+    private LoginUserInfoDto loginUserInfo;
     private List<CommentResponseDto> comments;
 
-    public GetPostResponseDto(Long id, String title, String body, long viewCount, Category category, GetWriterResponseDto writer, long likeCount, boolean checkPostLike, boolean checkWriter, LocalDateTime createdDate, String profileImageUrl) {
+    public GetPostResponseDto(Long id, String title, String body, long viewCount, Category category, GetWriterResponseDto writer, long likeCount, boolean checkPostLike, boolean checkWriter, LocalDateTime createdDate) {
         this.id = id;
         this.title = title;
         this.body = body;
@@ -41,6 +42,5 @@ public class GetPostResponseDto {
         this.checkPostLike = checkPostLike;
         this.checkWriter = checkWriter;
         this.createdDate = createdDate;
-        this.profileImageUrl = profileImageUrl;
     }
 }
