@@ -8,24 +8,20 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import teamdropin.server.aws.service.S3Uploader;
 import teamdropin.server.domain.box.repository.BoxRepository;
-import teamdropin.server.domain.comment.entity.Comment;
 import teamdropin.server.domain.comment.repository.CommentRepository;
-import teamdropin.server.domain.like.entity.Like;
 import teamdropin.server.domain.like.repository.LikeRepository;
+import teamdropin.server.domain.member.dto.MemberUpdateGenderRequestDto;
 import teamdropin.server.domain.member.dto.MemberUpdatePasswordRequestDto;
 import teamdropin.server.domain.member.dto.MemberUpdateProfileRequestDto;
 import teamdropin.server.domain.member.entity.Gender;
 import teamdropin.server.domain.member.entity.Member;
 import teamdropin.server.domain.member.repository.MemberRepository;
-import teamdropin.server.domain.post.entity.Post;
 import teamdropin.server.domain.post.repository.PostRepository;
-import teamdropin.server.domain.review.entity.Review;
 import teamdropin.server.domain.review.repository.ReviewRepository;
 import teamdropin.server.global.exception.BusinessLogicException;
 import teamdropin.server.global.exception.ExceptionCode;
 import teamdropin.server.security.utils.CustomAuthorityUtils;
 
-import javax.annotation.PostConstruct;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.util.*;
@@ -155,6 +151,19 @@ public class MemberService {
         return profileImageUrl;
     }
 
+    /**
+     * 회원 성별 수정(OAuth 로그인 유저만)
+     */
+    @Transactional(readOnly = false)
+    public void updateGender(Member member, MemberUpdateGenderRequestDto memberUpdateGenderRequestDto) {
+        Member findMember = findVerifyMember(member.getUsername());
+        if(findMember.getGender() == Gender.NOT_SELECT) {
+            findMember.updateGender(memberUpdateGenderRequestDto.getGender());
+        } else {
+            throw new BusinessLogicException(ExceptionCode.USER_GENDER_CHANGE_IMPOSSIBLE);
+        }
+    }
+
     @Transactional(readOnly = false)
     public void updatePassword(String username, @Valid MemberUpdatePasswordRequestDto memberUpdatePasswordRequestDto){
         Member member = findVerifyMember(username);
@@ -167,7 +176,6 @@ public class MemberService {
         }
         member.updatePassword(passwordEncoder.encode(memberUpdatePasswordRequestDto.getUpdatePassword()));
     }
-
     private String getFileExtension(String fileName){
         int dotIndex = fileName.lastIndexOf(".");
         if(dotIndex > 0 && dotIndex < fileName.length() -1){
@@ -183,4 +191,5 @@ public class MemberService {
         String dirName = "member";
         return s3Uploader.upload(image,dirName);
     }
+
 }

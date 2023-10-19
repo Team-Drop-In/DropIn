@@ -77,14 +77,16 @@ public class Member extends BaseTimeEntity {
     @OneToMany(mappedBy = "member")
     private List<Review> reviews = new ArrayList<>();
 
-    public Member updatePassword(String encodedPassword){
+    public void updatePassword(String encodedPassword){
         this.password = encodedPassword;
-        return this;
     }
 
-    public Member updateInfo(String nickname, String profileImageUrl){
+    public void updateInfo(String nickname, String profileImageUrl){
         this.nickname = nickname;
         this.profileImageUrl = profileImageUrl;
-        return this;
+    }
+
+    public void updateGender(Gender gender) {
+        this.gender = gender;
     }
 }

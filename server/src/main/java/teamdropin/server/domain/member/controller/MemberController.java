@@ -2,8 +2,6 @@ package teamdropin.server.domain.member.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -25,7 +23,6 @@ import teamdropin.server.domain.member.entity.Member;
 import teamdropin.server.domain.member.mapper.MemberMapper;
 import teamdropin.server.domain.member.service.MemberService;
 import teamdropin.server.domain.post.service.PostService;
-import teamdropin.server.global.advice.GlobalExceptionAdvice;
 import teamdropin.server.global.dto.SingleResponseDto;
 import teamdropin.server.global.util.UriCreator;
 
@@ -150,6 +147,19 @@ public class MemberController {
         String profileImageUrl = memberService.updateProfile(member.getUsername(), memberUpdateProfileRequestDto, image);
         MemberUpdateProfileResponseDto memberUpdateProfileResponseDto = new MemberUpdateProfileResponseDto(profileImageUrl);
         return new ResponseEntity<>(memberUpdateProfileResponseDto,HttpStatus.OK);
+    }
+
+    @Operation(summary = "회원 성별 수정 API", description = "**AccessToken이 필수입니다.** <br> **USER_ROLE 권한이 필요합니다.** <br> OAuth2.0 회원가입 이용자들에게만 적용 가능 합니다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "회원 성별 수정 성공"),
+            @ApiResponse(responseCode = "400", description = "회원 성별이 미 선택이 아닌 경우"),
+            @ApiResponse(responseCode = "401", description = "인증 권한이 없거나, 유효하지 않은 JWT일 경우"),
+    })
+    @PutMapping("/member/gender")
+    public ResponseEntity<MemberUpdateGenderRequestDto> updateGender(@AuthenticationPrincipal Member member,
+                                                                     @RequestBody MemberUpdateGenderRequestDto memberUpdateGenderRequestDto){
+        memberService.updateGender(member, memberUpdateGenderRequestDto);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @Operation(summary = "회원 비밀번호 수정", description = "**AccessToken이 필수입니다.** <br> **USER_ROLE 권한이 필요합니다.**")
