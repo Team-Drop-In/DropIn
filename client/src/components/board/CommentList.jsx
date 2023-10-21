@@ -2,9 +2,10 @@ import styled from "styled-components";
 import { useState, useEffect } from "react";
 import { COLOR } from "../../styles/theme";
 import { FiThumbsUp } from "react-icons/fi";
+import { FaThumbsUp } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { BiSolidUser } from "react-icons/bi";
-import { updateComment, deleteComment } from "../../apis/api";
+import { updateComment, deleteComment, likeComment } from "../../apis/api";
 import { toast } from "react-toastify";
 
 const CommentList = ({ boardId, commentsData, setCommentsData }) => {
@@ -28,6 +29,21 @@ const CommentList = ({ boardId, commentsData, setCommentsData }) => {
     }
   };
 
+  const updateCommentContent = (commentId, newContent) => {
+    setCommentsData((prevComments) => {
+      const updatedComments = prevComments.map((comment) => {
+        if (comment.id === commentId) {
+          return {
+            ...comment,
+            body: newContent,
+          };
+        }
+        return comment;
+      });
+      return updatedComments;
+    });
+  };
+
   const removeCommentById = (commentId) => {
     setCommentsData((prevComments) => {
       const filteredComments = prevComments.filter(
@@ -37,13 +53,30 @@ const CommentList = ({ boardId, commentsData, setCommentsData }) => {
     });
   };
 
-  const updateCommentContent = (commentId, newContent) => {
+  const likeCommentCount = (commentId, likeCount) => {
     setCommentsData((prevComments) => {
       const updatedComments = prevComments.map((comment) => {
         if (comment.id === commentId) {
           return {
             ...comment,
-            body: newContent,
+            checkCommentLike: true,
+            likeCommentCount: likeCount + 1,
+          };
+        }
+        return comment;
+      });
+      return updatedComments;
+    });
+  };
+
+  const removelikeCount = (commentId, likeCount) => {
+    setCommentsData((prevComments) => {
+      const updatedComments = prevComments.map((comment) => {
+        if (comment.id === commentId) {
+          return {
+            ...comment,
+            checkCommentLike: false,
+            likeCommentCount: likeCount - 1,
           };
         }
         return comment;
@@ -87,6 +120,38 @@ const CommentList = ({ boardId, commentsData, setCommentsData }) => {
           toast.warning("댓글 삭제 실패");
         }
       });
+  };
+
+  const handleLikeComment = (checkLike, commentId, likeCount) => {
+    const data = {
+      likeCategoryId: commentId,
+      likeCategory: "COMMENT",
+    };
+    if (!checkLike) {
+      likeComment(data)
+        .then(() => {
+          likeCommentCount(commentId, likeCount);
+        })
+        .catch((error) => {
+          if (error && error.status === 401) {
+            toast.warning("로그인이 필요합니다");
+          } else {
+            toast.warning("댓글 수정 실패");
+          }
+        });
+    } else {
+      likeComment(data)
+        .then(() => {
+          removelikeCount(commentId, likeCount);
+        })
+        .catch((error) => {
+          if (error && error.status === 401) {
+            toast.warning("로그인이 필요합니다");
+          } else {
+            toast.warning("댓글 수정 실패");
+          }
+        });
+    }
   };
 
   useEffect(() => {
@@ -138,8 +203,20 @@ const CommentList = ({ boardId, commentsData, setCommentsData }) => {
                     </DeleteAndModify>
                   )}
                   <span>
-                    <button>
-                      <FiThumbsUp />
+                    <button
+                      onClick={() =>
+                        handleLikeComment(
+                          comment.checkCommentLike,
+                          comment.id,
+                          comment.likeCommentCount
+                        )
+                      }
+                    >
+                      {comment.checkCommentLike ? (
+                        <FaThumbsUp />
+                      ) : (
+                        <FiThumbsUp />
+                      )}
                     </button>
                     {comment.likeCommentCount}
                   </span>

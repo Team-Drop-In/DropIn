@@ -284,3 +284,12 @@ export const deleteComment = async (boardId, commentId) => {
     throw error.response;
   }
 };
+
+export const likeComment = async (data) => {
+  try {
+    const response = await api.post(`/api/comment/like`, data);
+    return response.data;
+  } catch (error) {
+    throw error.response;
+  }
+};
