@@ -78,10 +78,10 @@ const List = () => {
         const searchKeyword = searchWord;
 
         const res = await getListsWithSearch(
-          sortCondition,
-          page,
+          searchKeyword,
           searchType,
-          searchKeyword
+          sortCondition,
+          page
         );
         setBoardData(res.data);
         setTotalPages(res.pageInfo.totalPages);
@@ -289,6 +289,10 @@ const Contain = styled(Content)`
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
+
+  button {
+    cursor: pointer;
+  }
 `;
 
 const Option = styled.section`
