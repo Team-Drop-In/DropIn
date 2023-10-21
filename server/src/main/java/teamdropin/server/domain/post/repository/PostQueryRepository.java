@@ -242,9 +242,6 @@ public class PostQueryRepository {
         if(member == null){
             return Expressions.FALSE;
         }
-        return JPAExpressions.select(comment.id)
-                .from(comment)
-                .where(comment.member.id.eq(member.getId()))
-                .exists();
+        return comment.member.id.eq(member.getId());
     }
 }
