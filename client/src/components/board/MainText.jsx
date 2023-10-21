@@ -78,7 +78,7 @@ const MainText = ({ boardId }) => {
     setViewData(boardData);
   }, [boardData]);
 
-  console.log(viewData.body);
+  // console.log(viewData);
 
   return (
     <Wrap>
@@ -116,12 +116,12 @@ const MainText = ({ boardId }) => {
               <div>
                 <p>{formatDate(viewData.createdDate)}</p>
                 <ModifyBtn>
-                  {viewData.checkWriter && (
-                    <>
-                      <Link to={`/board/${boardId}/edit`}>수정</Link>|
-                      <p onClick={handleButtonDelete}>삭제</p>
-                    </>
-                  )}
+                  {/* {viewData.checkWriter && ( */}
+                  <>
+                    <Link to={`/board/${boardId}/edit`}>수정</Link>|
+                    <p onClick={handleButtonDelete}>삭제</p>
+                  </>
+                  {/* )} */}
                 </ModifyBtn>
               </div>
             </TitleAndTime>

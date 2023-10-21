@@ -106,7 +106,7 @@ const List = () => {
         const res = await getLists(sortCondition, page);
         setBoardData(res.data);
         setTotalPages(res.pageInfo.totalPages);
-        console.log(boardData);
+        // console.log(boardData);
       } catch (error) {
         console.error("Error fetching data:", error);
       }

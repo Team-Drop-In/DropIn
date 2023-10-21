@@ -13,6 +13,8 @@ const WriteForm = () => {
   const setLogin = useSetRecoilState(loginState);
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
+  const [error, setError] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
   const navigate = useNavigate();
 
   const postBoard = () => {
@@ -21,19 +23,28 @@ const WriteForm = () => {
       body: content,
       category: "QUESTION",
     };
-    createBoard(data)
-      .then(() => {
-        navigate("/board");
-      })
-      .catch((error) => {
-        if (error && error.status === 401) {
-          toast.warning("로그인이 필요합니다");
-          setLogin(false);
-          localStorage.removeItem("accessToken");
-          localStorage.removeItem("refreshToken");
-          localStorage.removeItem("accessTokenExpiration");
-        }
-      });
+
+    if (title === "") {
+      setError(true);
+      setErrorMsg("제목을 입력해주세요");
+    } else if (content === "<p><br></p>") {
+      setError(true);
+      setErrorMsg("내용을 입력해주세요");
+    } else {
+      createBoard(data)
+        .then(() => {
+          navigate("/board");
+        })
+        .catch((error) => {
+          if (error && error.status === 401) {
+            toast.warning("로그인이 필요합니다");
+            setLogin(false);
+            localStorage.removeItem("accessToken");
+            localStorage.removeItem("refreshToken");
+            localStorage.removeItem("accessTokenExpiration");
+          }
+        });
+    }
   };
 
   return (
@@ -45,6 +56,7 @@ const WriteForm = () => {
             onChange={(e) => setTitle(e.target.value)}
           />
           <ReactQuill onChange={setContent} />
+          {error && <ErrorMsg>{errorMsg}</ErrorMsg>}
           <SubmitBtn>
             <button type="button" onClick={postBoard}>
               등록
@@ -67,13 +79,17 @@ const Contain = styled(Content)`
   .quill {
     width: 100%;
     color: white;
-
-    .ql-editor p {
-      color: white;
-    }
   }
   .ql-container {
     min-height: 35rem;
+
+    .ql-editor p,
+    h1,
+    h2,
+    h3,
+    span {
+      color: white;
+    }
   }
 
   .ql-snow .ql-stroke {
@@ -159,4 +175,10 @@ const SubmitBtn = styled.div`
       background-color: ${COLOR.active_yellow};
     }
   }
+`;
+
+const ErrorMsg = styled.div`
+  margin-top: 20px;
+  width: 100%;
+  color: ${COLOR.main_yellow};
 `;

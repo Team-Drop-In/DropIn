@@ -119,7 +119,13 @@ const ModifyForm = ({
       nicknameValue !== username; // Check if nicknameValue is different from username
 
     setIsNicknameError(!isNicknameValid);
-  }, [nicknameValue, username]);
+  }, [
+    nickValidationOptions.maxLength.value,
+    nickValidationOptions.minLength.value,
+    nickValidationOptions.pattern.value,
+    nicknameValue,
+    username,
+  ]);
 
   return (
     <>

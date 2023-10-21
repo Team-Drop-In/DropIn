@@ -37,9 +37,7 @@ const App = () => {
           setLogin(false);
           handleTokenExpiration();
           toast.warning("인증기간이 만료되었습니다");
-          console.log("만료됨");
         }
-        console.log("만료안됨");
       }, 60000);
 
       return () => clearInterval(intervalId);

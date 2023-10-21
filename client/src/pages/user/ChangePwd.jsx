@@ -57,7 +57,6 @@ const ChangePwd = () => {
 
   const onFormSubmit = async (data) => {
     try {
-      console.log(data);
       await changePwdApi(data);
       localStorage.removeItem("accessToken");
       localStorage.removeItem("accessTokenExpiration");

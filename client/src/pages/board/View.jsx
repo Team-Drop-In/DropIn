@@ -48,4 +48,12 @@ const Contain = styled(Content)`
   flex-direction: column;
   justify-content: flex-start;
   margin-bottom: 20px;
+
+  p,
+  h1,
+  h2,
+  h3,
+  span {
+    color: white;
+  }
 `;

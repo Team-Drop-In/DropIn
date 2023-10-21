@@ -8,7 +8,7 @@ import { Link } from "react-router-dom";
 const CommentList = () => {
   const commentsData = useRecoilValue(commentsDataState);
 
-  console.log(commentsData);
+  // console.log(commentsData);
 
   const formatDate = (createdDate) => {
     const currentDate = new Date();
