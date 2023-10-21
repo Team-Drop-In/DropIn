@@ -3,25 +3,45 @@ import { COLOR } from "../../styles/theme";
 import { FiThumbsUp } from "react-icons/fi";
 import { Link } from "react-router-dom";
 import { BiSolidUser } from "react-icons/bi";
+import { deleteComment } from "../../apis/api";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
-const CommentList = ({ commentsData, setCommentsData }) => {
+const CommentList = ({ boardId, commentsData, setCommentsData }) => {
+  const navigate = useNavigate();
   const formatDate = (createdDate) => {
     const currentDate = new Date();
     const date = new Date(createdDate);
     const timeDifference = currentDate - date;
 
     if (timeDifference > 24 * 60 * 60 * 1000) {
-      // If older than 24 hours, display in YYYY-MM-DD format
+      // 24시간 이후
       const year = date.getFullYear();
       const month = String(date.getMonth() + 1).padStart(2, "0");
       const day = String(date.getDate()).padStart(2, "0");
       return `${year}-${month}-${day}`;
     } else {
-      // If within 24 hours, display in X hours ago format
+      // 24시간 이내
       const hoursAgo = Math.floor(timeDifference / (60 * 60 * 1000));
       return `${hoursAgo}시간 전`;
     }
   };
+
+  const handleButtonDelete = (commentId) => {
+    deleteComment(boardId, commentId)
+      .then(() => {
+        navigate(`/board/${boardId}`);
+      })
+      .catch((error) => {
+        if (error && error.status === 401) {
+          toast.warning("로그인이 필요합니다");
+        } else {
+          toast.warning("게시글 삭제 실패");
+        }
+      });
+  };
+
+  console.log(commentsData);
 
   return (
     <Wrap>
@@ -46,10 +66,14 @@ const CommentList = ({ commentsData, setCommentsData }) => {
                   </NameAndTime>
                 </User>
                 <LikeAndBtn>
-                  <DeleteAndModify>
-                    <button>수정</button>
-                    <button>삭제</button>
-                  </DeleteAndModify>
+                  {comment.checkWriter && (
+                    <DeleteAndModify>
+                      <button>수정</button>
+                      <button onClick={() => handleButtonDelete(comment.id)}>
+                        삭제
+                      </button>
+                    </DeleteAndModify>
+                  )}
                   <span>
                     <button>
                       <FiThumbsUp />
@@ -74,6 +98,10 @@ const Wrap = styled.section`
   display: flex;
   flex-direction: column;
   margin-top: 15px;
+
+  button {
+    cursor: pointer;
+  }
 `;
 
 const List = styled.ul`

@@ -53,13 +53,13 @@ const List = () => {
     const timeDifference = currentDate - date;
 
     if (timeDifference > 24 * 60 * 60 * 1000) {
-      // If older than 24 hours, display in YYYY-MM-DD format
+      // 24시간 이후
       const year = date.getFullYear();
       const month = String(date.getMonth() + 1).padStart(2, "0");
       const day = String(date.getDate()).padStart(2, "0");
       return `${year}-${month}-${day}`;
     } else {
-      // If within 24 hours, display in X hours ago format
+      // 24시간 이내
       const hoursAgo = Math.floor(timeDifference / (60 * 60 * 1000));
       return `${hoursAgo}시간 전`;
     }

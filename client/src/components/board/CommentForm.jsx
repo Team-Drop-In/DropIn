@@ -4,40 +4,73 @@ import { COLOR } from "../../styles/theme";
 import { useRecoilValue } from "recoil";
 import { commentsDataState, loginState } from "../../atoms/atom";
 import { BiSolidUser } from "react-icons/bi";
+import { useRecoilState } from "recoil";
 import { createComment } from "../../apis/api";
+import { toast } from "react-toastify";
 
-const CommentForm = ({ boardData }) => {
+const CommentForm = ({ boardData, boardId }) => {
+  const [isLogin, setLogin] = useRecoilState(loginState);
   const commentsData = useRecoilValue(commentsDataState);
   const [userData, setUserData] = useState({});
-  const isLogin = useRecoilValue(loginState);
+  const [content, setContent] = useState("");
+  const [errorMsg, setErrorMsg] = useState("댓글을 입력해주세요");
 
   useEffect(() => {
-    setUserData(boardData.loginUserInfo);
+    if (boardData.loginUserInfo) {
+      setUserData(boardData.loginUserInfo);
+    }
   }, [boardData]);
+
+  const postComment = () => {
+    const data = {
+      body: content,
+    };
+
+    if (content === "") {
+      setErrorMsg("입력된 댓글이 없습니다");
+    }
+
+    createComment(boardId, data)
+      .then(() => {})
+      .catch((error) => {
+        if (error && error.status === 401) {
+          toast.warning("로그인이 필요합니다");
+          setLogin(false);
+          localStorage.removeItem("accessToken");
+          localStorage.removeItem("refreshToken");
+          localStorage.removeItem("accessTokenExpiration");
+        }
+      });
+  };
 
   return (
     <Wrap>
-      {userData && (
-        <>
-          <CmCount>댓글 ({commentsData.length})</CmCount>
-          <CmForm>
-            <UserAndWrite>
-              <User>
-                <Imgbox>
-                  {userData.profileImageUrl ? (
-                    <img src={`${userData.profileImageUrl}`} alt="" />
-                  ) : (
-                    <BiSolidUser size={22} color={COLOR.main_yellow} />
-                  )}
-                </Imgbox>
-                {isLogin ? <>{userData.nickname}</> : "로그인이 필요합니다"}
-              </User>
-              <button>작성하기</button>
-            </UserAndWrite>
-            <Comment />
-          </CmForm>
-        </>
-      )}
+      <>
+        <CmCount>댓글 ({commentsData.length})</CmCount>
+        <CmForm>
+          <UserAndWrite>
+            <User>
+              <Imgbox>
+                {userData.profileImageUrl ? (
+                  <img src={`${userData.profileImageUrl}`} alt="" />
+                ) : (
+                  <BiSolidUser size={22} color={COLOR.main_yellow} />
+                )}
+              </Imgbox>
+              {isLogin ? (
+                <>{userData && userData.nickname}</>
+              ) : (
+                "로그인이 필요합니다"
+              )}
+            </User>
+            <button onClick={postComment}>작성하기</button>
+          </UserAndWrite>
+          <Comment
+            placeholder={errorMsg}
+            onChange={(e) => setContent(e.target.value)}
+          />
+        </CmForm>
+      </>
     </Wrap>
   );
 };

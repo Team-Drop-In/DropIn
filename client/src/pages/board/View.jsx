@@ -49,8 +49,9 @@ const View = () => {
     <Container>
       <Contain>
         <MainText boardId={boardId} />
-        <CommentForm boardData={boardData} />
+        <CommentForm boardData={boardData} boardId={boardId} />
         <CommentList
+          boardId={boardId}
           commentsData={commentsData}
           setCommentsData={setCommentsData}
         />

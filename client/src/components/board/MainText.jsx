@@ -9,7 +9,7 @@ import { useRecoilValue, useSetRecoilState } from "recoil";
 import { useEffect, useState } from "react";
 import { deleteBoard, likeBoard } from "../../apis/api";
 import { toast } from "react-toastify";
-import Dompurify from "dompurify";
+import DOMPurify from "dompurify";
 
 const MainText = ({ boardId }) => {
   const boardData = useRecoilValue(boardDataState);
@@ -17,7 +17,6 @@ const MainText = ({ boardId }) => {
   const [viewBody, setBody] = useState("");
   const setLogin = useSetRecoilState(loginState);
   const navigate = useNavigate();
-  console.log(boardData);
 
   const formatDate = (createdDate) => {
     const currentDate = new Date();
@@ -147,9 +146,8 @@ const MainText = ({ boardId }) => {
             </TitleAndTime>
           </Head>
           <Body
-            dangerous
-            lySetInnerHTML={{
-              __html: Dompurify.sanitize(viewBody),
+            dangerouslySetInnerHTML={{
+              __html: DOMPurify.sanitize(viewBody),
             }}
           ></Body>
         </>
