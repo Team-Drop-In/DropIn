@@ -302,10 +302,6 @@ public class BoxQueryRepository {
         if(member == null){
             return Expressions.FALSE;
         }
-        return JPAExpressions.select(review.id)
-                .from(review)
-                .where(review.member.id.eq(member.getId()))
-                .exists();
+        return review.member.id.eq(member.getId());
     }
-
 }
