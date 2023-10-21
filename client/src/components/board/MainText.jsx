@@ -100,9 +100,8 @@ const MainText = ({ boardId }) => {
 
   useEffect(() => {
     setViewData(boardData);
-  }, [boardData]);
+  }, [boardData, viewData.checkWriter]);
 
-  console.log(boardData);
   return (
     <Wrap>
       {viewData.body && (
@@ -122,16 +121,10 @@ const MainText = ({ boardId }) => {
                   <BsEye />
                   {viewData.viewCount}
                 </span>
-                <button>
-                  <span>
-                    {viewData.checkPostLike ? (
-                      <FaThumbsUp />
-                    ) : (
-                      <FiThumbsUp onClick={handleLike} />
-                    )}
-                    {viewData.likeCount}
-                  </span>
+                <button onClick={handleLike}>
+                  {viewData.checkPostLike ? <FaThumbsUp /> : <FiThumbsUp />}
                 </button>
+                <span>{viewData.likeCount}</span>
               </ViewAndLike>
             </NameAndInfo>
             <TitleAndTime>
@@ -139,12 +132,12 @@ const MainText = ({ boardId }) => {
               <div>
                 <p>{formatDate(viewData.createdDate)}</p>
                 <ModifyBtn>
-                  {/* {viewData.checkWriter && ( */}
-                  <>
-                    <Link to={`/board/${boardId}/edit`}>수정</Link>|
-                    <p onClick={handleButtonDelete}>삭제</p>
-                  </>
-                  {/* )} */}
+                  {boardData.loginUserInfo.id === boardData.writer.id && (
+                    <>
+                      <Link to={`/board/${boardId}/edit`}>수정</Link>|
+                      <p onClick={handleButtonDelete}>삭제</p>
+                    </>
+                  )}
                 </ModifyBtn>
               </div>
             </TitleAndTime>

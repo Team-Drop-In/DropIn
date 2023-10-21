@@ -6,13 +6,13 @@ import CommentForm from "../../components/board/CommentForm";
 import CommentList from "../../components/board/CommentList";
 import { getBoard } from "../../apis/api";
 import { useParams } from "react-router-dom";
-import { useSetRecoilState } from "recoil";
+import { useRecoilState } from "recoil";
 import { boardDataState, commentsDataState } from "../../atoms/atom";
 
 const View = () => {
   const { boardId } = useParams();
-  const setBoardData = useSetRecoilState(boardDataState);
-  const setCommentsData = useSetRecoilState(commentsDataState);
+  const [boardData, setBoardData] = useRecoilState(boardDataState);
+  const [commentsData, setCommentsData] = useRecoilState(commentsDataState);
 
   useEffect(() => {
     const fetchListData = async () => {
@@ -32,8 +32,11 @@ const View = () => {
     <Container>
       <Contain>
         <MainText boardId={boardId} />
-        <CommentForm />
-        <CommentList />
+        <CommentForm boardData={boardData} />
+        <CommentList
+          commentsData={commentsData}
+          setCommentsData={setCommentsData}
+        />
       </Contain>
     </Container>
   );

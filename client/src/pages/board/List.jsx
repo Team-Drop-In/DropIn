@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { StyleSheetManager } from "styled-components";
 import { useState, useEffect, useRef } from "react";
 import { Container, Content } from "../../styles/style";
 import { COLOR } from "../../styles/theme";
@@ -8,8 +8,12 @@ import { GoComment } from "react-icons/go";
 import Pagination from "../../components/board/Pagination";
 import { getLists, getListsWithSearch } from "../../apis/api";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
+import { loginState } from "../../atoms/atom";
+import { useSetRecoilState } from "recoil";
 
 const List = () => {
+  const setLogin = useSetRecoilState(loginState);
   const [openOrderBy, setOpenOrderBy] = useState(false);
   const [openSearch, setOpenSearch] = useState(false);
   const [orderBy, setOrderBy] = useState("latest");
@@ -106,14 +110,19 @@ const List = () => {
         const res = await getLists(sortCondition, page);
         setBoardData(res.data);
         setTotalPages(res.pageInfo.totalPages);
-        // console.log(boardData);
       } catch (error) {
-        console.error("Error fetching data:", error);
+        if (error && error.status === 401) {
+          toast.warning("로그인이 필요합니다");
+          setLogin(false);
+          localStorage.removeItem("accessToken");
+          localStorage.removeItem("refreshToken");
+          localStorage.removeItem("accessTokenExpiration");
+        }
       }
     };
 
     fetchListData();
-  }, [orderBy, currentPage]);
+  }, [orderBy, currentPage, setLogin]);
 
   return (
     <Container>
@@ -164,68 +173,73 @@ const List = () => {
             ) : null}
           </Sort>
           <Search>
-            <Searchfield openSearch={openSearch}>
-              <span onClick={() => setOpenSearch((prev) => !prev)}>
-                <p>{getSearchSort()}</p>
-                {openSearch ? <BsChevronUp /> : <BsChevronDown />}
-              </span>
-              {openSearch ? (
-                <SearchWordBtn>
-                  <div>
-                    <button
-                      onClick={() => {
-                        setSearchSort("all");
-                        setOpenSearch(false);
-                      }}
-                    >
-                      전체
-                    </button>
-                  </div>
-                  <div>
-                    <button
-                      onClick={() => {
-                        setSearchSort("post-title");
-                        setOpenSearch(false);
-                      }}
-                    >
-                      제목
-                    </button>
-                  </div>
-                  <div>
-                    <button
-                      onClick={() => {
-                        setSearchSort("post-body");
-                        setOpenSearch(false);
-                      }}
-                    >
-                      내용
-                    </button>
-                  </div>
-                  <div>
-                    <button
-                      onClick={() => {
-                        setSearchSort("nickname");
-                        setOpenSearch(false);
-                      }}
-                    >
-                      작성자
-                    </button>
-                  </div>
-                </SearchWordBtn>
-              ) : null}
-            </Searchfield>
-            <SearchWord>
-              <input
-                name="searchword"
-                placeholder="키워드 검색"
-                onChange={(e) => {
-                  setSearchWord(e.target.value);
-                }}
-              />
-              <SearchBtn onClick={handleSearchClick}>
-                <FiSearch color="white" size={24} />
-              </SearchBtn>
-            </SearchWord>
+            {" "}
+            <StyleSheetManager
+              shouldForwardProp={(prop) => prop !== "openSearch"}
+            >
+              <Searchfield openSearch={openSearch}>
+                <span onClick={() => setOpenSearch((prev) => !prev)}>
+                  <p>{getSearchSort()}</p>
+                  {openSearch ? <BsChevronUp /> : <BsChevronDown />}
+                </span>
+                {openSearch ? (
+                  <SearchWordBtn>
+                    <div>
+                      <button
+                        onClick={() => {
+                          setSearchSort("all");
+                          setOpenSearch(false);
+                        }}
+                      >
+                        전체
+                      </button>
+                    </div>
+                    <div>
+                      <button
+                        onClick={() => {
+                          setSearchSort("post-title");
+                          setOpenSearch(false);
+                        }}
+                      >
+                        제목
+                      </button>
+                    </div>
+                    <div>
+                      <button
+                        onClick={() => {
+                          setSearchSort("post-body");
+                          setOpenSearch(false);
+                        }}
+                      >
+                        내용
+                      </button>
+                    </div>
+                    <div>
+                      <button
+                        onClick={() => {
+                          setSearchSort("nickname");
+                          setOpenSearch(false);
+                        }}
+                      >
+                        작성자
+                      </button>
+                    </div>
+                  </SearchWordBtn>
+                ) : null}
+              </Searchfield>
+              <SearchWord>
+                <input
+                  name="searchword"
+                  placeholder="키워드 검색"
+                  onChange={(e) => {
+                    setSearchWord(e.target.value);
+                  }}
+                />
+                <SearchBtn onClick={handleSearchClick}>
+                  <FiSearch color="white" size={24} />
+                </SearchBtn>
+              </SearchWord>
+            </StyleSheetManager>
           </Search>
         </Option>
         <BoardList>
@@ -375,7 +389,7 @@ const SearchWord = styled.div`
   align-items: center;
   padding: 5px 10px;
   border-left: ${(props) =>
-    props.openSearch ? "2px solid white" : "transparent"};
+    props.$openSearch ? "2px solid white" : "transparent"};
 
   input {
     width: 220px;

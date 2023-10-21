@@ -1,15 +1,10 @@
 import styled from "styled-components";
 import { COLOR } from "../../styles/theme";
 import { FiThumbsUp } from "react-icons/fi";
-import { useRecoilValue } from "recoil";
-import { commentsDataState } from "../../atoms/atom";
 import { Link } from "react-router-dom";
+import { BiSolidUser } from "react-icons/bi";
 
-const CommentList = () => {
-  const commentsData = useRecoilValue(commentsDataState);
-
-  // console.log(commentsData);
-
+const CommentList = ({ commentsData, setCommentsData }) => {
   const formatDate = (createdDate) => {
     const currentDate = new Date();
     const date = new Date(createdDate);
@@ -37,7 +32,11 @@ const CommentList = () => {
               <Info>
                 <User>
                   <Imgbox>
-                    <img src={`${comment.profileImageUrl}`} alt="" />
+                    {comment.profileImageUrl ? (
+                      <img src={`${comment.profileImageUrl}`} alt="" />
+                    ) : (
+                      <BiSolidUser size={22} color={COLOR.main_yellow} />
+                    )}
                   </Imgbox>
                   <NameAndTime>
                     <Link to={`/profile/${comment.writer.id}`}>
@@ -133,6 +132,9 @@ const DeleteAndModify = styled.div`
 const Imgbox = styled.div`
   width: 30px;
   height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   background-color: grey;
   border-radius: 50%;
   overflow: hidden;

@@ -20,11 +20,6 @@ export const boardDataState = atom({
   default: {},
 });
 
-export const boardLikeState = atom({
-  key: "boardLikeState",
-  default: false,
-});
-
 export const commentsDataState = atom({
   key: "commentsData",
   default: [],

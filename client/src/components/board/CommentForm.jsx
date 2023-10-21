@@ -1,26 +1,42 @@
 import styled from "styled-components";
+import { useState, useEffect } from "react";
 import { COLOR } from "../../styles/theme";
 import { useRecoilValue } from "recoil";
-import { commentsDataState } from "../../atoms/atom";
+import { commentsDataState, loginState } from "../../atoms/atom";
+import { BiSolidUser } from "react-icons/bi";
 
-const CommentForm = () => {
+const CommentForm = ({ boardData }) => {
   const commentsData = useRecoilValue(commentsDataState);
+  const [userData, setUserData] = useState({});
+  const isLogin = useRecoilValue(loginState);
+
+  useEffect(() => {
+    setUserData(boardData.loginUserInfo);
+  }, [boardData]);
 
   return (
     <Wrap>
-      <CmCount>댓글 ({commentsData.length})</CmCount>
-      <CmForm>
-        <UserAndWrite>
-          <User>
-            <Imgbox>
-              <img src="http://via.placeholder.com/30x30" alt="" />
-            </Imgbox>
-            닉네임
-          </User>
-          <button>작성하기</button>
-        </UserAndWrite>
-        <Comment />
-      </CmForm>
+      {userData && (
+        <>
+          <CmCount>댓글 ({commentsData.length})</CmCount>
+          <CmForm>
+            <UserAndWrite>
+              <User>
+                <Imgbox>
+                  {userData.profileImageUrl ? (
+                    <img src={`${userData.profileImageUrl}`} alt="" />
+                  ) : (
+                    <BiSolidUser size={22} color={COLOR.main_yellow} />
+                  )}
+                </Imgbox>
+                {isLogin ? <>{userData.nickname}</> : "로그인이 필요합니다"}
+              </User>
+              <button>작성하기</button>
+            </UserAndWrite>
+            <Comment />
+          </CmForm>
+        </>
+      )}
     </Wrap>
   );
 };
@@ -74,6 +90,9 @@ const User = styled.div`
 const Imgbox = styled.div`
   width: 30px;
   height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   background-color: grey;
   border-radius: 50%;
   overflow: hidden;

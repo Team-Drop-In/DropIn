@@ -10,14 +10,26 @@ const api = axios.create({
   withCredentials: true,
 });
 
-// export const getHelloApi = async () => {
-//   try {
-//     const response = await api.get("/hello");
-//     return response.data;
-//   } catch (error) {
-//     throw new Error(error.response);
-//   }
-// };
+api.interceptors.request.use(
+  (config) => {
+    const accessToken = localStorage.getItem("accessToken");
+    if (accessToken) {
+      config.headers.Authorization = accessToken;
+    }
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
+
+const axiosWithoutToken = axios.create({
+  baseURL: api.defaults.baseURL,
+  headers: {
+    "Content-Type": "application/json",
+  },
+  withCredentials: true,
+});
 
 // 회원
 export const loginApi = async (data) => {
@@ -25,13 +37,10 @@ export const loginApi = async (data) => {
     const res = await api.post("/api/login", data);
     const accessToken = res.headers["authorization"];
     localStorage.setItem("accessToken", accessToken);
-    //만료시간 설정
+    // 만료시간 설정
     const expirationTime = new Date();
     expirationTime.setMinutes(expirationTime.getMinutes() + 60);
-
-    localStorage.setItem("accessToken", accessToken);
     localStorage.setItem("accessTokenExpiration", expirationTime);
-    axios.defaults.headers["Authorization"] = accessToken;
   } catch (error) {
     throw error.response;
   }
@@ -88,11 +97,7 @@ export const checkAuthCodeApi = async (data) => {
 
 export const leaveMemberApi = async () => {
   try {
-    const response = await api.delete("/api/member", {
-      headers: {
-        Authorization: `${localStorage.getItem("accessToken")}`,
-      },
-    });
+    const response = await api.delete("/api/member");
     return response.data;
   } catch (error) {
     throw error.response;
@@ -101,11 +106,7 @@ export const leaveMemberApi = async () => {
 
 export const findPwdApi = async (data) => {
   try {
-    const response = await api.post("/api/email/send-new-password", data, {
-      headers: {
-        Authorization: `${localStorage.getItem("accessToken")}`,
-      },
-    });
+    const response = await api.post("/api/email/send-new-password", data);
     return response.data;
   } catch (error) {
     throw error.response;
@@ -114,24 +115,16 @@ export const findPwdApi = async (data) => {
 
 export const getMyInfo = async () => {
   try {
-    const response = await api.get("/api/member/my-page", {
-      headers: {
-        Authorization: `${localStorage.getItem("accessToken")}`,
-      },
-    });
+    const response = await api.get("/api/member/my-page");
     return response.data;
   } catch (error) {
     throw error.response;
   }
 };
 
-export const getNewPwdApi = async (data) => {
+export const getUserInfo = async (userId) => {
   try {
-    const response = await api.post("/api/email/send-new-password", data, {
-      headers: {
-        Authorization: `${localStorage.getItem("accessToken")}`,
-      },
-    });
+    const response = await api.get(`/api/member/${userId}`);
     return response.data;
   } catch (error) {
     throw error.response;
@@ -140,11 +133,7 @@ export const getNewPwdApi = async (data) => {
 
 export const changePwdApi = async (data) => {
   try {
-    const response = await api.put("/api/member/password", data, {
-      headers: {
-        Authorization: `${localStorage.getItem("accessToken")}`,
-      },
-    });
+    const response = await api.put("/api/member/password", data);
     return response.data;
   } catch (error) {
     throw error.response;
@@ -153,12 +142,7 @@ export const changePwdApi = async (data) => {
 
 export const modifyInfo = async (data) => {
   try {
-    const response = await api.put("/api/member", data, {
-      headers: {
-        Authorization: `${localStorage.getItem("accessToken")}`,
-        "Content-Type": "multipart/form-data",
-      },
-    });
+    const response = await api.put("/api/member", data);
     return response.data;
   } catch (error) {
     throw error.response;
@@ -174,7 +158,7 @@ export const getLists = async (sortCondition, page = 0) => {
       sortCondition: sortCondition,
     };
 
-    const response = await api.get("/api/post/search", {
+    const response = await axiosWithoutToken.get("/api/post/search", {
       params: params,
     });
 
@@ -199,7 +183,7 @@ export const getListsWithSearch = async (
       sortCondition: sortCondition,
     };
 
-    const response = await api.get("/api/post/search", {
+    const response = await axiosWithoutToken.get("/api/post/search", {
       params: params,
     });
 
@@ -211,11 +195,7 @@ export const getListsWithSearch = async (
 
 export const getBoard = async (boardId) => {
   try {
-    const response = await api.get(`/api/post/${boardId}`, {
-      headers: {
-        Authorization: `${localStorage.getItem("accessToken")}`,
-      },
-    });
+    const response = await api.get(`/api/post/${boardId}`);
     return response.data;
   } catch (error) {
     throw error.response;
@@ -224,11 +204,7 @@ export const getBoard = async (boardId) => {
 
 export const createBoard = async (data) => {
   try {
-    const response = await api.post("/api/post", data, {
-      headers: {
-        Authorization: `${localStorage.getItem("accessToken")}`,
-      },
-    });
+    const response = await api.post("/api/post", data);
     return response.data;
   } catch (error) {
     throw error.response;
@@ -237,11 +213,7 @@ export const createBoard = async (data) => {
 
 export const updateBoard = async (boardId, data) => {
   try {
-    const response = await api.put(`/api/post/${boardId}`, data, {
-      headers: {
-        Authorization: `${localStorage.getItem("accessToken")}`,
-      },
-    });
+    const response = await api.put(`/api/post/${boardId}`, data);
     return response.data;
   } catch (error) {
     throw error.response;
@@ -250,11 +222,7 @@ export const updateBoard = async (boardId, data) => {
 
 export const deleteBoard = async (boardId) => {
   try {
-    const response = await api.delete(`/api/post/${boardId}`, {
-      headers: {
-        Authorization: `${localStorage.getItem("accessToken")}`,
-      },
-    });
+    const response = await api.delete(`/api/post/${boardId}`);
     return response.data;
   } catch (error) {
     throw error.response;
@@ -263,11 +231,7 @@ export const deleteBoard = async (boardId) => {
 
 export const likeBoard = async (data) => {
   try {
-    const response = await api.post("/api/post/like", data, {
-      headers: {
-        Authorization: `${localStorage.getItem("accessToken")}`,
-      },
-    });
+    const response = await api.post("/api/post/like", data);
     return response.data;
   } catch (error) {
     throw error.response;
