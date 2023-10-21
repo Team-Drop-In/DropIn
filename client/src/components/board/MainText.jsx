@@ -4,7 +4,7 @@ import { FiThumbsUp } from "react-icons/fi";
 import { FaThumbsUp } from "react-icons/fa";
 import { BsEye } from "react-icons/bs";
 import { Link, useNavigate } from "react-router-dom";
-import { boardDataState, boardLikeState, loginState } from "../../atoms/atom";
+import { boardDataState, loginState } from "../../atoms/atom";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { useEffect, useState } from "react";
 import { deleteBoard, likeBoard } from "../../apis/api";
@@ -14,7 +14,6 @@ import Dompurify from "dompurify";
 const MainText = ({ boardId }) => {
   const boardData = useRecoilValue(boardDataState);
   const [viewData, setViewData] = useState({});
-  const setBoardLikeState = useSetRecoilState(boardLikeState);
   const setLogin = useSetRecoilState(loginState);
   const navigate = useNavigate();
 
@@ -59,26 +58,49 @@ const MainText = ({ boardId }) => {
       likeCategoryId: boardId,
       likeCategory: "POST",
     };
-    likeBoard(data)
-      .then(() => {
-        setBoardLikeState(true);
-      })
-      .catch((error) => {
-        if (error && error.status === 401) {
-          toast.warning("로그인이 필요합니다");
-          setLogin(false);
-          localStorage.removeItem("accessToken");
-          localStorage.removeItem("refreshToken");
-          localStorage.removeItem("accessTokenExpiration");
-        }
-      });
+
+    if (viewData.checkPostLike === false) {
+      likeBoard(data)
+        .then(() => {
+          setViewData({
+            ...viewData,
+            checkPostLike: true,
+            likeCount: viewData.likeCount + 1,
+          });
+        })
+        .catch((error) => {
+          if (error && error.status === 401) {
+            toast.warning("로그인이 필요합니다");
+            setLogin(false);
+            localStorage.removeItem("accessToken");
+            localStorage.removeItem("refreshToken");
+            localStorage.removeItem("accessTokenExpiration");
+          }
+        });
+    } else if (viewData.checkPostLike === true) {
+      likeBoard(data)
+        .then(() => {
+          setViewData({
+            ...viewData,
+            checkPostLike: false,
+            likeCount: viewData.likeCount - 1,
+          });
+        })
+        .catch((error) => {
+          if (error && error.status === 401) {
+            toast.warning("로그인이 필요합니다");
+            setLogin(false);
+            localStorage.removeItem("accessToken");
+            localStorage.removeItem("refreshToken");
+            localStorage.removeItem("accessTokenExpiration");
+          }
+        });
+    }
   };
 
   useEffect(() => {
     setViewData(boardData);
   }, [boardData]);
-
-  // console.log(viewData);
 
   return (
     <Wrap>
