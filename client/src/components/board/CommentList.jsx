@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { useState, useEffect } from "react";
 import { COLOR } from "../../styles/theme";
 import { FiThumbsUp } from "react-icons/fi";
 import { Link } from "react-router-dom";
@@ -8,6 +9,8 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 const CommentList = ({ boardId, commentsData, setCommentsData }) => {
+  const [isEdit, setIsEdit] = useState(false);
+  const [content, setContent] = useState("");
   const navigate = useNavigate();
   const formatDate = (createdDate) => {
     const currentDate = new Date();
@@ -27,10 +30,19 @@ const CommentList = ({ boardId, commentsData, setCommentsData }) => {
     }
   };
 
+  const removeCommentById = (commentId) => {
+    setCommentsData((prevComments) => {
+      const filteredComments = prevComments.filter(
+        (comment) => comment.id !== commentId
+      );
+      return filteredComments;
+    });
+  };
+
   const handleButtonDelete = (commentId) => {
     deleteComment(boardId, commentId)
       .then(() => {
-        navigate(`/board/${boardId}`);
+        removeCommentById(commentId);
       })
       .catch((error) => {
         if (error && error.status === 401) {
@@ -40,6 +52,10 @@ const CommentList = ({ boardId, commentsData, setCommentsData }) => {
         }
       });
   };
+
+  useEffect(() => {
+    setContent(commentsData.body);
+  }, [commentsData]);
 
   console.log(commentsData);
 
@@ -68,7 +84,7 @@ const CommentList = ({ boardId, commentsData, setCommentsData }) => {
                 <LikeAndBtn>
                   {comment.checkWriter && (
                     <DeleteAndModify>
-                      <button>수정</button>
+                      <button onClick={() => setIsEdit(true)}>수정</button>
                       <button onClick={() => handleButtonDelete(comment.id)}>
                         삭제
                       </button>
@@ -82,7 +98,13 @@ const CommentList = ({ boardId, commentsData, setCommentsData }) => {
                   </span>
                 </LikeAndBtn>
               </Info>
-              <Content>{comment.body}</Content>
+              {isEdit ? (
+                <>
+                  <ModifyForm onChange={(e) => setContent(e.target.value)} />
+                </>
+              ) : (
+                <Content>{comment.body}</Content>
+              )}
             </CommentItem>
           ))}
       </List>
@@ -195,4 +217,18 @@ const Content = styled.div`
   min-height: 40px;
   height: fit-content;
   margin-top: 15px;
+`;
+
+const ModifyForm = styled.textarea`
+  margin-top: 10px;
+  width: 100%;
+  min-height: 95px;
+  height: fit-content;
+  resize: none;
+  background-color: white;
+  outline: none;
+  padding: 8px 8px;
+  font-size: 0.9rem;
+  border-radius: 5px;
+  /* white-space: pre; */
 `;

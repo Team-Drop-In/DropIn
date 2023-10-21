@@ -31,6 +31,14 @@ const axiosWithoutToken = axios.create({
   withCredentials: true,
 });
 
+const axiosFormdata = axios.create({
+  baseURL: baseURL,
+  headers: {
+    "Content-Type": "multipart/form-data",
+  },
+  withCredentials: true,
+});
+
 // 회원
 export const loginApi = async (data) => {
   try {
@@ -142,7 +150,13 @@ export const changePwdApi = async (data) => {
 
 export const modifyInfo = async (data) => {
   try {
-    const response = await api.put("/api/member", data);
+    const accessToken = localStorage.getItem("accessToken");
+    const response = await axiosFormdata.post("/api/member", data, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+        Authorization: accessToken,
+      },
+    });
     return response.data;
   } catch (error) {
     throw error.response;
