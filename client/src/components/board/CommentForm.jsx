@@ -4,6 +4,7 @@ import { COLOR } from "../../styles/theme";
 import { useRecoilValue } from "recoil";
 import { commentsDataState, loginState } from "../../atoms/atom";
 import { BiSolidUser } from "react-icons/bi";
+import { createComment } from "../../apis/api";
 
 const CommentForm = ({ boardData }) => {
   const commentsData = useRecoilValue(commentsDataState);

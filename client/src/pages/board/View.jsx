@@ -5,14 +5,22 @@ import MainText from "../../components/board/MainText";
 import CommentForm from "../../components/board/CommentForm";
 import CommentList from "../../components/board/CommentList";
 import { getBoard } from "../../apis/api";
-import { useParams } from "react-router-dom";
-import { useRecoilState } from "recoil";
-import { boardDataState, commentsDataState } from "../../atoms/atom";
+import { useParams, useNavigate } from "react-router-dom";
+import { useRecoilState, useSetRecoilState } from "recoil";
+import {
+  boardDataState,
+  commentsDataState,
+  loginState,
+} from "../../atoms/atom";
+
+import { toast } from "react-toastify";
 
 const View = () => {
   const { boardId } = useParams();
   const [boardData, setBoardData] = useRecoilState(boardDataState);
   const [commentsData, setCommentsData] = useRecoilState(commentsDataState);
+  const navigate = useNavigate();
+  const setLogin = useSetRecoilState(loginState);
 
   useEffect(() => {
     const fetchListData = async () => {
@@ -21,12 +29,21 @@ const View = () => {
         setBoardData(res.data);
         setCommentsData(res.data.comments);
       } catch (error) {
-        console.error("Error fetching data:", error);
+        if (error && error.status === 401) {
+          toast.warning("로그인이 필요합니다");
+          setLogin(false);
+          navigate("/login");
+          localStorage.removeItem("accessToken");
+          localStorage.removeItem("refreshToken");
+          localStorage.removeItem("accessTokenExpiration");
+        }
       }
     };
 
     fetchListData();
-  }, [boardId, setBoardData, setCommentsData]);
+  }, [boardId, navigate, setBoardData, setCommentsData, setLogin]);
+
+  console.log(boardData);
 
   return (
     <Container>

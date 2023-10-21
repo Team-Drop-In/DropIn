@@ -1,4 +1,4 @@
-import styled, { StyleSheetManager } from "styled-components";
+import styled from "styled-components";
 import { useState, useEffect, useRef } from "react";
 import { Container, Content } from "../../styles/style";
 import { COLOR } from "../../styles/theme";
@@ -173,73 +173,68 @@ const List = () => {
             ) : null}
           </Sort>
           <Search>
-            {" "}
-            <StyleSheetManager
-              shouldForwardProp={(prop) => prop !== "openSearch"}
-            >
-              <Searchfield openSearch={openSearch}>
-                <span onClick={() => setOpenSearch((prev) => !prev)}>
-                  <p>{getSearchSort()}</p>
-                  {openSearch ? <BsChevronUp /> : <BsChevronDown />}
-                </span>
-                {openSearch ? (
-                  <SearchWordBtn>
-                    <div>
-                      <button
-                        onClick={() => {
-                          setSearchSort("all");
-                          setOpenSearch(false);
-                        }}
-                      >
-                        전체
-                      </button>
-                    </div>
-                    <div>
-                      <button
-                        onClick={() => {
-                          setSearchSort("post-title");
-                          setOpenSearch(false);
-                        }}
-                      >
-                        제목
-                      </button>
-                    </div>
-                    <div>
-                      <button
-                        onClick={() => {
-                          setSearchSort("post-body");
-                          setOpenSearch(false);
-                        }}
-                      >
-                        내용
-                      </button>
-                    </div>
-                    <div>
-                      <button
-                        onClick={() => {
-                          setSearchSort("nickname");
-                          setOpenSearch(false);
-                        }}
-                      >
-                        작성자
-                      </button>
-                    </div>
-                  </SearchWordBtn>
-                ) : null}
-              </Searchfield>
-              <SearchWord>
-                <input
-                  name="searchword"
-                  placeholder="키워드 검색"
-                  onChange={(e) => {
-                    setSearchWord(e.target.value);
-                  }}
-                />
-                <SearchBtn onClick={handleSearchClick}>
-                  <FiSearch color="white" size={24} />
-                </SearchBtn>
-              </SearchWord>
-            </StyleSheetManager>
+            <Searchfield openSearch={openSearch}>
+              <span onClick={() => setOpenSearch((prev) => !prev)}>
+                <p>{getSearchSort()}</p>
+                {openSearch ? <BsChevronUp /> : <BsChevronDown />}
+              </span>
+              {openSearch ? (
+                <SearchWordBtn>
+                  <div>
+                    <button
+                      onClick={() => {
+                        setSearchSort("all");
+                        setOpenSearch(false);
+                      }}
+                    >
+                      전체
+                    </button>
+                  </div>
+                  <div>
+                    <button
+                      onClick={() => {
+                        setSearchSort("post-title");
+                        setOpenSearch(false);
+                      }}
+                    >
+                      제목
+                    </button>
+                  </div>
+                  <div>
+                    <button
+                      onClick={() => {
+                        setSearchSort("post-body");
+                        setOpenSearch(false);
+                      }}
+                    >
+                      내용
+                    </button>
+                  </div>
+                  <div>
+                    <button
+                      onClick={() => {
+                        setSearchSort("nickname");
+                        setOpenSearch(false);
+                      }}
+                    >
+                      작성자
+                    </button>
+                  </div>
+                </SearchWordBtn>
+              ) : null}
+            </Searchfield>
+            <SearchWord>
+              <input
+                name="searchword"
+                placeholder="키워드 검색"
+                onChange={(e) => {
+                  setSearchWord(e.target.value);
+                }}
+              />
+              <SearchBtn onClick={handleSearchClick}>
+                <FiSearch color="white" size={24} />
+              </SearchBtn>
+            </SearchWord>
           </Search>
         </Option>
         <BoardList>

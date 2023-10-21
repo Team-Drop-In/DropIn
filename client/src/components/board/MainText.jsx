@@ -14,8 +14,10 @@ import Dompurify from "dompurify";
 const MainText = ({ boardId }) => {
   const boardData = useRecoilValue(boardDataState);
   const [viewData, setViewData] = useState({});
+  const [viewBody, setBody] = useState("");
   const setLogin = useSetRecoilState(loginState);
   const navigate = useNavigate();
+  console.log(boardData);
 
   const formatDate = (createdDate) => {
     const currentDate = new Date();
@@ -100,6 +102,7 @@ const MainText = ({ boardId }) => {
 
   useEffect(() => {
     setViewData(boardData);
+    setBody(boardData.body);
   }, [boardData, viewData.checkWriter]);
 
   return (
@@ -132,19 +135,21 @@ const MainText = ({ boardId }) => {
               <div>
                 <p>{formatDate(viewData.createdDate)}</p>
                 <ModifyBtn>
-                  {boardData.loginUserInfo.id === boardData.writer.id && (
-                    <>
-                      <Link to={`/board/${boardId}/edit`}>수정</Link>|
-                      <p onClick={handleButtonDelete}>삭제</p>
-                    </>
-                  )}
+                  {viewData.loginUserInfo &&
+                    viewData.loginUserInfo.id === viewData.writer.id && (
+                      <>
+                        <Link to={`/board/${boardId}/edit`}>수정</Link>|
+                        <p onClick={handleButtonDelete}>삭제</p>
+                      </>
+                    )}
                 </ModifyBtn>
               </div>
             </TitleAndTime>
           </Head>
           <Body
-            dangerouslySetInnerHTML={{
-              __html: Dompurify.sanitize(viewData.body),
+            dangerous
+            lySetInnerHTML={{
+              __html: Dompurify.sanitize(viewBody),
             }}
           ></Body>
         </>

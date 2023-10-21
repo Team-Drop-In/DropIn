@@ -237,3 +237,36 @@ export const likeBoard = async (data) => {
     throw error.response;
   }
 };
+
+// 보드-댓글
+export const createComment = async (boardId, data) => {
+  try {
+    const response = await api.post(`/api/post/${boardId}/comment`, data);
+    return response.data;
+  } catch (error) {
+    throw error.response;
+  }
+};
+
+export const updateComment = async (boardId, commentId, data) => {
+  try {
+    const response = await api.put(
+      `/api/post/${boardId}/comment/${commentId}`,
+      data
+    );
+    return response.data;
+  } catch (error) {
+    throw error.response;
+  }
+};
+
+export const deleteComment = async (boardId, commentId) => {
+  try {
+    const response = await api.delete(
+      `/api/post/${boardId}/comment/${commentId}`
+    );
+    return response.data;
+  } catch (error) {
+    throw error.response;
+  }
+};
