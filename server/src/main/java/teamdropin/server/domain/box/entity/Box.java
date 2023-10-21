@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import teamdropin.server.domain.like.entity.Like;
 import teamdropin.server.domain.member.entity.Member;
+import teamdropin.server.domain.record.entity.Record;
 import teamdropin.server.domain.review.entity.Review;
 import teamdropin.server.global.audit.BaseTimeEntity;
 
@@ -68,6 +69,10 @@ public class Box extends BaseTimeEntity {
     @Builder.Default
     @OneToMany(mappedBy = "box")
     private List<Review> reviews = new ArrayList<>();
+
+    @Builder.Default
+    @OneToMany(mappedBy = "box")
+    private List<Record> records = new ArrayList<>();
 
     public void addMember(Member member){
         this.member = member;

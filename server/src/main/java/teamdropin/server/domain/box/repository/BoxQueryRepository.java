@@ -39,6 +39,7 @@ import java.util.stream.Collectors;
 import static com.querydsl.core.group.GroupBy.groupBy;
 import static com.querydsl.core.types.dsl.Expressions.list;
 import static org.springframework.util.StringUtils.hasText;
+
 import static teamdropin.server.domain.box.entity.QBox.box;
 import static teamdropin.server.domain.box.entity.QBoxImage.boxImage;
 import static teamdropin.server.domain.box.entity.QBoxTag.*;

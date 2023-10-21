@@ -5,6 +5,7 @@ import teamdropin.server.domain.box.entity.Box;
 import teamdropin.server.domain.comment.entity.Comment;
 import teamdropin.server.domain.member.entity.Member;
 import teamdropin.server.domain.post.entity.Post;
+import teamdropin.server.domain.record.entity.Record;
 import teamdropin.server.domain.review.entity.Review;
 import teamdropin.server.global.util.enumValid.ValidEnum;
 
@@ -45,6 +46,9 @@ public class Like {
     @JoinColumn(name = "review_id")
     private Review review;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "record_id")
+    private Record record;
 
 
     public Like(Member member, Post post, LikeCategory likeCategory){
