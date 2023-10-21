@@ -102,6 +102,7 @@ const MainText = ({ boardId }) => {
     setViewData(boardData);
   }, [boardData]);
 
+  console.log(boardData);
   return (
     <Wrap>
       {viewData.body && (
