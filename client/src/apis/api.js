@@ -151,7 +151,7 @@ export const changePwdApi = async (data) => {
 export const modifyInfo = async (data) => {
   try {
     const accessToken = localStorage.getItem("accessToken");
-    const response = await axiosFormdata.post("/api/member", data, {
+    const response = await axiosFormdata.put("/api/member", data, {
       headers: {
         "Content-Type": "multipart/form-data",
         Authorization: accessToken,

@@ -4,14 +4,12 @@ import { COLOR } from "../../styles/theme";
 import { FiThumbsUp } from "react-icons/fi";
 import { Link } from "react-router-dom";
 import { BiSolidUser } from "react-icons/bi";
-import { deleteComment } from "../../apis/api";
-import { useNavigate } from "react-router-dom";
+import { updateComment, deleteComment } from "../../apis/api";
 import { toast } from "react-toastify";
 
 const CommentList = ({ boardId, commentsData, setCommentsData }) => {
-  const [isEdit, setIsEdit] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
   const [content, setContent] = useState("");
-  const navigate = useNavigate();
   const formatDate = (createdDate) => {
     const currentDate = new Date();
     const date = new Date(createdDate);
@@ -39,6 +37,43 @@ const CommentList = ({ boardId, commentsData, setCommentsData }) => {
     });
   };
 
+  const updateCommentContent = (commentId, newContent) => {
+    setCommentsData((prevComments) => {
+      const updatedComments = prevComments.map((comment) => {
+        if (comment.id === commentId) {
+          return {
+            ...comment,
+            body: newContent,
+          };
+        }
+        return comment;
+      });
+      return updatedComments;
+    });
+  };
+
+  const handleEdit = (commentId, currentContent) => {
+    setIsEditing(commentId);
+    setContent(currentContent);
+  };
+
+  const handleSave = (commentId) => {
+    const data = {
+      body: content,
+    };
+    updateComment(boardId, commentId, data)
+      .then(() => {
+        updateCommentContent(commentId, content);
+      })
+      .catch((error) => {
+        if (error && error.status === 401) {
+          toast.warning("로그인이 필요합니다");
+        } else {
+          toast.warning("댓글 수정 실패");
+        }
+      });
+  };
+
   const handleButtonDelete = (commentId) => {
     deleteComment(boardId, commentId)
       .then(() => {
@@ -48,7 +83,7 @@ const CommentList = ({ boardId, commentsData, setCommentsData }) => {
         if (error && error.status === 401) {
           toast.warning("로그인이 필요합니다");
         } else {
-          toast.warning("게시글 삭제 실패");
+          toast.warning("댓글 삭제 실패");
         }
       });
   };
@@ -84,7 +119,16 @@ const CommentList = ({ boardId, commentsData, setCommentsData }) => {
                 <LikeAndBtn>
                   {comment.checkWriter && (
                     <DeleteAndModify>
-                      <button onClick={() => setIsEdit(true)}>수정</button>
+                      {isEditing === comment.id ? (
+                        <button
+                          onClick={() => handleEdit(comment.id, comment.body)}
+                        >
+                          저장
+                        </button>
+                      ) : (
+                        <button onClick={() => handleSave()}>수정</button>
+                      )}
+
                       <button onClick={() => handleButtonDelete(comment.id)}>
                         삭제
                       </button>
@@ -98,9 +142,12 @@ const CommentList = ({ boardId, commentsData, setCommentsData }) => {
                   </span>
                 </LikeAndBtn>
               </Info>
-              {isEdit ? (
+              {isEditing === comment.id ? (
                 <>
-                  <ModifyForm onChange={(e) => setContent(e.target.value)} />
+                  <ModifyForm
+                    value={content}
+                    onChange={(e) => setContent(e.target.value)}
+                  />
                 </>
               ) : (
                 <Content>{comment.body}</Content>
