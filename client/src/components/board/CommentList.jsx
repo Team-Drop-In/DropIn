@@ -64,6 +64,7 @@ const CommentList = ({ boardId, commentsData, setCommentsData }) => {
     updateComment(boardId, commentId, data)
       .then(() => {
         updateCommentContent(commentId, content);
+        setIsEditing(false);
       })
       .catch((error) => {
         if (error && error.status === 401) {
@@ -120,13 +121,15 @@ const CommentList = ({ boardId, commentsData, setCommentsData }) => {
                   {comment.checkWriter && (
                     <DeleteAndModify>
                       {isEditing === comment.id ? (
-                        <button
-                          onClick={() => handleEdit(comment.id, comment.body)}
-                        >
+                        <button onClick={() => handleSave(comment.id)}>
                           저장
                         </button>
                       ) : (
-                        <button onClick={() => handleSave()}>수정</button>
+                        <button
+                          onClick={() => handleEdit(comment.id, comment.body)}
+                        >
+                          수정
+                        </button>
                       )}
 
                       <button onClick={() => handleButtonDelete(comment.id)}>
