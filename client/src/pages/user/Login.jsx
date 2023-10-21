@@ -72,8 +72,9 @@ const Login = () => {
 
   const handleGoogleLogin = () => {
     googleloginApi();
-    const currentPath = window.location.pathname;
-    console.log(currentPath);
+    const expirationTime = new Date();
+    expirationTime.setMinutes(expirationTime.getMinutes() + 60);
+    localStorage.setItem("accessTokenExpiration", expirationTime);
   };
 
   return (
