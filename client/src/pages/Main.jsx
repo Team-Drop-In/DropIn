@@ -1,7 +1,7 @@
 import styled from "styled-components";
-import { Container, Content } from "../styles/style";
-import { COLOR } from "../styles/theme";
 import { SectionsContainer, Section } from "react-fullpage";
+import DropIn from "../components/main/Dropin";
+import About from "../components/main/About";
 
 const Main = () => {
   const options = {
@@ -14,25 +14,17 @@ const Main = () => {
   };
 
   return (
-    <Container>
-      <Content>
-        <SectionsContainer {...options}>
-          <Section>
-            <MainSection>1dfsdfsd</MainSection>
-          </Section>
-          <Section>
-            <MainSection>2sdfsedfsdfsd</MainSection>
-          </Section>
-        </SectionsContainer>
-      </Content>
-    </Container>
+    <main>
+      <SectionsContainer {...options}>
+        <Section>
+          <DropIn />
+        </Section>
+        <Section>
+          <About />
+        </Section>
+      </SectionsContainer>
+    </main>
   );
 };
 
 export default Main;
-
-const MainSection = styled(Content)`
-  height: calc(100vh - 60px);
-  flex-direction: column;
-  justify-content: flex-start;
-`;

@@ -55,6 +55,7 @@ const Wrap = styled(Container)`
   position: fixed;
   z-index: 50;
   border-bottom: 1px solid ${COLOR.border_grey};
+  background-color: black;
 
   button {
     cursor: pointer;

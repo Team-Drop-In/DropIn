@@ -296,6 +296,7 @@ const Contain = styled(Content)`
   min-height: calc(100vh - 60px);
   height: fit-content;
   display: flex;
+  position: relative;
   flex-direction: column;
   justify-content: flex-start;
 
