@@ -9,7 +9,7 @@ import { useRecoilValue, useSetRecoilState } from "recoil";
 import { useEffect, useState } from "react";
 import { deleteBoard, likeBoard } from "../../apis/api";
 import { toast } from "react-toastify";
-import ReactMarkdown from "react-markdown";
+import Dompurify from "dompurify";
 
 const MainText = ({ boardId }) => {
   const boardData = useRecoilValue(boardDataState);
@@ -35,8 +35,6 @@ const MainText = ({ boardId }) => {
       return `${hoursAgo}시간 전`;
     }
   };
-
-  console.log(viewData);
 
   const handleButtonDelete = () => {
     deleteBoard(boardId)
@@ -79,6 +77,8 @@ const MainText = ({ boardId }) => {
   useEffect(() => {
     setViewData(boardData);
   }, [boardData]);
+
+  console.log(viewData.body);
 
   return (
     <Wrap>
@@ -126,10 +126,11 @@ const MainText = ({ boardId }) => {
               </div>
             </TitleAndTime>
           </Head>
-          <Body>
-            {" "}
-            <ReactMarkdown source={viewData.body} />
-          </Body>
+          <Body
+            dangerouslySetInnerHTML={{
+              __html: Dompurify.sanitize(viewData.body),
+            }}
+          ></Body>
         </>
       )}
     </Wrap>
