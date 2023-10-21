@@ -211,8 +211,11 @@ export const getListsWithSearch = async (
 
 export const getBoard = async (boardId) => {
   try {
-    const response = await api.get(`/api/post/${boardId}`);
-
+    const response = await api.get(`/api/post/${boardId},`, {
+      headers: {
+        Authorization: `${localStorage.getItem("accessToken")}`,
+      },
+    });
     return response.data;
   } catch (error) {
     throw error.response;
