@@ -11,6 +11,7 @@ import { toast } from "react-toastify";
 const CommentList = ({ boardId, commentsData, setCommentsData }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [content, setContent] = useState("");
+  const [profile, setProfile] = useState("");
   const formatDate = (createdDate) => {
     const currentDate = new Date();
     const date = new Date(createdDate);
@@ -156,9 +157,9 @@ const CommentList = ({ boardId, commentsData, setCommentsData }) => {
 
   useEffect(() => {
     setContent(commentsData.body);
+    setProfile(commentsData.profileImageUrl);
+    console.log(commentsData.writer);
   }, [commentsData]);
-
-  console.log(commentsData);
 
   return (
     <Wrap>
@@ -169,8 +170,8 @@ const CommentList = ({ boardId, commentsData, setCommentsData }) => {
               <Info>
                 <User>
                   <Imgbox>
-                    {comment.profileImageUrl ? (
-                      <img src={`${comment.profileImageUrl}`} alt="" />
+                    {comment.writer.profileImageUrl ? (
+                      <img src={`${comment.writer?.profileImageUrl}`} alt="" />
                     ) : (
                       <BiSolidUser size={22} color={COLOR.main_yellow} />
                     )}

@@ -14,6 +14,7 @@ export const isAccessTokenExpired = () => {
 export const handleTokenExpiration = () => {
   localStorage.removeItem("accessToken");
   localStorage.removeItem("accessTokenExpiration");
+  localStorage.removeItem("profileImage");
 
   window.location.href = "/login";
 };

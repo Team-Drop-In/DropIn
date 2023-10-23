@@ -60,6 +60,7 @@ const ChangePwd = () => {
       await changePwdApi(data);
       localStorage.removeItem("accessToken");
       localStorage.removeItem("accessTokenExpiration");
+      localStorage.removeItem("profileImage");
       setLogin(false);
       navigate("/login");
     } catch (error) {

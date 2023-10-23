@@ -34,7 +34,14 @@ const Header = () => {
           </Tab>
           {isLogin ? (
             <LoginUser onClick={handleModal}>
-              <BiSolidUser size={25} color={COLOR.main_yellow} />
+              {localStorage.getItem("profileImage") ? (
+                <ProfileImg
+                  src={localStorage.getItem("profileImage")}
+                  alt="Profile"
+                />
+              ) : (
+                <BiSolidUser size={25} color={COLOR.main_yellow} />
+              )}
             </LoginUser>
           ) : (
             <User>
@@ -100,6 +107,12 @@ const LoginUser = styled.div`
   justify-content: center;
   align-items: center;
   background-color: ${COLOR.btn_grey};
+`;
+
+const ProfileImg = styled.img`
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
 `;
 
 const Position = styled.div`

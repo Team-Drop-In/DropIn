@@ -117,6 +117,7 @@ const List = () => {
           localStorage.removeItem("accessToken");
           localStorage.removeItem("refreshToken");
           localStorage.removeItem("accessTokenExpiration");
+          localStorage.removeItem("profileImage");
         }
       }
     };

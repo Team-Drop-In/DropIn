@@ -49,6 +49,7 @@ export const loginApi = async (data) => {
     const expirationTime = new Date();
     expirationTime.setMinutes(expirationTime.getMinutes() + 60);
     localStorage.setItem("accessTokenExpiration", expirationTime);
+    localStorage.setItem("profileImage", res.data.profileImageUrl);
   } catch (error) {
     throw error.response;
   }

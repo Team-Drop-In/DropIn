@@ -55,6 +55,7 @@ const FindPwd = () => {
       await findPwdApi(data);
       localStorage.removeItem("accessToken");
       localStorage.removeItem("accessTokenExpiration");
+      localStorage.removeItem("profileImage");
       setLogin(false);
       navigate("/login");
       setFindPwd(true);

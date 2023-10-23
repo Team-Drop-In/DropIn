@@ -55,7 +55,7 @@ const Login = () => {
 
   const onFormSubmit = (data) => {
     loginApi(data)
-      .then(() => {
+      .then((res) => {
         navigate("/");
         setLogin(true);
       })

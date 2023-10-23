@@ -48,6 +48,7 @@ const MainText = ({ boardId }) => {
           localStorage.removeItem("accessToken");
           localStorage.removeItem("refreshToken");
           localStorage.removeItem("accessTokenExpiration");
+          localStorage.removeItem("profileImage");
         } else {
           toast.warning("게시글 삭제 실패");
         }
@@ -76,6 +77,7 @@ const MainText = ({ boardId }) => {
             localStorage.removeItem("accessToken");
             localStorage.removeItem("refreshToken");
             localStorage.removeItem("accessTokenExpiration");
+            localStorage.removeItem("profileImage");
           }
         });
     } else if (viewData.checkPostLike === true) {
@@ -94,6 +96,7 @@ const MainText = ({ boardId }) => {
             localStorage.removeItem("accessToken");
             localStorage.removeItem("refreshToken");
             localStorage.removeItem("accessTokenExpiration");
+            localStorage.removeItem("profileImage");
           }
         });
     }

@@ -36,14 +36,13 @@ const View = () => {
           localStorage.removeItem("accessToken");
           localStorage.removeItem("refreshToken");
           localStorage.removeItem("accessTokenExpiration");
+          localStorage.removeItem("profileImage");
         }
       }
     };
 
     fetchListData();
   }, [boardId, navigate, setBoardData, setCommentsData, setLogin]);
-
-  console.log(boardData);
 
   return (
     <Container>
