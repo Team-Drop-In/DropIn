@@ -43,7 +43,7 @@ const Header = () => {
           </Tab>
           {isLogin ? (
             <LoginUser onClick={handleModal}>
-              {profileImg === "null" ? (
+              {profileImg === null || profileImg === "null" ? (
                 <BiSolidUser size={25} color={COLOR.main_yellow} />
               ) : (
                 <ProfileImg src={profileImg} alt="Profile" />
