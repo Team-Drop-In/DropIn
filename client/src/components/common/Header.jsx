@@ -26,7 +26,7 @@ const Header = () => {
     setProfileImg(profile);
   }, [profile]);
 
-  console.log(profile);
+  // console.log(profile);
 
   return (
     <>
