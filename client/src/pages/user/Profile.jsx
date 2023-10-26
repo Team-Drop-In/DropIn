@@ -36,7 +36,7 @@ const Profile = () => {
     fetchUserData();
   }, [userId]);
 
-  console.log(userData);
+  // console.log(userData);
   return (
     <Container>
       {userData && (
