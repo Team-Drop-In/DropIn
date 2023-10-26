@@ -158,7 +158,6 @@ const CommentList = ({ boardId, commentsData, setCommentsData }) => {
   useEffect(() => {
     setContent(commentsData.body);
     setProfile(commentsData.profileImageUrl);
-    console.log(commentsData.writer);
   }, [commentsData]);
 
   return (

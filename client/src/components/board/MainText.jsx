@@ -6,6 +6,7 @@ import { BsEye } from "react-icons/bs";
 import { Link, useNavigate } from "react-router-dom";
 import { boardDataState, loginState } from "../../atoms/atom";
 import { useRecoilValue, useSetRecoilState } from "recoil";
+import { BiSolidUser } from "react-icons/bi";
 import { useEffect, useState } from "react";
 import { deleteBoard, likeBoard } from "../../apis/api";
 import { toast } from "react-toastify";
@@ -115,7 +116,11 @@ const MainText = ({ boardId }) => {
             <NameAndInfo>
               <User>
                 <Imgbox>
-                  <img src={`${viewData.profileImageUrl}`} alt="" />
+                  {viewData.writer.profileImageUrl ? (
+                    <img src={`${viewData.writer?.profileImageUrl}`} alt="" />
+                  ) : (
+                    <BiSolidUser size={22} color={COLOR.main_yellow} />
+                  )}
                 </Imgbox>
                 <Link to={`/profile/${viewData.writer.id}`}>
                   {viewData.writer.nickname}
