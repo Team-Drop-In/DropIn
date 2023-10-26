@@ -246,7 +246,7 @@ const List = () => {
                   <Info>
                     <NameAndTime>
                       <Imgbox>
-                        <img src={`${boardData.profileImageUrl}`} alt="" />
+                        <img src={`${data.writer.profileImageUrl}`} alt="" />
                       </Imgbox>
                       <Link to={`/profile/${data.writer.id}`}>
                         {data.writer.nickname}

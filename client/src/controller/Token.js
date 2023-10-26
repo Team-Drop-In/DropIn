@@ -10,6 +10,7 @@ const TokenPage = () => {
 
   const searchParams = useMemo(
     () => new URLSearchParams(location.search),
+
     [location.search]
   );
 
@@ -17,10 +18,12 @@ const TokenPage = () => {
     try {
       const accessToken = searchParams.get("access_token");
       const refreshToken = searchParams.get("refresh_token");
+      const profileImage = searchParams.get("profileImageUrl");
 
       if (accessToken && refreshToken) {
         localStorage.setItem("accessToken", `Bearer ${accessToken}`);
         localStorage.setItem("refreshToken", `Bearer ${refreshToken}`);
+        localStorage.setItem("profileImage", profileImage);
 
         setLogin(true);
         navigate("/");
