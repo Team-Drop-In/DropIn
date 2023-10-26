@@ -5,6 +5,7 @@ import { COLOR } from "../../styles/theme";
 import { FiSearch, FiThumbsUp } from "react-icons/fi";
 import { BsEye, BsChevronDown, BsChevronUp } from "react-icons/bs";
 import { GoComment } from "react-icons/go";
+import { BiSolidUser } from "react-icons/bi";
 import Pagination from "../../components/board/Pagination";
 import { getLists, getListsWithSearch } from "../../apis/api";
 import { Link } from "react-router-dom";
@@ -246,7 +247,11 @@ const List = () => {
                   <Info>
                     <NameAndTime>
                       <Imgbox>
-                        <img src={`${data.writer.profileImageUrl}`} alt="" />
+                        {data.writer.profileImageUrl ? (
+                          <img src={`${data.writer.profileImageUrl}`} alt="" />
+                        ) : (
+                          <BiSolidUser size={14} color={COLOR.main_yellow} />
+                        )}
                       </Imgbox>
                       <Link to={`/profile/${data.writer.id}`}>
                         {data.writer.nickname}
@@ -270,7 +275,7 @@ const List = () => {
                       <Tag>{/* <p>{data.category}</p> */}</Tag>
                       <p>
                         <FiThumbsUp />
-                        {data.likeCount}
+                        <span>{data.likeCount}</span>
                       </p>
                     </span>
                   </TitleAndTag>
@@ -488,6 +493,9 @@ const ListItem = styled.li`
 const Imgbox = styled.div`
   width: 20px;
   height: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   background-color: grey;
   border-radius: 50%;
   overflow: hidden;
@@ -497,6 +505,10 @@ const Imgbox = styled.div`
     width: 20px;
     height: 20px;
     object-fit: contain;
+  }
+
+  & > svg {
+    margin-right: 0px;
   }
 `;
 
@@ -511,7 +523,7 @@ const Info = styled.div`
     font-size: 0.9rem;
   }
 
-  svg {
+  span > p > svg {
     margin-right: 2px;
   }
 `;
@@ -546,6 +558,7 @@ const TitleAndTag = styled.div`
     margin-right: 2px;
   }
 `;
+
 const Title = styled.span`
   font-size: 1.1rem;
   line-height: 1rem;
