@@ -103,6 +103,7 @@ const ModifyForm = ({
       const res = await modifyInfo(formData);
       setUsername(selectedNickname);
       setUserimgUrl(res.profileImageUrl);
+      localStorage.setItem("profileImage", res.profileImageUrl);
       setChangeInfo(false);
       navigate("/mypage");
     } catch (error) {
