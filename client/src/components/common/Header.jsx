@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { useState, useEffect } from "react";
 import { Container, Content } from "../../styles/style";
 import LogoImage from "../../images/logo.svg";
 import { BiSolidUser } from "react-icons/bi";
@@ -14,10 +15,18 @@ const Header = () => {
   const navigate = useNavigate();
   const isLogin = useRecoilValue(loginState);
   const setModal = useSetRecoilState(ModalState);
+  const [profileImg, setProfileImg] = useState(null);
+  const profile = localStorage.getItem("profileImage");
 
   const handleModal = () => {
     setModal((prev) => !prev);
   };
+
+  useEffect(() => {
+    setProfileImg(profile);
+  }, [profile]);
+
+  console.log(profile);
 
   return (
     <>
@@ -34,13 +43,10 @@ const Header = () => {
           </Tab>
           {isLogin ? (
             <LoginUser onClick={handleModal}>
-              {localStorage.getItem("profileImage") ? (
-                <ProfileImg
-                  src={localStorage.getItem("profileImage")}
-                  alt="Profile"
-                />
-              ) : (
+              {profileImg === "null" ? (
                 <BiSolidUser size={25} color={COLOR.main_yellow} />
+              ) : (
+                <ProfileImg src={profileImg} alt="Profile" />
               )}
             </LoginUser>
           ) : (
